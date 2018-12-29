@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Client} from '../model/Client';
+import {SyncupApiService} from '../shared/syncup-api.service';
 
 @Component({
   selector: 'app-client',
@@ -12,14 +13,14 @@ export class ClientComponent implements OnInit {
     id: -1,
     name: '',
     address: '',
-    client_type: '',
-    doi_or_dob: '',
-    responsible_person_name: '',
-    responsible_person_PAN: '',
-    responsible_person_DOB: '',
-    responsible_person_aadhaar: ''
+    clientType: '',
+    doiOrDob: '',
+    responsiblePersonName: '',
+    responsiblePersonPAN: '',
+    responsiblePersonDOB: '',
+    responsiblePersonAadhaar: ''
   };
-  constructor() { }
+  constructor(private apiService: SyncupApiService) { }
 
   ngOnInit() {
   }
@@ -36,5 +37,16 @@ export class ClientComponent implements OnInit {
       document.getElementById('labelResponsiblePersonName').style.display = 'inline';
       document.getElementById('labelResponsiblePersonDOB').style.display = 'inline';
     }
+  }
+
+  createNewClient(): void {
+    this.apiService.AddClient(this.clientModel).subscribe(
+      res => {
+        alert('Client ' + this.clientModel.name + ' successfully inserted');
+      },
+      err => {
+        alert('oops!!! Somthing went wrong');
+      }
+    );
   }
 }
