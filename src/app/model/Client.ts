@@ -1,16 +1,18 @@
 export interface Client {
   id: number;
   name: string;
-  address: string;
+  flatNo: string;
+  area: string;
+  city: string;
+  state: string;
+  pin: string;
   clientType: string;
   mobile: string;
   clientEmail: string;
+  pan: string;
   doiOrDob: string;
   responsiblePersonName: string;
   responsiblePersonPAN: string;
   responsiblePersonDOB: string;
   responsiblePersonAadhaar: string;
-  gstNo: string;
-  cinNo: string;
-  tanNo: string;
 }
