@@ -14,11 +14,16 @@ export class ClientComponent implements OnInit {
     name: '',
     address: '',
     clientType: '',
+    mobile: '',
+    clientEmail: '',
     doiOrDob: '',
     responsiblePersonName: '',
     responsiblePersonPAN: '',
     responsiblePersonDOB: '',
-    responsiblePersonAadhaar: ''
+    responsiblePersonAadhaar: '',
+    gstNo: '',
+    cinNo: '',
+    tanNo: ''
   };
   constructor(private apiService: SyncupApiService) { }
 
@@ -42,6 +47,7 @@ export class ClientComponent implements OnInit {
   createNewClient(): void {
     this.apiService.AddClient(this.clientModel).subscribe(
       res => {
+        this.clientModel.id = res;
         alert('Client ' + this.clientModel.name + ' successfully inserted');
       },
       err => {
