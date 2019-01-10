@@ -1,302 +1,339 @@
 <div class="container">
-  <div class="row">
-    <div class="col-md-6 offset-md-3">
-      <h2>Add New Client</h2>
-      <br>
-      <br>
-      <form (ngSubmit)="f.form.valid && createNewClient()" #f="ngForm">
-        <!--Client Name-->
-        <div class="form-group">
-          <label for="clientName">Client Name</label>
-          <input type="text"
-                 id="clientName"
-                 class="form-control"
-                 name="name"
-                 placeholder="Client Name"
-                 [(ngModel)]="clientModel.name"
-                 #clientName="ngModel"
-                 [ngClass]="{ 'is-invalid': f.submitted && clientName.invalid }"
-                  required/>
-          <!-- input validation group -->
-          <div *ngIf="f.submitted && clientName.invalid" class="invalid-input">
-            <!-- individual validation errors -->
-            <div *ngIf="clientName.errors?.required">Client Name is required</div>
-          </div>
+  <h2 align="center">Add New Client</h2>
+  <br>
+  <br>
+  <form (ngSubmit)="f.form.valid && createNewClient()" #f="ngForm" role="form">
+    <!--Client Name-->
+    <div class="form-group row">
+      <label for="clientName" class="col-sm-2 col-form-label">Client Name</label>
+      <div class="col-sm-10">
+        <input type="text"
+               id="clientName"
+               class="form-control"
+               name="name"
+               placeholder="Client Name"
+               [(ngModel)]="clientModel.name"
+               #clientName="ngModel"
+               [ngClass]="{ 'is-invalid': f.submitted && clientName.invalid }"
+               required/>
+        <!-- input validation group -->
+        <div *ngIf="f.submitted && clientName.invalid" class="invalid-input">
+          <!-- individual validation errors -->
+          <div *ngIf="clientName.errors?.required">Client Name is required</div>
         </div>
-        <!--Flat No.-->
-        <div class="form-group">
-          <label for="flatNo">Flat No.</label>
-          <input type="text"
-                 id="flatNo"
+      </div>
+    </div>
+    <!--Flat No.-->
+    <div class="form-group row">
+      <label for="flatNo" class="col-sm-2 col-form-label">Flat No.</label>
+      <div class="col-sm-10">
+        <input type="text"
+               id="flatNo"
+               class="form-control"
+               name="flatNo"
+               placeholder="Flat No."
+               [(ngModel)]="clientModel.flatNo"
+               #flatNo="ngModel"
+               [ngClass]="{ 'is-invalid': f.submitted && flatNo.invalid }"
+               required/>
+        <!-- input validation group -->
+        <div *ngIf="f.submitted && flatNo.invalid" class="invalid-input">
+          <!-- individual validation errors -->
+          <div *ngIf="flatNo.errors?.required">Flat No. is required</div>
+        </div>
+      </div>
+    </div>
+    <!--Area-->
+    <div class="form-group row">
+      <label for="area" class="col-sm-2 col-form-label">Area</label>
+      <div class="col-sm-10">
+        <input type="text"
+               id="area"
+               class="form-control"
+               name="area"
+               placeholder="Area"
+               [(ngModel)]="clientModel.area"
+               #area="ngModel"
+               [ngClass]="{ 'is-invalid': f.submitted && area.invalid }"
+               required/>
+        <!-- input validation group -->
+        <div *ngIf="f.submitted && area.invalid" class="invalid-input">
+          <!-- individual validation errors -->
+          <div *ngIf="area.errors?.required">Area is required</div>
+        </div>
+      </div>
+    </div>
+    <!--State-->
+    <div class="form-group row">
+      <label for="state" class="col-sm-2 col-form-label">State</label>
+      <div class="col-sm-10">
+        <input type="text"
+               id="state"
+               class="form-control"
+               name="state"
+               placeholder="State"
+               [(ngModel)]="clientModel.state"
+               #state="ngModel"
+               [ngClass]="{ 'is-invalid': f.submitted && state.invalid }"
+               required/>
+        <!-- input validation group -->
+        <div *ngIf="f.submitted && state.invalid" class="invalid-input">
+          <!-- individual validation errors -->
+          <div *ngIf="state.errors?.required">State is required</div>
+        </div>
+      </div>
+    </div>
+    <!--City-->
+    <div class="form-group row">
+      <label for="city" class="col-sm-2 col-form-label">City</label>
+      <div class="col-sm-10">
+        <input type="text"
+               id="city"
+               class="form-control"
+               name="city"
+               placeholder="City"
+               [(ngModel)]="clientModel.city"
+               #city="ngModel"
+               [ngClass]="{ 'is-invalid': f.submitted && city.invalid }"
+               required/>
+        <!-- input validation group -->
+        <div *ngIf="f.submitted && city.invalid" class="invalid-input">
+          <!-- individual validation errors -->
+          <div *ngIf="city.errors?.required">City is required</div>
+        </div>
+      </div>
+    </div>
+    <!--PIN-->
+    <div class="form-group row">
+      <label for="pin" class="col-sm-2 col-form-label">PIN Code</label>
+      <div class="col-sm-10">
+        <input type="text"
+               id="pin"
+               class="form-control"
+               name="pin"
+               placeholder="PIN Code"
+               [(ngModel)]="clientModel.pin"
+               #pin="ngModel"
+               [ngClass]="{ 'is-invalid': f.submitted && pin.invalid }"
+               required/>
+        <!-- input validation group -->
+        <div *ngIf="f.submitted && pin.invalid" class="invalid-input">
+          <!-- individual validation errors -->
+          <div *ngIf="pin.errors?.required">PIN Code is required</div>
+        </div>
+      </div>
+    </div>
+    <!--Client Type-->
+    <div class="form-group row">
+      <label for="clientType" class="col-sm-2 col-form-label">Client Type</label>
+      <div class="col-sm-10">
+        <select class="form-control"
+                id="clientType"
+                name="clientType"
+                [(ngModel)]="clientModel.clientType"
+                #clientType="ngModel"
+                (change)="toggleElements(clientType)"
+                required>
+          <option value="individual" selected>Individual</option>
+          <option value="company">Company</option>
+          <option value="llp">LLP</option>
+          <option value="huf">HUF</option>
+          <option value="firm">Firm</option>
+          <option value="association_of_persons">Association Of Persons</option>
+          <option value="trust">Trust</option>
+          <option value="body_of_individuals">Body Of Individuals</option>
+          <option value="local_authority">Local Authority</option>
+          <option value="artificial_juridical_person">Artificial Juridical Person</option>
+          <option value="government">Government</option>
+        </select>
+      </div>
+    </div>
+    <!--Mobile-->
+    <div class="form-group row">
+      <label for="mobile" class="col-sm-2 col-form-label">Mobile No.</label>
+      <div class="col-sm-10">
+        <input type="text"
+               id="mobile"
+               class="form-control"
+               name="mobile"
+               placeholder="Mobile No."
+               [(ngModel)]="clientModel.mobile"
+               #mobile="ngModel"
+               [ngClass]="{ 'is-invalid': f.submitted && mobile.invalid }"
+               required maxlength="10" minlength="10"/>
+        <!-- input validation group -->
+        <div *ngIf="f.submitted && mobile.invalid" class="invalid-input">
+          <!-- individual validation errors -->
+          <div *ngIf="mobile.errors?.required">Mobile No. is required</div>
+          <div *ngIf="mobile.errors?.maxlength">Mobile No. not of 10 digits</div>
+          <div *ngIf="mobile.errors?.minlength">Mobile No. not of 10 digits</div>
+        </div>
+      </div>
+    </div>
+    <!--Email Id-->
+    <div class="form-group row">
+      <label for="emailId" class="col-sm-2 col-form-label">Client Email Id</label>
+      <div class="col-sm-10">
+        <input type="text"
+               id="emailId"
+               class="form-control"
+               name="emailId"
+               placeholder="Client Email Id"
+               [(ngModel)]="clientModel.clientEmail"
+               #emailId="ngModel"
+               [ngClass]="{ 'is-invalid': f.submitted && emailId.invalid }"
+               required
+               email/>
+        <!-- input validation group -->
+        <div *ngIf="f.submitted && emailId.invalid" class="invalid-input">
+          <!-- individual validation errors -->
+          <div *ngIf="emailId.errors?.required">Client Email Id is required</div>
+          <div *ngIf="emailId.errors?.email">Not a valid Email Id</div>
+        </div>
+      </div>
+    </div>
+    <!--PAN-->
+    <div class="form-group row">
+      <label for="pan" class="col-sm-2 col-form-label">PAN Number</label>
+      <div class="col-sm-10">
+        <input type="text"
+               id="pan"
+               class="form-control"
+               name="pan"
+               placeholder="PAN Number"
+               [(ngModel)]="clientModel.pan"
+               #pan="ngModel"
+               [ngClass]="{ 'is-invalid': f.submitted && pan.invalid }"
+               required/>
+        <!-- input validation group -->
+        <div *ngIf="f.submitted && pan.invalid" class="invalid-input">
+          <!-- individual validation errors -->
+          <div *ngIf="pan.errors?.required">PAN Number is required</div>
+        </div>
+      </div>
+    </div>
+    <!--dob or doi-->
+    <div class="form-group row">
+      <label for="dob_or_doi" class="col-sm-2 col-form-label">Date of birth/Date of Incorporation</label>
+      <div class="col-sm-10">
+        <div class='input-group date' id='datetimepicker1'>
+          <input type="date"
                  class="form-control"
-                 name="flatNo"
-                 placeholder="Flat No."
-                 [(ngModel)]="clientModel.flatNo"
-                 #flatNo="ngModel"
-                 [ngClass]="{ 'is-invalid': f.submitted && flatNo.invalid }"
+                 id="dob_or_doi"
+                 name="dobOrDoi"
+                 [(ngModel)]="clientModel.doiOrDob"
+                 #dob_or_doi="ngModel"
                  required/>
+        </div>
           <!-- input validation group -->
-          <div *ngIf="f.submitted && flatNo.invalid" class="invalid-input">
+          <div *ngIf="f.submitted && dob_or_doi.invalid" class="invalid-input">
             <!-- individual validation errors -->
-            <div *ngIf="flatNo.errors?.required">Flat No. is required</div>
+            <div *ngIf="dob_or_doi.errors?.required">Date of birth/Date of Incorporation is required</div>
           </div>
         </div>
-        <!--Area-->
-        <div class="form-group">
-          <label for="area">Area</label>
-          <input type="text"
-                 id="area"
+    </div>
+    <!--Name of Responsible Person-->
+    <div class="form-group row">
+      <label for="responsiblePersonName" id="labelResponsiblePersonName" style="display: none"
+             class="col-sm-2 col-form-label">Name of Responsible Person</label>
+      <div class="col-sm-10">
+        <input type="text"
+               id="responsiblePersonName"
+               class="form-control"
+               name="responsiblePersonName"
+               placeholder="Name of Responsible Person"
+               [(ngModel)]="clientModel.responsiblePersonName"
+               #responsiblePersonName="ngModel"
+               [ngClass]="{ 'is-invalid': f.submitted && responsiblePersonName.invalid }"
+               style="display: none"
+               [required]="clientType.value!=='individual'"/>
+        <!--input validation group -->
+        <div *ngIf="f.submitted && responsiblePersonName.invalid" class="invalid-input">
+          <!-- individual validation errors -->
+          <div *ngIf="responsiblePersonName.errors?.required">Responsible person name is required</div>
+        </div>
+      </div>
+    </div>
+    <!--PAN of Responsible Person-->
+    <div class="form-group row">
+      <label for="responsiblePersonPAN" id="labelResponsiblePersonPAN" style="display: none"
+             class="col-sm-2 col-form-label">PAN of Responsible Person</label>
+      <div class="col-sm-10">
+        <input type="text"
+               id="responsiblePersonPAN"
+               class="form-control"
+               name="responsiblePersonPAN"
+               placeholder="PAN of Responsible Person"
+               [(ngModel)]="clientModel.responsiblePersonPAN"
+               #responsiblePersonPAN="ngModel"
+               [ngClass]="{ 'is-invalid': f.submitted && responsiblePersonPAN.invalid }"
+               style="display: none"
+               [required]="clientType.value!=='individual'" maxlength="10" minlength="10"
+               pattern="[A-Z]{5}[0-9]{4}[A-Z]"/>
+        <!-- input validation group -->
+        <div *ngIf="f.submitted && responsiblePersonPAN.invalid" class="invalid-input">
+          <!-- individual validation errors -->
+          <div *ngIf="responsiblePersonPAN.errors?.required">Responsible person PAN is required</div>
+          <div *ngIf="responsiblePersonPAN.errors?.maxlength">Responsible person PAN not of 10 digits</div>
+          <div *ngIf="responsiblePersonPAN.errors?.minlength">Responsible person PAN not of 10 digits</div>
+          <div *ngIf="responsiblePersonPAN.errors?.pattern">Invalid PAN number</div>
+        </div>
+      </div>
+    </div>
+    <!--DOB of Responsible Person-->
+    <div class="form-group row">
+      <label for="responsiblePersonDOB" id="labelResponsiblePersonDOB" style="display: none"
+             class="col-sm-2 col-form-label">Date of birth of responsible person</label>
+      <div class="col-sm-10">
+        <div class='input-group date' id='datetimepicker2'>
+          <input type="date"
                  class="form-control"
-                 name="area"
-                 placeholder="Area"
-                 [(ngModel)]="clientModel.area"
-                 #area="ngModel"
-                 [ngClass]="{ 'is-invalid': f.submitted && area.invalid }"
-                 required/>
-          <!-- input validation group -->
-          <div *ngIf="f.submitted && area.invalid" class="invalid-input">
-            <!-- individual validation errors -->
-            <div *ngIf="area.errors?.required">Area is required</div>
-          </div>
-        </div>
-        <!--State-->
-        <div class="form-group">
-          <label for="state">State</label>
-          <input type="text"
-                 id="state"
-                 class="form-control"
-                 name="state"
-                 placeholder="State"
-                 [(ngModel)]="clientModel.state"
-                 #state="ngModel"
-                 [ngClass]="{ 'is-invalid': f.submitted && state.invalid }"
-                 required/>
-          <!-- input validation group -->
-          <div *ngIf="f.submitted && state.invalid" class="invalid-input">
-            <!-- individual validation errors -->
-            <div *ngIf="state.errors?.required">State is required</div>
-          </div>
-        </div>
-        <!--City-->
-        <div class="form-group">
-          <label for="city">City</label>
-          <input type="text"
-                 id="city"
-                 class="form-control"
-                 name="city"
-                 placeholder="City"
-                 [(ngModel)]="clientModel.city"
-                 #city="ngModel"
-                 [ngClass]="{ 'is-invalid': f.submitted && city.invalid }"
-                 required/>
-          <!-- input validation group -->
-          <div *ngIf="f.submitted && city.invalid" class="invalid-input">
-            <!-- individual validation errors -->
-            <div *ngIf="city.errors?.required">City is required</div>
-          </div>
-        </div>
-        <!--PIN-->
-        <div class="form-group">
-          <label for="pin">PIN Code</label>
-          <input type="text"
-                 id="pin"
-                 class="form-control"
-                 name="pin"
-                 placeholder="PIN Code"
-                 [(ngModel)]="clientModel.pin"
-                 #pin="ngModel"
-                 [ngClass]="{ 'is-invalid': f.submitted && pin.invalid }"
-                 required/>
-          <!-- input validation group -->
-          <div *ngIf="f.submitted && pin.invalid" class="invalid-input">
-            <!-- individual validation errors -->
-            <div *ngIf="pin.errors?.required">PIN Code is required</div>
-          </div>
-        </div>
-        <!--Client Type-->
-        <div class="form-group">
-          <label for="clientType">Client Type</label>
-          <select class="form-control"
-                  id="clientType"
-                  name="clientType"
-                  [(ngModel)]="clientModel.clientType"
-                  #clientType="ngModel"
-                  (change)="toggleElements(clientType)"
-                  required>
-            <option value="I" selected>Individual</option>
-            <option value="C">Company</option>
-            <option value="LLP">LLP</option>
-            <option value="H">HUF</option>
-            <option value="F">Firm</option>
-            <option value="A">Association Of Persons</option>
-            <option value="T">Trust</option>
-            <option value="B">Body Of Individuals</option>
-            <option value="L">Local Authority</option>
-            <option value="J">Artificial Juridical Person</option>
-            <option value="G">Government</option>
-          </select>
-        </div>
-        <!--Mobile-->
-        <div class="form-group">
-          <label for="mobile">Mobile No.</label>
-          <input type="text"
-                 id="mobile"
-                 class="form-control"
-                 name="mobile"
-                 placeholder="Mobile No."
-                 [(ngModel)]="clientModel.mobile"
-                 #mobile="ngModel"
-                 [ngClass]="{ 'is-invalid': f.submitted && mobile.invalid }"
-                 required maxlength="10" minlength="10"/>
-          <!-- input validation group -->
-          <div *ngIf="f.submitted && mobile.invalid" class="invalid-input">
-            <!-- individual validation errors -->
-            <div *ngIf="mobile.errors?.required">Mobile No. is required</div>
-            <div *ngIf="mobile.errors?.maxlength">Mobile No. not of 10 digits</div>
-            <div *ngIf="mobile.errors?.minlength">Mobile No. not of 10 digits</div>
-          </div>
-        </div>
-        <!--Email Id-->
-        <div class="form-group">
-          <label for="emailId">Client Email Id</label>
-          <input type="text"
-                 id="emailId"
-                 class="form-control"
-                 name="emailId"
-                 placeholder="Client Email Id"
-                 [(ngModel)]="clientModel.clientEmail"
-                 #emailId="ngModel"
-                 [ngClass]="{ 'is-invalid': f.submitted && emailId.invalid }"
-                 required
-                 email/>
-          <!-- input validation group -->
-          <div *ngIf="f.submitted && emailId.invalid" class="invalid-input">
-            <!-- individual validation errors -->
-            <div *ngIf="emailId.errors?.required">Client Email Id is required</div>
-            <div *ngIf="emailId.errors?.email">Not a valid Email Id</div>
-          </div>
-        </div>
-        <!--PAN-->
-        <div class="form-group">
-          <label for="pan">PAN Number</label>
-          <input type="text"
-                 id="pan"
-                 class="form-control"
-                 name="pan"
-                 placeholder="PAN Number"
-                 [(ngModel)]="clientModel.pan"
-                 #pan="ngModel"
-                 [ngClass]="{ 'is-invalid': f.submitted && pan.invalid }"/>
-          <!-- input validation group -->
-          <div *ngIf="f.submitted && pan.invalid" class="invalid-input">
-            <!-- individual validation errors -->
-            <div *ngIf="pan.errors?.required">PAN Number is required</div>
-          </div>
-        </div>
-        <!--dob or doi-->
-        <div class="form-group">
-          <label for="dob_or_doi">Date of birth/Date of Incorporation</label>
-          <div class='input-group date' id='datetimepicker1'>
-            <input type="date"
-                   class="form-control"
-                   id="dob_or_doi"
-                   name="dobOrDoi"
-                   [(ngModel)]="clientModel.doiOrDob"
-                   #dob_or_doi="ngModel"
-                   required/>
-            <!-- input validation group -->
-            <div *ngIf="f.submitted && dob_or_doi.invalid" class="invalid-input">
-              <!-- individual validation errors -->
-              <div *ngIf="dob_or_doi.errors?.required">Date of birth/Date of Incorporation is required</div>
-            </div>
-          </div>
-        </div>
-        <!--Name of Responsible Person-->
-        <div class="form-group">
-          <label for="responsiblePersonName" id="labelResponsiblePersonName" style="display: none">Name of Responsible Person</label>
-          <input type="text"
-                 id="responsiblePersonName"
-                 class="form-control"
-                 name="responsiblePersonName"
-                 placeholder="Name of Responsible Person"
-                 [(ngModel)]="clientModel.responsiblePersonName"
-                 #responsiblePersonName="ngModel"
-                 [ngClass]="{ 'is-invalid': f.submitted && responsiblePersonName.invalid }"
+                 id="responsiblePersonDOB"
+                 name="responsiblePersonDOB"
+                 [(ngModel)]="clientModel.responsiblePersonDOB"
+                 #responsiblePersonDOB="ngModel"
                  style="display: none"
                  [required]="clientType.value!=='individual'"/>
-           <!--input validation group -->
-          <div *ngIf="f.submitted && responsiblePersonName.invalid" class="invalid-input">
-            <!-- individual validation errors -->
-            <div *ngIf="responsiblePersonName.errors?.required">Responsible person name is required</div>
-          </div>
         </div>
-        <!--PAN of Responsible Person-->
-        <div class="form-group">
-          <label for="responsiblePersonPAN" id="labelResponsiblePersonPAN" style="display: none">PAN of Responsible Person</label>
-          <input type="text"
-                 id="responsiblePersonPAN"
-                 class="form-control"
-                 name="responsiblePersonPAN"
-                 placeholder="PAN of Responsible Person"
-                 [(ngModel)]="clientModel.responsiblePersonPAN"
-                 #responsiblePersonPAN="ngModel"
-                 [ngClass]="{ 'is-invalid': f.submitted && responsiblePersonPAN.invalid }"
-                 style="display: none"
-                 [required]="clientType.value!=='individual'" maxlength="10" minlength="10" pattern="[A-Z]{5}[0-9]{4}[A-Z]"/>
           <!-- input validation group -->
-          <div *ngIf="f.submitted && responsiblePersonPAN.invalid" class="invalid-input">
+          <div *ngIf="f.submitted && responsiblePersonDOB.invalid" class="invalid-input">
             <!-- individual validation errors -->
-            <div *ngIf="responsiblePersonPAN.errors?.required">Responsible person PAN is required</div>
-            <div *ngIf="responsiblePersonPAN.errors?.maxlength">Responsible person PAN not of 10 digits</div>
-            <div *ngIf="responsiblePersonPAN.errors?.minlength">Responsible person PAN not of 10 digits</div>
-            <div *ngIf="responsiblePersonPAN.errors?.pattern">Invalid PAN number</div>
+            <div *ngIf="responsiblePersonDOB.errors?.required">Date of birth of responsible person is required</div>
           </div>
         </div>
-        <!--DOB of Responsible Person-->
-        <div class="form-group">
-          <label for="responsiblePersonDOB" id="labelResponsiblePersonDOB" style="display: none">Date of birth of responsible person</label>
-          <div class='input-group date' id='datetimepicker2'>
-            <input type="date"
-                   class="form-control"
-                   id="responsiblePersonDOB"
-                   name="responsiblePersonDOB"
-                   [(ngModel)]="clientModel.responsiblePersonDOB"
-                   #responsiblePersonDOB="ngModel"
-                   style="display: none"
-                   [required]="clientType.value!=='individual'"/>
-            <!-- input validation group -->
-            <div *ngIf="f.submitted && responsiblePersonDOB.invalid" class="invalid-input">
-              <!-- individual validation errors -->
-              <div *ngIf="responsiblePersonDOB.errors?.required">Date of birth of responsible person is required</div>
-            </div>
-          </div>
+
+    </div>
+    <!--Aadhaar of Responsible Person-->
+    <div class="form-group row">
+      <label for="responsiblePersonAadhaar" id="labelResponsiblePersonAadhaar" style="display: inline"
+             class="col-sm-2 col-form-label">Aadhaar of Responsible Person</label>
+      <div class="col-sm-10">
+        <input type="text"
+               id="responsiblePersonAadhaar"
+               class="form-control"
+               name="responsiblePersonAadhaar"
+               placeholder="Aadhaar of Responsible Person"
+               [(ngModel)]="clientModel.responsiblePersonAadhaar"
+               #responsiblePersonAadhaar="ngModel"
+               style="display: inline"
+               [ngClass]="{ 'is-invalid': f.submitted && responsiblePersonAadhaar.invalid }"
+               [required]="clientType.value==='individual'" maxlength="12" minlength="12"/>
+        <!-- input validation group -->
+        <div *ngIf="f.submitted && responsiblePersonAadhaar.invalid" class="invalid-input">
+          <!-- individual validation errors -->
+          <div *ngIf="responsiblePersonAadhaar.errors?.required">Responsible person Aadhaar is required</div>
+          <div *ngIf="responsiblePersonAadhaar.errors?.maxlength">Aadhaar not of 12 digits</div>
+          <div *ngIf="responsiblePersonAadhaar.errors?.minlength">Aadhaar not of 12 digits</div>
         </div>
-        <!--Aadhaar of Responsible Person-->
-        <div class="form-group">
-          <label for="responsiblePersonAadhaar" id="labelResponsiblePersonAadhaar" style="display: inline">Aadhaar of Responsible Person</label>
-          <input type="text"
-                 id="responsiblePersonAadhaar"
-                 class="form-control"
-                 name="responsiblePersonAadhaar"
-                 placeholder="Aadhaar of Responsible Person"
-                 [(ngModel)]="clientModel.responsiblePersonAadhaar"
-                 #responsiblePersonAadhaar="ngModel"
-                 style="display: inline"
-                 [ngClass]="{ 'is-invalid': f.submitted && responsiblePersonAadhaar.invalid }"
-                 [required]="clientType.value=='individual'" maxlength="12" minlength="12"/>
-          <!-- input validation group -->
-          <div *ngIf="f.submitted && responsiblePersonAadhaar.invalid" class="invalid-input">
-            <!-- individual validation errors -->
-            <div *ngIf="responsiblePersonAadhaar.errors?.required">Responsible person Aadhaar is required</div>
-            <div *ngIf="responsiblePersonAadhaar.errors?.maxlength">Aadhaar not of 12 digits</div>
-            <div *ngIf="responsiblePersonAadhaar.errors?.minlength">Aadhaar not of 12 digits</div>
-          </div>
-        </div>
-        <!--Submit button-->
+      </div>
+    </div>
+    <!--Submit button-->
+    <div class="form-group row">
+      <div class="col-sm-10">
         <button type="submit" class="btn btn-info pull-center">
           <span> Add Client</span>
         </button>
-      </form>
+      </div>
     </div>
-  </div>
+  </form>
 </div>
