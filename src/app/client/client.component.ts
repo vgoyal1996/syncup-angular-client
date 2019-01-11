@@ -17,7 +17,7 @@ export class ClientComponent implements OnInit {
     city: '',
     state: '',
     pin: '',
-    clientType: '',
+    clientType: 'individual',
     mobile: '',
     clientEmail: '',
     pan: '',
@@ -30,28 +30,6 @@ export class ClientComponent implements OnInit {
   constructor(private apiService: SyncupApiService) { }
 
   ngOnInit() {
-  }
-
-  toggleElements(clientType: HTMLSelectElement) {
-    if (clientType.value === 'individual') {
-      document.getElementById('responsiblePersonName').style.display = 'none';
-      document.getElementById('responsiblePersonDOB').style.display = 'none';
-      document.getElementById('responsiblePersonPAN').style.display = 'none';
-      document.getElementById('responsiblePersonAadhaar').style.display = 'inline';
-      document.getElementById('labelResponsiblePersonName').style.display = 'none';
-      document.getElementById('labelResponsiblePersonDOB').style.display = 'none';
-      document.getElementById('labelResponsiblePersonPAN').style.display = 'none';
-      document.getElementById('labelResponsiblePersonAadhaar').style.display = 'inline';
-    } else {
-      document.getElementById('responsiblePersonName').style.display = 'inline';
-      document.getElementById('responsiblePersonDOB').style.display = 'inline';
-      document.getElementById('responsiblePersonPAN').style.display = 'inline';
-      document.getElementById('responsiblePersonAadhaar').style.display = 'none';
-      document.getElementById('labelResponsiblePersonName').style.display = 'inline';
-      document.getElementById('labelResponsiblePersonDOB').style.display = 'inline';
-      document.getElementById('labelResponsiblePersonPAN').style.display = 'inline';
-      document.getElementById('labelResponsiblePersonAadhaar').style.display = 'none';
-    }
   }
 
   createNewClient(): void {
