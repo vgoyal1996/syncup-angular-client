@@ -7,12 +7,19 @@ import {Client} from '../model/Client';
   providedIn: 'root'
 })
 export class SyncupApiService {
-  private BASE_URL = 'http://localhost:8080/api/v1/client';
-  private ADD_CLIENT_URL = `${this.BASE_URL}/add`;
+  private BASE_URL = 'http://localhost:8080/api/v1';
+  private ADD_CLIENT_URL = `${this.BASE_URL}/client/add`;
+  private CHECK_LOGIN_CREDENTIALS_URL = `${this.BASE_URL}/login/validate/`;
 
   constructor(private http: HttpClient) {
   }
+
   AddClient(client: Client): Observable<any> {
     return this.http.post(this.ADD_CLIENT_URL, client);
   }
+
+  checkLoginCredentials(userId: string): Observable<any> {
+    return this.http.get(this.CHECK_LOGIN_CREDENTIALS_URL + userId);
+  }
+
 }

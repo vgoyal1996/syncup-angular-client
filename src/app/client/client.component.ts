@@ -25,7 +25,8 @@ export class ClientComponent implements OnInit {
     responsiblePersonName: '',
     responsiblePersonPAN: '',
     responsiblePersonDOB: '',
-    responsiblePersonAadhaar: ''
+    responsiblePersonAadhaar: '',
+    cin: ''
   };
   constructor(private apiService: SyncupApiService) { }
 

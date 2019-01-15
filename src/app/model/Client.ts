@@ -15,4 +15,5 @@ export interface Client {
   responsiblePersonPAN: string;
   responsiblePersonDOB: string;
   responsiblePersonAadhaar: string;
+  cin: string;
 }

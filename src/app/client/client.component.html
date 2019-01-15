@@ -335,6 +335,30 @@
         </div>
       </div>
     </div>
+    <!--CIN-->
+    <div class="form-group row"
+         [ngClass]="{'form-group row d-none' : clientType.value!=='company'&&clientType.value!=='llp',
+                     'form-group row d-flex' : clientType.value==='company'||clientType.value==='llp'}">
+      <label for="cin" class="col-sm-2 col-form-label">CIN Number</label>
+      <div class="col-sm-10">
+        <input type="text"
+               id="cin"
+               class="form-control"
+               name="cin"
+               placeholder="CIN Number"
+               [(ngModel)]="clientModel.cin"
+               #cin="ngModel"
+               [ngClass]="{ 'is-invalid': f.submitted && cin.invalid }"
+               required maxlength="21" minlength="21"/>
+        <!-- input validation group -->
+        <div *ngIf="f.submitted && cin.invalid" class="invalid-input">
+          <!-- individual validation errors -->
+          <div *ngIf="cin.errors?.required">CIN Number is required</div>
+          <div *ngIf="cin.errors?.maxlength">CIN Number not of 21 digits</div>
+          <div *ngIf="cin.errors?.minlength">CIN Number not of 21 digits</div>
+        </div>
+      </div>
+    </div>
     <!--Submit button-->
     <div class="form-group row">
       <div class="col-sm-10">
