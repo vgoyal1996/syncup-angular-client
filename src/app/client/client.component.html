@@ -133,7 +133,7 @@
                 ngModel
                 #clientType="ngModel"
                 (change)="log(clientType)"
-                [ngClass]="{ 'is-invalid': f.submitted && pin.invalid }"
+                [ngClass]="{ 'is-invalid': f.submitted && clientType.invalid }"
                 [required]="clientType!==''">
           <option value="blank" selected></option>
           <option value="individual">Individual</option>
