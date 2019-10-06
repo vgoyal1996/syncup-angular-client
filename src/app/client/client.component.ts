@@ -1,47 +1,44 @@
-import { Component, OnInit } from '@angular/core';
+import {Component} from '@angular/core';
 import {Client} from '../model/Client';
-import {SyncupApiService} from '../shared/syncup-api.service';
+import {Router} from '@angular/router';
+import {DataTransferService} from '../shared/datatransferservice/data-transfer.service';
+import {NgForm} from '@angular/forms';
+import {ClientService} from './service/client.service';
 
 @Component({
   selector: 'app-client',
   templateUrl: './client.component.html',
   styleUrls: ['./client.component.css']
 })
-export class ClientComponent implements OnInit {
+export class ClientComponent {
 
-  clientModel: Client = {
-    id: -1,
-    name: '',
-    flatNo: '',
-    area: '',
-    city: '',
-    state: '',
-    pin: '',
-    clientType: 'individual',
-    mobile: '',
-    clientEmail: '',
-    pan: '',
-    doiOrDob: '',
-    responsiblePersonName: '',
-    responsiblePersonPAN: '',
-    responsiblePersonDOB: '',
-    responsiblePersonAadhaar: '',
-    cin: ''
-  };
-  constructor(private apiService: SyncupApiService) { }
-
-  ngOnInit() {
+  constructor(private apiService: ClientService, private router: Router, private dataTransferService: DataTransferService) {
   }
 
-  createNewClient(): void {
-    this.apiService.AddClient(this.clientModel).subscribe(
-      res => {
-        this.clientModel.id = res;
-        alert('Client ' + this.clientModel.name + ' successfully inserted');
-      },
-      err => {
-        alert('oops!!! Somthing went wrong');
-      }
-    );
+  createNewClient(f: NgForm): void {
+    console.log(f);
+    if (f.valid) {
+      console.log(f.form.controls.clientType.value + 'is working');
+      const clientModel: Client = new Client(f);
+      this.apiService.addClient(clientModel).subscribe(
+        res => {
+          // clientModel.id = res;
+          this.dataTransferService.setData(res);
+          this.router.navigateByUrl('/returnCredentials').then((e) => {
+            if (e) {
+              console.log('Navigation to return Credentials successful');
+            } else {
+              console.log('Navigation to return Credentials failed');
+            }
+          });
+          // alert('Client ' + this.clientModel.name + ' successfully inserted');
+        },
+        err => {
+          alert('oops!!! Somthing went wrong');
+        }
+      );
+    } else {
+      console.log(f.form.controls.clientType.value + 'is not working');
+    }
   }
 }

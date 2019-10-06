@@ -339,11 +339,11 @@
                placeholder="Aadhaar of Responsible Person"
                ngModel
                #responsiblePersonAadhaar="ngModel"
-               [ngClass]="{ 'is-invalid': responsiblePersonAadhaar.touched && f.submitted && responsiblePersonAadhaar.invalid }"
+               [ngClass]="{ 'is-invalid': f.submitted && responsiblePersonAadhaar.invalid }"
                [required]="clientType.value==='individual'" maxlength="12" minlength="12"/>
         <!-- input validation group -->
         <div id="responsiblePersonAadhaarInvalid"
-             *ngIf="responsiblePersonAadhaar.touched && f.submitted && responsiblePersonAadhaar.invalid"
+             *ngIf="f.submitted && responsiblePersonAadhaar.invalid"
              class="invalid-input">
           <!-- individual validation errors -->
           <div id="responsiblePersonAadhaarRequiredError" *ngIf="responsiblePersonAadhaar.errors.required">Responsible
