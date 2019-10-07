@@ -1,7 +1,43 @@
 /* You can add global styles to this file, and also import other style files */
-@import "~bootstrap/dist/css/bootstrap.min.css";
-@import "~font-awesome/css/font-awesome.min.css";
+@import "~bootstrap/dist/css/bootstrap.css";
+@import "~font-awesome/css/font-awesome.css";
+
+html, body{
+  background-color: #bbdefb;
+}
 
 .invalid-input{
   color: red;
+}
+
+.container-bg-color{
+  background-color: #bbdefb;
+}
+
+.is-invalid{
+  border: 2px solid red
+}
+
+.card-primary{
+  border: none;
+  margin: 20px;
+  text-align: center;
+  background-color: #bbdefb;
+}
+
+.card-header-style{
+  background-color: #9933CC;
+  text-align: center;
+  color: white;
+  font-size: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.btn-style{
+  background-color: #9933CC;
+  text-align: center;
+  color: white;
+  font-size: 20px;
+  margin: 0 auto;
 }
