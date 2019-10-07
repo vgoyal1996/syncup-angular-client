@@ -3,7 +3,7 @@ import {Client} from '../model/Client';
 import {Router} from '@angular/router';
 import {DataTransferService} from '../shared/datatransferservice/data-transfer.service';
 import {NgForm} from '@angular/forms';
-import {ClientService} from './service/client.service';
+import {SyncupApiService} from '../shared/api/syncup-api.service';
 
 @Component({
   selector: 'app-client',
@@ -12,7 +12,7 @@ import {ClientService} from './service/client.service';
 })
 export class ClientComponent {
 
-  constructor(private apiService: ClientService, private router: Router, private dataTransferService: DataTransferService) {
+  constructor(private apiService: SyncupApiService, private router: Router, private dataTransferService: DataTransferService) {
   }
 
   createNewClient(f: NgForm): void {
