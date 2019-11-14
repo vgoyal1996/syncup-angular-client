@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {SyncupApiService} from '../shared/syncup-api.service';
+import {SyncupApiService} from '../shared/api/syncup-api.service';
 import {Router} from '@angular/router';
 
 @Component({

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Login} from '../model/Login';
-import {SyncupApiService} from '../shared/syncup-api.service';
+import {SyncupApiService} from '../shared/api/syncup-api.service';
 import {Router} from '@angular/router';
 import {NgForm} from '@angular/forms';
 
@@ -44,11 +44,11 @@ export class LoginComponent implements OnInit {
         } else {
           this.dbLoginModel = res;
           if ((this.loginModel.userId === this.dbLoginModel.userId) && (this.loginModel.password === this.dbLoginModel.password)) {
-            this.router.navigateByUrl('/addclient').then((e) => {
+            this.router.navigateByUrl('/home').then((e) => {
               if (e) {
-                console.log('Navigation to Add Client Page successful');
+                console.log('Navigation to home Page successful');
               } else {
-                console.log('Navigation to Add Client Page failed');
+                console.log('Navigation to home Page failed');
               }
             });
           }
