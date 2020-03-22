@@ -1,0 +1,122 @@
+<div class="container container-bg-color">
+  <div class="card card-primary">
+    <div class="card-header card-header-style">GST</div>
+    <div class="card-block">
+      <div formArrayName="returnForms"
+           *ngFor="let returnForm of gstReturnForm.get('returnForms').controls; let i = index;">
+        <h3 class="p-3">GST Return Credentials</h3>
+        <div [formGroupName]="i">
+          <div class=".container-fluid p-1">
+            <div class="row">
+              <label for="gstFlatNo" class="col-sm-2 col-form-label">Flat No.</label>
+              <div class="col-sm-4">
+                <input type="text"
+                      id="gstFlatNo"
+                      class="form-control"
+                      name="gstFlatNo"
+                      placeholder="Flat No."
+                      formControlName="gstFlatNo"/>
+              </div>
+              <label for="gstArea" class="col-sm-2 col-form-label">Area</label>
+              <div class="col-sm-4">
+                <input type="text"
+                      id="gstArea"
+                      class="form-control"
+                      name="gstArea"
+                      placeholder="Area"
+                      formControlName="gstArea"/>
+              </div>
+            </div>
+          </div>
+          <div class=".container-fluid p-1">
+            <div class="row">
+              <label for="gstCity" class="col-sm-2 col-form-label">City</label>
+              <div class="col-sm-4">
+                <input type="text"
+                       id="gstCity"
+                       class="form-control"
+                       name="gstCity"
+                       placeholder="City"
+                       formControlName="gstCity"/>
+              </div>
+              <label for="gstState" class="col-sm-2 col-form-label">State</label>
+              <div class="col-sm-4">
+                <input type="text"
+                       id="gstState"
+                       class="form-control"
+                       name="gstState"
+                       placeholder="State"
+                       formControlName="gstState"/>
+              </div>
+            </div>
+          </div>
+          <div class=".container-fluid p-1">
+            <div class="row">
+              <label for="gstPin" class="col-sm-2 col-form-label">PIN</label>
+              <div class="col-sm-4">
+                <input type="text"
+                       id="gstPin"
+                       class="form-control"
+                       name="gstPin"
+                       placeholder="PIN"
+                       formControlName="gstPin"/>
+              </div>
+              <label for="gstNo" class="col-sm-2 col-form-label">GST No</label>
+              <div class="col-sm-4">
+                <input type="text"
+                       id="gstNo"
+                       class="form-control"
+                       name="gstNo"
+                       placeholder="GST No"
+                       formControlName="gstNo"/>
+              </div>
+            </div>
+          </div>
+          <div class=".container-fluid p-1">
+            <div class="row">
+              <label for="gstUserName" class="col-sm-2 col-form-label">User Name</label>
+              <div class="col-sm-4">
+                <input type="text"
+                       id="gstUserName"
+                       class="form-control"
+                       name="gstUserName"
+                       placeholder="User Name"
+                       formControlName="gstUserName"/>
+              </div>
+              <label for="gstPassword" class="col-sm-2 col-form-label">Password</label>
+              <div class="col-sm-4">
+                <input type="password"
+                       id="gstPassword"
+                       class="form-control"
+                       name="gstPassword"
+                       placeholder="Password"
+                       formControlName="gstPassword"/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class=".container-fluid p-5">
+        <div class="container p-4">
+          <div class="row justify-content-center">
+            <div class="col-4 text-center">
+              <button type="button" class="btn btn-secondary" (click)="addReturnForm()">Add GST
+                Credentials
+              </button>
+            </div>
+            <div class="col-4 text-center">
+              <button type="button" class="btn btn-secondary" (click)="removeReturnForm()">Remove GST
+                Credentials
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="col text-center">
+          <button type="submit" class="btn btn-primary" (click)="saveReturnInfo()">
+            <span>Add Return Information</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

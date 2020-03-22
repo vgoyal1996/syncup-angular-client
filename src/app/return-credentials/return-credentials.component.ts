@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, FormControl, Validators, NgForm, Form, FormArray} from '@angular/forms';
 import {ReturnCredentials} from '../model/ReturnCredentials';
-import {DataTransferService} from '../shared/datatransferservice/data-transfer.service';
+//import {DataTransferService} from '../shared/datatransferservice/data-transfer.service';
 import {SyncupApiService} from '../shared/api/syncup-api.service';
 
 @Component({
@@ -19,7 +19,7 @@ export class ReturnCredentialsComponent implements OnInit {
   ngOnInit() {
   }
 
-  constructor(private formBuilder: FormBuilder, private dataTransferService: DataTransferService, private apiService: SyncupApiService) {
+  constructor(private formBuilder: FormBuilder, private apiService: SyncupApiService) {
       this.incomeTaxReturnForm = formBuilder.group({
         incomeTaxUserName: '',
         incomeTaxPassword: ''

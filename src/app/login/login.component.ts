@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
         } else {
           this.dbLoginModel = res;
           if ((this.loginModel.userId === this.dbLoginModel.userId) && (this.loginModel.password === this.dbLoginModel.password)) {
-            this.router.navigateByUrl('/home').then((e) => {
+            this.router.navigateByUrl('/addclient').then((e) => {
               if (e) {
                 console.log('Navigation to home Page successful');
               } else {
