@@ -14,8 +14,10 @@ import { ReturnCredentialsComponent } from './return-credentials/return-credenti
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { ConfirmEqualValidatorDirective } from './shared/validators/confirm-equal-validator/confirm-equal-validator.directive';
-import { HomeComponent } from './home/home.component';
-import { ReturnFormComponent } from './return-form/return-form.component';
+import { IncomeTaxReturnComponent } from './return-credentials/income-tax-return/income-tax-return.component';
+import { GstReturnComponent } from './return-credentials/gst-return/gst-return.component';
+import { TdsReturnComponent } from './return-credentials/tds-return/tds-return.component';
+import { RocReturnComponent } from './return-credentials/roc-return/roc-return.component';
 
 const appRoutes: Routes = [
   {
@@ -25,10 +27,6 @@ const appRoutes: Routes = [
   {
     path : 'signup',
     component : SignupComponent
-  },
-  {
-    path : 'home',
-    component : HomeComponent
   },
   {
     path : 'addclient',
@@ -53,8 +51,10 @@ const appRoutes: Routes = [
     LoginComponent,
     SignupComponent,
     ConfirmEqualValidatorDirective,
-    HomeComponent,
-    ReturnFormComponent
+    IncomeTaxReturnComponent,
+    GstReturnComponent,
+    TdsReturnComponent,
+    RocReturnComponent,
   ],
   imports: [
     BrowserModule,
