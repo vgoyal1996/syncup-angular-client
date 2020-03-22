@@ -38,7 +38,6 @@ export class ClientComponent implements OnInit {
               console.log('Navigation to return Credentials failed');
             }
           });
-          // alert('Client ' + this.clientModel.name + ' successfully inserted');
         },
         err => {
           alert('oops!!! Somthing went wrong');

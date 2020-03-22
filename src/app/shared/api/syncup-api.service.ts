@@ -32,7 +32,7 @@ export class SyncupApiService {
     return this.http.post(this.CREATE_ACCOUNT_URL, loginCredentials);
   }
 
-  addReturnCredentials(returnCredentials: ReturnCredentials[]): Observable<any> {
+  addReturnCredentials(returnCredentials: ReturnCredentials): Observable<any> {
     return this.http.post(this.ADD_RETURN_CREDENTIALS_URL, returnCredentials);
   }
 
