@@ -17,7 +17,7 @@ export class ReturnCredentials {
   private tracesUserId: string;
   private tracesPassword: string;
 
-  constructor(form: NgForm) {
+  constructor() {
 
   }
 
