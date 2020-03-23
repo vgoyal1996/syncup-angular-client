@@ -11,7 +11,12 @@
                    class="form-control"
                    name="incomeTaxUserName"
                    placeholder="User Name"
-                   formControlName="incomeTaxUserName"/>
+                   formControlName="incomeTaxUserName"
+                   [ngClass]="{ 'is-invalid': submitted && incomeTaxUserName.invalid }"/>
+            <div *ngIf="submitted && incomeTaxUserName.invalid" class="invalid-input">
+              <!-- validation errors -->
+              <div *ngIf="incomeTaxUserName.errors.required">Income Tax User name is required</div>
+            </div>
           </div>
           <label for="incomeTaxPassword" class="col-sm-2 col-form-label">Password</label>
           <div class="col-sm-4">
@@ -20,7 +25,12 @@
                    class="form-control"
                    name="incomeTaxPassword"
                    placeholder="Password"
-                   formControlName="incomeTaxPassword"/>
+                   formControlName="incomeTaxPassword"
+                   [ngClass]="{ 'is-invalid': submitted && incomeTaxPassword.invalid }"/>
+            <div *ngIf="submitted && incomeTaxPassword.invalid" class="invalid-input">
+              <!-- validation errors -->
+              <div *ngIf="incomeTaxPassword.errors.required">Income Tax Password is required</div>
+            </div>
           </div>
           <div class="col text-center p-4">
             <button type="submit" class="btn btn-primary">
