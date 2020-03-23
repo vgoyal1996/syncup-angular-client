@@ -12,7 +12,12 @@
                      class="form-control"
                      name="tdsUserName"
                      placeholder="User Name"
-                     formControlName="tdsUserName"/>
+                     formControlName="tdsUserName"
+                     [ngClass]="{ 'is-invalid': submitted && tdsUserName.invalid }"/>
+              <div *ngIf="submitted && tdsUserName.invalid" class="invalid-input">
+                <!-- validation errors -->
+                <div *ngIf="tdsUserName.errors.required">TDS User name is required</div>
+              </div>
             </div>
             <label for="tdsPassword" class="col-sm-2 col-form-label">Password</label>
             <div class="col-sm-4">
@@ -21,7 +26,12 @@
                      class="form-control"
                      name="tdsPassword"
                      placeholder="Password"
-                     formControlName="tdsPassword"/>
+                     formControlName="tdsPassword"
+                     [ngClass]="{ 'is-invalid': submitted && tdsPassword.invalid }"/>
+              <div *ngIf="submitted && tdsPassword.invalid" class="invalid-input">
+                <!-- validation errors -->
+                <div *ngIf="tdsPassword.errors.required">TDS Password is required</div>
+              </div>
             </div>
           </div>
         </div>
@@ -34,7 +44,12 @@
                      class="form-control"
                      name="tracesTdsUserName"
                      placeholder="User Name"
-                     formControlName="tracesTdsUserName"/>
+                     formControlName="tracesTdsUserName"
+                     [ngClass]="{ 'is-invalid': submitted && tracesTdsUserName.invalid }"/>
+              <div *ngIf="submitted && tracesTdsUserName.invalid" class="invalid-input">
+                <!-- validation errors -->
+                <div *ngIf="tracesTdsUserName.errors.required">TDS Traces User name is required</div>
+              </div>
             </div>
             <label for="tracesTdsPassword" class="col-sm-2 col-form-label">Traces Password</label>
             <div class="col-sm-4">
@@ -43,7 +58,12 @@
                      class="form-control"
                      name="tracesTdsPassword"
                      placeholder="Password"
-                     formControlName="tracesTdsPassword"/>
+                     formControlName="tracesTdsPassword"
+                     [ngClass]="{ 'is-invalid': submitted && tracesTdsPassword.invalid }"/>
+              <div *ngIf="submitted && tracesTdsPassword.invalid" class="invalid-input">
+                <!-- validation errors -->
+                <div *ngIf="tracesTdsPassword.errors.required">TDS Traces Password is required</div>
+              </div>
             </div>
           </div>
         </div>
@@ -56,7 +76,12 @@
                      class="form-control"
                      name="tdsTanNo"
                      placeholder="TAN No"
-                     formControlName="tdsTanNo"/>
+                     formControlName="tdsTanNo"
+                     [ngClass]="{ 'is-invalid': submitted && tdsTanNo.invalid }"/>
+              <div *ngIf="submitted && tdsTanNo.invalid" class="invalid-input">
+                <!-- validation errors -->
+                <div *ngIf="tdsTanNo.errors.required">TAN No. is required</div>
+              </div>
             </div>
           </div>
         </div>
