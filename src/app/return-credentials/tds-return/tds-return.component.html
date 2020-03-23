@@ -3,52 +3,64 @@
     <div class="card-header card-header-style">TDS</div>
     <div class="card-block">
       <form [formGroup]="tdsReturnForm" (ngSubmit)="addTdsReturnInfo()">
-        <div class="form-group row">
-          <label for="tdsTanNo" class="col-sm-2 col-form-label">TAN No</label>
-          <div class="col-sm-4">
-            <input type="text"
-                   id="tdsTanNo"
-                   class="form-control"
-                   name="tdsTanNo"
-                   placeholder="TAN No"
-                   formControlName="tdsTanNo"/>
+        <div class=".container-fluid p-1">
+          <div class="row">
+            <label for="tdsUserName" class="col-sm-2 col-form-label">User Name</label>
+            <div class="col-sm-4">
+              <input type="text"
+                     id="tdsUserName"
+                     class="form-control"
+                     name="tdsUserName"
+                     placeholder="User Name"
+                     formControlName="tdsUserName"/>
+            </div>
+            <label for="tdsPassword" class="col-sm-2 col-form-label">Password</label>
+            <div class="col-sm-4">
+              <input type="password"
+                     id="tdsPassword"
+                     class="form-control"
+                     name="tdsPassword"
+                     placeholder="Password"
+                     formControlName="tdsPassword"/>
+            </div>
           </div>
-          <label for="tdsUserName" class="col-sm-2 col-form-label">User Name</label>
-          <div class="col-sm-4">
-            <input type="text"
-                   id="tdsUserName"
-                   class="form-control"
-                   name="tdsUserName"
-                   placeholder="User Name"
-                   formControlName="tdsUserName"/>
+        </div>
+        <div class=".container-fluid p-1">
+          <div class="row">
+            <label for="tracesTdsUserName" class="col-sm-2 col-form-label">Traces User Name</label>
+            <div class="col-sm-4">
+              <input type="text"
+                     id="tracesTdsUserName"
+                     class="form-control"
+                     name="tracesTdsUserName"
+                     placeholder="User Name"
+                     formControlName="tracesTdsUserName"/>
+            </div>
+            <label for="tracesTdsPassword" class="col-sm-2 col-form-label">Traces Password</label>
+            <div class="col-sm-4">
+              <input type="password"
+                     id="tracesTdsPassword"
+                     class="form-control"
+                     name="tracesTdsPassword"
+                     placeholder="Password"
+                     formControlName="tracesTdsPassword"/>
+            </div>
           </div>
-          <label for="tdsPassword" class="col-sm-2 col-form-label">Password</label>
-          <div class="col-sm-4">
-            <input type="password"
-                   id="tdsPassword"
-                   class="form-control"
-                   name="tdsPassword"
-                   placeholder="Password"
-                   formControlName="tdsPassword"/>
+        </div>
+        <div class="container p-1">
+          <div class="row justify-content-md-center">
+            <label for="tdsTanNo" class="col-sm-2 col-form-label">TAN No</label>
+            <div class="col-sm-4">
+              <input type="text"
+                     id="tdsTanNo"
+                     class="form-control"
+                     name="tdsTanNo"
+                     placeholder="TAN No"
+                     formControlName="tdsTanNo"/>
+            </div>
           </div>
-          <label for="tracesTdsUserName" class="col-sm-2 col-form-label">Traces User Name</label>
-          <div class="col-sm-4">
-            <input type="text"
-                   id="tracesTdsUserName"
-                   class="form-control"
-                   name="tracesTdsUserName"
-                   placeholder="User Name"
-                   formControlName="tracesTdsUserName"/>
-          </div>
-          <label for="tracesTdsPassword" class="col-sm-2 col-form-label">Traces Password</label>
-          <div class="col-sm-4">
-            <input type="password"
-                   id="tracesTdsPassword"
-                   class="form-control"
-                   name="tracesTdsPassword"
-                   placeholder="Password"
-                   formControlName="tracesTdsPassword"/>
-          </div>
+        </div>
+        <div class=".container-fluid p-5">
           <div class="col text-center">
             <button type="submit" class="btn btn-primary">
               <span>Add Return Information</span>
