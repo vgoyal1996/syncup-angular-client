@@ -20,21 +20,21 @@ import { TdsReturnComponent } from './return-credentials/tds-return/tds-return.c
 import { RocReturnComponent } from './return-credentials/roc-return/roc-return.component';
 
 const appRoutes: Routes = [
-  {
+  /*{
     path : 'login',
     component : LoginComponent
   },
   {
     path : 'signup',
     component : SignupComponent
-  },
+  },*/
   {
     path : 'addclient',
     component : ClientComponent
   },
   {
     path : 'returnCredentials',
-    component : ReturnCredentialsComponent
+    component : RocReturnComponent
   },
   {
     path : '',

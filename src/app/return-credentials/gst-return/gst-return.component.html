@@ -2,20 +2,25 @@
   <div class="card card-primary">
     <div class="card-header card-header-style">GST</div>
     <div class="card-block">
-      <div formArrayName="returnForms"
-           *ngFor="let returnForm of gstReturnForm.get('returnForms').controls; let i = index;">
-        <h3 class="p-3">GST Return Credentials</h3>
+      <div formArrayName="gstReturnForm"
+           *ngFor="let returnForm of gstReturnForm.get('returnForms').controls; index as i">
+        <h3 class="p-3">{{ i }} + GST Return Credentials</h3>
         <div [formGroupName]="i">
           <div class=".container-fluid p-1">
             <div class="row">
-              <label for="gstFlatNo" class="col-sm-2 col-form-label">Flat No.</label>
+              <label for="{{'gstFlatNo' + i}}" class="col-sm-2 col-form-label">Flat No.</label>
               <div class="col-sm-4">
                 <input type="text"
-                      id="gstFlatNo"
+                      id="{{'gstFlatNo' + i}}"
                       class="form-control"
                       name="gstFlatNo"
                       placeholder="Flat No."
-                      formControlName="gstFlatNo"/>
+                      formControlName="gstFlatNo1"
+                       [ngClass]="{ 'is-invalid': submitted && returnForm.controls.gstFlatNo1.invalid }"/>
+                <div *ngIf="submitted && returnForm.controls.gstFlatNo1.invalid" class="invalid-input">
+                  <!-- validation errors -->
+                  <div *ngIf="returnForm.controls.gstFlatNo1.errors?.required">Flat No. is required</div>
+                </div>
               </div>
               <label for="gstArea" class="col-sm-2 col-form-label">Area</label>
               <div class="col-sm-4">
@@ -24,7 +29,12 @@
                       class="form-control"
                       name="gstArea"
                       placeholder="Area"
-                      formControlName="gstArea"/>
+                      formControlName="gstArea"
+                       [ngClass]="{ 'is-invalid': submitted && gstArea.invalid }"/>
+                <div *ngIf="submitted && gstArea.invalid" class="invalid-input">
+                  <!-- validation errors -->
+                  <div *ngIf="gstArea.errors.required">Area is required</div>
+                </div>
               </div>
             </div>
           </div>
@@ -37,7 +47,12 @@
                        class="form-control"
                        name="gstCity"
                        placeholder="City"
-                       formControlName="gstCity"/>
+                       formControlName="gstCity"
+                       [ngClass]="{ 'is-invalid': submitted && gstCity.invalid }"/>
+                <div *ngIf="submitted && gstCity.invalid" class="invalid-input">
+                  <!-- validation errors -->
+                  <div *ngIf="gstCity.errors.required">City Name is required</div>
+                </div>
               </div>
               <label for="gstState" class="col-sm-2 col-form-label">State</label>
               <div class="col-sm-4">
@@ -46,7 +61,12 @@
                        class="form-control"
                        name="gstState"
                        placeholder="State"
-                       formControlName="gstState"/>
+                       formControlName="gstState"
+                       [ngClass]="{ 'is-invalid': submitted && gstState.invalid }"/>
+                <div *ngIf="submitted && gstState.invalid" class="invalid-input">
+                  <!-- validation errors -->
+                  <div *ngIf="gstState.errors.required">State Name is required</div>
+                </div>
               </div>
             </div>
           </div>
@@ -59,7 +79,12 @@
                        class="form-control"
                        name="gstPin"
                        placeholder="PIN"
-                       formControlName="gstPin"/>
+                       formControlName="gstPin"
+                       [ngClass]="{ 'is-invalid': submitted && gstPin.invalid }"/>
+                <div *ngIf="submitted && gstPin.invalid" class="invalid-input">
+                  <!-- validation errors -->
+                  <div *ngIf="gstPin.errors.required">PIN Number is required</div>
+                </div>
               </div>
               <label for="gstNo" class="col-sm-2 col-form-label">GST No</label>
               <div class="col-sm-4">
@@ -68,7 +93,12 @@
                        class="form-control"
                        name="gstNo"
                        placeholder="GST No"
-                       formControlName="gstNo"/>
+                       formControlName="gstNo"
+                       [ngClass]="{ 'is-invalid': submitted && gstNo.invalid }"/>
+                <div *ngIf="submitted && gstNo.invalid" class="invalid-input">
+                  <!-- validation errors -->
+                  <div *ngIf="gstNo.errors.required">GST Number is required</div>
+                </div>
               </div>
             </div>
           </div>
@@ -81,7 +111,12 @@
                        class="form-control"
                        name="gstUserName"
                        placeholder="User Name"
-                       formControlName="gstUserName"/>
+                       formControlName="gstUserName"
+                       [ngClass]="{ 'is-invalid': submitted && gstUserName.invalid }"/>
+                <div *ngIf="submitted && gstUserName.invalid" class="invalid-input">
+                  <!-- validation errors -->
+                  <div *ngIf="gstUserName.errors.required">GST User name is required</div>
+                </div>
               </div>
               <label for="gstPassword" class="col-sm-2 col-form-label">Password</label>
               <div class="col-sm-4">
@@ -90,7 +125,12 @@
                        class="form-control"
                        name="gstPassword"
                        placeholder="Password"
-                       formControlName="gstPassword"/>
+                       formControlName="gstPassword"
+                       [ngClass]="{ 'is-invalid': submitted && gstPassword.invalid }"/>
+                <div *ngIf="submitted && gstPassword.invalid" class="invalid-input">
+                  <!-- validation errors -->
+                  <div *ngIf="gstPassword.errors.required">GST Password is required</div>
+                </div>
               </div>
             </div>
           </div>
