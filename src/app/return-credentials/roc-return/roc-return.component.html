@@ -3,25 +3,39 @@
     <div class="card-header card-header-style">ROC</div>
     <div class="card-block">
       <form [formGroup]="rocReturnForm" (ngSubmit)="addRocReturnInfo()">
-        <div class="form-group row">
-          <label for="rocUserName" class="col-sm-2 col-form-label">User Name</label>
-          <div class="col-sm-4">
-            <input type="text"
-                   id="rocUserName"
-                   class="form-control"
-                   name="rocUserName"
-                   placeholder="User Name"
-                   formControlName="rocUserName"/>
+        <div class=".container-fluid p-1">
+          <div class="row">
+            <label for="rocUserName" class="col-sm-2 col-form-label">User Name</label>
+            <div class="col-sm-4">
+              <input type="text"
+                     id="rocUserName"
+                     class="form-control"
+                     name="rocUserName"
+                     placeholder="User Name"
+                     formControlName="rocUserName"
+                     [ngClass]="{ 'is-invalid': submitted && rocUserName.invalid }"/>
+              <div *ngIf="submitted && rocUserName.invalid" class="invalid-input">
+                <!-- validation errors -->
+                <div *ngIf="rocUserName.errors.required">ROC User name is required</div>
+              </div>
+            </div>
+            <label for="rocPassword" class="col-sm-2 col-form-label">Password</label>
+            <div class="col-sm-4">
+              <input type="password"
+                     id="rocPassword"
+                     class="form-control"
+                     name="rocPassword"
+                     placeholder="Password"
+                     formControlName="rocPassword"
+                     [ngClass]="{ 'is-invalid': submitted && rocUserName.invalid }"/>
+              <div *ngIf="submitted && rocPassword.invalid" class="invalid-input">
+                <!-- validation errors -->
+                <div *ngIf="rocPassword.errors.required">ROC Password is required</div>
+              </div>
+            </div>
           </div>
-          <label for="rocPassword" class="col-sm-2 col-form-label">Password</label>
-          <div class="col-sm-4">
-            <input type="password"
-                   id="rocPassword"
-                   class="form-control"
-                   name="rocPassword"
-                   placeholder="Password"
-                   formControlName="rocPassword"/>
-          </div>
+        </div>
+        <div class=".container-fluid p-5">
           <div class="col text-center">
             <button type="submit" class="btn btn-primary">
               <span>Add Return Information</span>

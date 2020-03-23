@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {SyncupApiService} from 'src/app/shared/api/syncup-api.service';
-import {FormGroup, FormBuilder} from '@angular/forms';
+import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 import { ReturnCredentials } from '../../model/ReturnCredentials';
 import {DataTransferService} from '../../shared/data/data-transfer.service';
 import {Router} from '@angular/router';
@@ -12,13 +12,14 @@ import {Router} from '@angular/router';
 })
 export class IncomeTaxReturnComponent implements OnInit {
 
+  submitted = false;
   private clientId: string;
   private incomeTaxReturnForm: FormGroup;
 
   constructor(private formBuilder: FormBuilder, private apiService: SyncupApiService, private dataTransferService: DataTransferService, private router: Router) {
     this.incomeTaxReturnForm = formBuilder.group({
-            incomeTaxUserName: [''],
-            incomeTaxPassword: ['']
+            incomeTaxUserName: this.formBuilder.control('', Validators.required),
+            incomeTaxPassword: this.formBuilder.control('', Validators.required)
           });
   }
 
@@ -27,14 +28,18 @@ export class IncomeTaxReturnComponent implements OnInit {
   }
 
   get incomeTaxUserName() {
-    return this.incomeTaxReturnForm.get('incomeTaxUserName').value;
+    return this.incomeTaxReturnForm.get('incomeTaxUserName');
   }
 
   get incomeTaxPassword() {
-    return this.incomeTaxReturnForm.get('incomeTaxPassword').value;
+    return this.incomeTaxReturnForm.get('incomeTaxPassword');
   }
 
   private addIncomeTaxReturnInfo() {
+    this.submitted = true;
+    if (this.incomeTaxReturnForm.invalid) {
+      return;
+    }
     const incomeTaxCredentials: ReturnCredentials = new ReturnCredentials();
     incomeTaxCredentials.setUserId = this.incomeTaxReturnForm.controls.incomeTaxUserName.value;
     incomeTaxCredentials.setPassword = this.incomeTaxReturnForm.controls.incomeTaxPassword.value;

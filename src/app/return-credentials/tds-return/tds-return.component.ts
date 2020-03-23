@@ -12,16 +12,17 @@ import {Router} from '@angular/router';
 })
 export class TdsReturnComponent implements OnInit {
 
+  submitted = false;
   private clientId: string;
   private tdsReturnForm: FormGroup;
 
   constructor(private formBuilder: FormBuilder, private apiService: SyncupApiService, private dataTransferService: DataTransferService, private router: Router) {
     this.tdsReturnForm = this.formBuilder.group({
-                    tdsTanNo: [null, [Validators.required]],
-                    tdsUserName: [null, [Validators.required]],
-                    tdsPassword: [null, [Validators.required]],
-                    tracesTdsUserName: [null, [Validators.required]],
-                    tracesTdsPassword: [null, [Validators.required]]
+                    tdsTanNo: this.formBuilder.control('', Validators.required),
+                    tdsUserName: this.formBuilder.control('', Validators.required),
+                    tdsPassword: this.formBuilder.control('', Validators.required),
+                    tracesTdsUserName: this.formBuilder.control('', Validators.required),
+                    tracesTdsPassword: this.formBuilder.control('', Validators.required)
                   });
    }
 
@@ -29,7 +30,31 @@ export class TdsReturnComponent implements OnInit {
     this.dataTransferService.currentMessage.subscribe(message => this.clientId = message);
   }
 
+  get tdsUserName() {
+    return this.tdsReturnForm.get('tdsUserName');
+  }
+
+  get tdsPassword() {
+    return this.tdsReturnForm.get('tdsPassword');
+  }
+
+  get tracesTdsUserName() {
+    return this.tdsReturnForm.get('tracesTdsUserName');
+  }
+
+  get tracesTdsPassword() {
+    return this.tdsReturnForm.get('tracesTdsPassword');
+  }
+
+  get tdsTanNo() {
+    return this.tdsReturnForm.get('tdsTanNo');
+  }
+
   private addTdsReturnInfo() {
+    this.submitted = true;
+    if (this.tdsReturnForm.invalid) {
+      return;
+    }
     console.log(this.tdsReturnForm.value);
     const tdsReturnCredentials: ReturnCredentials = new ReturnCredentials();
     tdsReturnCredentials.setUserId = this.tdsReturnForm.controls.tdsUserName.value;
