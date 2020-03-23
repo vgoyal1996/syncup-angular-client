@@ -12,13 +12,14 @@ import {Router} from '@angular/router';
 })
 export class RocReturnComponent implements OnInit {
 
+  submitted = false;
   private clientId: string;
   private rocReturnForm: FormGroup;
 
   constructor(private formBuilder: FormBuilder, private apiService: SyncupApiService, private dataTransferService: DataTransferService, private router: Router) {
-    this.rocReturnForm = formBuilder.group({
-                rocUserName: [null, [Validators.required]],
-                rocPassword: [null, [Validators.required]]
+    this.rocReturnForm = this.formBuilder.group({
+                rocUserName: this.formBuilder.control('', Validators.required),
+                rocPassword: this.formBuilder.control('', Validators.required)
               });
    }
 
@@ -26,16 +27,20 @@ export class RocReturnComponent implements OnInit {
     this.dataTransferService.currentMessage.subscribe(message => this.clientId = message);
   }
 
-  get incomeTaxUserName() {
-      return this.rocReturnForm.get('rocUserName').value;
+  get rocUserName() {
+      return this.rocReturnForm.get('rocUserName');
     }
 
-    get incomeTaxPassword() {
-      return this.rocReturnForm.get('rocPassword').value;
+    get rocPassword() {
+      return this.rocReturnForm.get('rocPassword');
     }
 
-    private addRocReturnInfo() {
-      console.log(this.rocReturnForm.value);
+    addRocReturnInfo() {
+      this.submitted = true;
+      if (this.rocReturnForm.invalid) {
+        return;
+      }
+      console.log(this.rocReturnForm);
       const rocReturnCredentials: ReturnCredentials = new ReturnCredentials();
       rocReturnCredentials.setUserId = this.rocReturnForm.controls.rocUserName.value;
       rocReturnCredentials.setPassword = this.rocReturnForm.controls.rocPassword.value;
