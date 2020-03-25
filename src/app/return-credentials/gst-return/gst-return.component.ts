@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {SyncupApiService} from 'src/app/shared/api/syncup-api.service';
 import {FormGroup, FormBuilder, FormArray, Validators, FormControl} from '@angular/forms';
+import { ReturnCredentials } from '../../model/ReturnCredentials';
+import {DataTransferService} from '../../shared/data/data-transfer.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-gst-return',
@@ -9,11 +12,10 @@ import {FormGroup, FormBuilder, FormArray, Validators, FormControl} from '@angul
 })
 export class GstReturnComponent implements OnInit {
 
-  submitted = false;
+  private clientId: string;
   private gstReturnForm: FormGroup;
 
-
-  constructor(private formBuilder: FormBuilder, private apiService: SyncupApiService) {
+  constructor(private formBuilder: FormBuilder, private apiService: SyncupApiService, private dataTransferService: DataTransferService, private router: Router) {
       this.gstReturnForm = this.formBuilder.group({
         returnForms: this.formBuilder.array([
           this.getReturnForm()
@@ -22,6 +24,7 @@ export class GstReturnComponent implements OnInit {
    }
 
   ngOnInit() {
+    this.dataTransferService.currentMessage.subscribe(message => this.clientId = message);
   }
 
    getReturnForm(): FormGroup {
@@ -53,50 +56,31 @@ export class GstReturnComponent implements OnInit {
     return this.gstReturnForm.get('returnForms') as FormArray;
    }
 
-   /*get gstFlatNo(): FormControl[] {
-     let flatNoArray: FormControl[];
-     for (let returnForm of this.returnForms.controls) {
-       flatNoArray.push(returnForm.get('gstFlatNo'));
-     }
-     return flatNoArray;
-   }
-
-   get gstArea() {
-     return this.returnForms.get('gstArea') as FormArray;
-   }
-
-   get gstCity() {
-       return this.returnForms.get('gstCity') as FormArray;
-   }
-
-   get gstState() {
-     return this.returnForms.get('gstState') as FormArray;
-   }
-
-   get gstPin() {
-     return this.returnForms.get('gstPin') as FormArray;
-   }
-
-   get gstNo() {
-     return this.returnForms.get('gstNo') as FormArray;
-   }
-
-   get gstUserName() {
-     return this.returnForms.get('gstUserName') as FormArray;
-   }
-
-   get gstPassword() {
-     return this.returnForms.get('gstPassword') as FormArray;
-   }*/
-
     saveReturnInfo(): void {
-      this.submitted = true;
-      for (let returnForm of this.returnForms.controls) {
-        if (returnForm.invalid) {
-          return;
-        }
+      if (this.gstReturnForm.invalid) {
+        alert("GST Return Form is invalid");
+        return;
       }
-      //console.log(this.gstReturnForm);
+      for (const control of (<FormArray>this.gstReturnForm.get('returnForms')).controls) {
+        const gstCredentials: ReturnCredentials = new ReturnCredentials();
+        gstCredentials.setId = +this.clientId;
+        gstCredentials.setFlatNo = control.get('gstFlatNo').value;
+        gstCredentials.setArea = control.get('gstArea').value;
+        gstCredentials.setCity = control.get('gstCity').value;
+        gstCredentials.setState = control.get('gstState').value;
+        gstCredentials.setPin = control.get('gstPin').value;
+        gstCredentials.setGstNo = control.get('gstNo').value;
+        gstCredentials.setUserId = control.get('gstUserName').value;
+        gstCredentials.setPassword = control.get('gstPassword').value;
+        gstCredentials.setReturnType = "gst";
+        this.apiService.addReturnCredentials(gstCredentials).subscribe(
+          res => {
+            console.log(gstCredentials + " insertion successful")
+          },
+          err => {
+            alert('oops!!! Somthing went wrong');
+          }
+        );
+      }
     }
-
 }
