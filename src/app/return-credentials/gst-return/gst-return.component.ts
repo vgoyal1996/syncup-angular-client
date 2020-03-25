@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {SyncupApiService} from 'src/app/shared/api/syncup-api.service';
-import {FormGroup, FormBuilder, FormArray, Validators} from '@angular/forms';
+import {FormGroup, FormBuilder, FormArray, Validators, FormControl} from '@angular/forms';
+import { ReturnCredentials } from '../../model/ReturnCredentials';
+import {DataTransferService} from '../../shared/data/data-transfer.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-gst-return',
@@ -9,12 +12,10 @@ import {FormGroup, FormBuilder, FormArray, Validators} from '@angular/forms';
 })
 export class GstReturnComponent implements OnInit {
 
-  /*private gstReturnForm: FormGroup;*/
-
+  private clientId: string;
   private gstReturnForm: FormGroup;
 
-
-  constructor(private formBuilder: FormBuilder, private apiService: SyncupApiService) {
+  constructor(private formBuilder: FormBuilder, private apiService: SyncupApiService, private dataTransferService: DataTransferService, private router: Router) {
       this.gstReturnForm = this.formBuilder.group({
         returnForms: this.formBuilder.array([
           this.getReturnForm()
@@ -23,18 +24,19 @@ export class GstReturnComponent implements OnInit {
    }
 
   ngOnInit() {
+    this.dataTransferService.currentMessage.subscribe(message => this.clientId = message);
   }
 
    getReturnForm(): FormGroup {
      return this.formBuilder.group({
-       gstFlatNo: [null, [Validators.required]],
-       gstArea: [null, [Validators.required]],
-       gstCity: [null, [Validators.required]],
-       gstState: [null, [Validators.required]],
-       gstPin: [null, [Validators.required]],
-       gstNo: [null, [Validators.required]],
-       gstUserName: [null, [Validators.required]],
-       gstPassword: [null, [Validators.required]]
+       gstFlatNo: this.formBuilder.control('', Validators.required),
+       gstArea: this.formBuilder.control('', Validators.required),
+       gstCity: this.formBuilder.control('', Validators.required),
+       gstState: this.formBuilder.control('', Validators.required),
+       gstPin: this.formBuilder.control('', Validators.required),
+       gstNo: this.formBuilder.control('', Validators.required),
+       gstUserName: this.formBuilder.control('', Validators.required),
+       gstPassword: this.formBuilder.control('', Validators.required)
      })
    }
 
@@ -50,40 +52,35 @@ export class GstReturnComponent implements OnInit {
      }
    }
 
-   get gstFlatNo() {
-     return this.gstReturnForm.get('gstFlatNo') as FormArray;
+   get returnForms(): FormArray {
+    return this.gstReturnForm.get('returnForms') as FormArray;
    }
 
-   get gstArea() {
-     return this.gstReturnForm.get('gstArea') as FormArray;
-   }
-
-   get gstCity() {
-       return this.gstReturnForm.get('gstCity') as FormArray;
-   }
-
-   get gstState() {
-     return this.gstReturnForm.get('gstState') as FormArray;
-   }
-
-   get gstPin() {
-     return this.gstReturnForm.get('gstPin') as FormArray;
-   }
-
-   get gstNo() {
-     return this.gstReturnForm.get('gstNo') as FormArray;
-   }
-
-   get gstUserName() {
-     return this.gstReturnForm.get('gstUserName') as FormArray;
-   }
-
-   get gstPassword() {
-     return this.gstReturnForm.get('gstPassword') as FormArray;
-   }
-
-   saveReturnInfo(): void {
-
-   }
-
+    saveReturnInfo(): void {
+      if (this.gstReturnForm.invalid) {
+        alert("GST Return Form is invalid");
+        return;
+      }
+      for (const control of (<FormArray>this.gstReturnForm.get('returnForms')).controls) {
+        const gstCredentials: ReturnCredentials = new ReturnCredentials();
+        gstCredentials.setId = +this.clientId;
+        gstCredentials.setFlatNo = control.get('gstFlatNo').value;
+        gstCredentials.setArea = control.get('gstArea').value;
+        gstCredentials.setCity = control.get('gstCity').value;
+        gstCredentials.setState = control.get('gstState').value;
+        gstCredentials.setPin = control.get('gstPin').value;
+        gstCredentials.setGstNo = control.get('gstNo').value;
+        gstCredentials.setUserId = control.get('gstUserName').value;
+        gstCredentials.setPassword = control.get('gstPassword').value;
+        gstCredentials.setReturnType = "gst";
+        this.apiService.addReturnCredentials(gstCredentials).subscribe(
+          res => {
+            console.log(gstCredentials + " insertion successful")
+          },
+          err => {
+            alert('oops!!! Somthing went wrong');
+          }
+        );
+      }
+    }
 }
