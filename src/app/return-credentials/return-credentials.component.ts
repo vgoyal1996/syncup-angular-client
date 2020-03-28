@@ -1,8 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, FormControl, Validators, NgForm, Form, FormArray} from '@angular/forms';
-import {ReturnCredentials} from '../model/ReturnCredentials';
-//import {DataTransferService} from '../shared/datatransferservice/data-transfer.service';
-import {SyncupApiService} from '../shared/api/syncup-api.service';
 import { Router } from '@angular/router';
 
 @Component({
