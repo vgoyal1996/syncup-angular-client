@@ -1,0 +1,37 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <button mat-icon-button>
+      <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
+    </button>
+    <h1>Syncup</h1>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-sidenav-container>
+  <mat-sidenav #sidenav>
+    <mat-nav-list>
+
+
+      <a mat-list-item [routerLink]="'/addclient'"> Add New Client </a>
+      <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              View Return Forms
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-list-item>Income Tax</mat-list-item>
+          <mat-list-item>TDS</mat-list-item>
+          <mat-list-item>GST</mat-list-item>
+          <mat-list-item>ROC</mat-list-item>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div style="height: 88vh;">
+
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
