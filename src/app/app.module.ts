@@ -9,7 +9,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import {MatExpansionModule} from '@angular/material/expansion';
-
+import { MatCardModule } from '@angular/material/card';
+import { MatTableModule } from '@angular/material/table';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatNativeDateModule} from '@angular/material';
+import {MatSelectModule} from '@angular/material/select';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { DatePipe } from '@angular/common';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -21,6 +29,9 @@ import { SignupComponent } from './signup/signup.component';
 import { ConfirmEqualValidatorDirective } from './shared/validators/confirm-equal-validator/confirm-equal-validator.directive';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './home/home.component';
+import { ReturnFormsComponent } from './return-forms/return-forms.component';
+import { AddReturnFormDialogComponent } from './return-forms/add-return-form-dialog/add-return-form-dialog.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @NgModule({
   declarations: [
@@ -29,7 +40,9 @@ import { HomeComponent } from './home/home.component';
     LoginComponent,
     SignupComponent,
     ConfirmEqualValidatorDirective,
-    HomeComponent
+    HomeComponent,
+    ReturnFormsComponent,
+    AddReturnFormDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,8 +60,22 @@ import { HomeComponent } from './home/home.component';
     MatButtonModule,
     MatMenuModule,
     MatExpansionModule,
+    MatCardModule,
+    MatTableModule,
+    MatDialogModule,
+    MatDatepickerModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatNativeDateModule,
+    MatSelectModule,
+    MatSnackBarModule,
   ],
-  providers: [],
+  entryComponents: [
+    AddReturnFormDialogComponent
+  ],
+  providers: [
+    DatePipe,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

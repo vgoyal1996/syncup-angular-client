@@ -1,0 +1,54 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <span class="title-center">Return Forms</span>
+  </mat-toolbar-row>
+</mat-toolbar>
+<br><br>
+<mat-card class="card-container">
+  <mat-card-header>
+    <div *ngIf="[returnType]=='incomeTax'">
+      <mat-card-title>Income Tax</mat-card-title>
+    </div>
+    <div *ngIf="[returnType]=='tds'">
+      <mat-card-title>TDS</mat-card-title>
+    </div>
+    <div *ngIf="[returnType]=='gst'">
+      <mat-card-title>GST</mat-card-title>
+    </div>
+    <div *ngIf="[returnType]=='roc'">
+      <mat-card-title>ROC</mat-card-title>
+    </div>
+  </mat-card-header>
+</mat-card>
+
+<br><br>
+
+<mat-table class="mat-elevation-z8" [dataSource]="dataSource">
+
+  <ng-container matColumnDef="formName">
+    <mat-header-cell *matHeaderCellDef> Return Name </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.formName}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="periodicity">
+    <mat-header-cell *matHeaderCellDef> Periodicity </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.periodicity}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="dueDateOfFiling">
+    <mat-header-cell *matHeaderCellDef> Due Date of Filing </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.dueDateOfFiling}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="actions">
+    <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <button mat-raised-button color="primary">Edit</button>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>
+
+<button mat-raised-button color="primary" (click)="openDialog()">Add New</button>

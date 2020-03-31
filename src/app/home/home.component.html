@@ -20,10 +20,10 @@
               View Return Forms
             </mat-panel-title>
           </mat-expansion-panel-header>
-          <mat-list-item>Income Tax</mat-list-item>
-          <mat-list-item>TDS</mat-list-item>
-          <mat-list-item>GST</mat-list-item>
-          <mat-list-item>ROC</mat-list-item>
+          <a mat-list-item [routerLink]="['/returnForms', 'incomeTax']">Income Tax</a>
+          <a mat-list-item [routerLink]="['/returnForms', 'tds']">TDS</a>
+          <a mat-list-item [routerLink]="['/returnForms', 'gst']">GST</a>
+          <a mat-list-item [routerLink]="['/returnForms', 'roc']">ROC</a>
         </mat-expansion-panel>
       </mat-accordion>
     </mat-nav-list>
