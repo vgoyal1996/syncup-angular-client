@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { SyncupApiService } from '../../shared/api/syncup-api.service';
@@ -14,8 +14,6 @@ export class AddReturnFormDialogComponent implements OnInit {
 
   private returnType: string;
   private returnForm: FormGroup;
-
-  newReturnFormValue: ReturnForm;
 
   constructor(private dialogRef: MatDialogRef<AddReturnFormDialogComponent>, private formBuilder: FormBuilder,
     private apiService: SyncupApiService, @Inject(MAT_DIALOG_DATA) private data: any, private snackBar: MatSnackBar) {
@@ -67,7 +65,6 @@ export class AddReturnFormDialogComponent implements OnInit {
         this.snackBar.open(returnFormModel.getFormName + " inserted", null, {
           duration: 3000,
         });
-        this.newReturnFormValue = returnFormModel;
       },
       err => {
         this.snackBar.open(err, null, {

@@ -32,6 +32,7 @@ import { HomeComponent } from './home/home.component';
 import { ReturnFormsComponent } from './return-forms/return-forms.component';
 import { AddReturnFormDialogComponent } from './return-forms/add-return-form-dialog/add-return-form-dialog.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { EditReturnFormDialogComponent } from './return-forms/edit-return-form-dialog/edit-return-form-dialog.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     HomeComponent,
     ReturnFormsComponent,
     AddReturnFormDialogComponent,
+    EditReturnFormDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -71,7 +73,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     MatSnackBarModule,
   ],
   entryComponents: [
-    AddReturnFormDialogComponent
+    AddReturnFormDialogComponent,
+    EditReturnFormDialogComponent
   ],
   providers: [
     DatePipe,

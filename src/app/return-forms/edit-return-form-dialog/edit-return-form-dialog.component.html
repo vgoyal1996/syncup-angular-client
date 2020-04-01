@@ -1,0 +1,53 @@
+<h1 mat-dialog-title class="title-center">Edit Return Form</h1>
+<form [formGroup]="returnForm" (ngSubmit)="editReturnForm()">
+  <div class="form-group">
+    <div mat-dialog-content>
+      <mat-form-field appearance="fill">
+        <mat-label>Return Form Name</mat-label>
+        <input matInput type="text" formControlName="returnFormName">
+        <mat-error *ngIf="returnFormName.hasError('required')">
+          Form name is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <br><br>
+      <mat-form-field appearance="fill">
+        <mat-label>Section</mat-label>
+        <mat-select formControlName="returnType">
+          <mat-option value="incomeTax">Income Tax</mat-option>
+          <mat-option value="tds">TDS</mat-option>
+          <mat-option value="gst">GST</mat-option>
+          <mat-option value="roc">ROC</mat-option>
+        </mat-select>
+        <mat-error *ngIf="returnType.hasError('required')">
+          Section is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <br><br>
+      <mat-form-field appearance="fill">
+        <mat-label>Select</mat-label>
+        <mat-select formControlName="periodicity">
+          <mat-option value="monthly">Monthly</mat-option>
+          <mat-option value="quarterly">Quarterly</mat-option>
+          <mat-option value="yearly">Yearly</mat-option>
+        </mat-select>
+        <mat-error *ngIf="periodicity.hasError('required')">
+          Form periodicity is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <br><br>
+      <mat-form-field appearance="fill">
+        <mat-label>Due Date of Filing</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="dueDateOfFiling">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="dueDateOfFiling.hasError('required')">
+          Due Date of filing is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div mat-dialog-actions align="center">
+      <button mat-raised-button type="button" (click)="onNoClick()">Cancel</button>
+      <button mat-raised-button cdkFocusInitial>Edit</button>
+    </div>
+  </div>
+</form>

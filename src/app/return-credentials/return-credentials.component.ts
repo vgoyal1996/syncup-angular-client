@@ -38,7 +38,8 @@ export class ReturnCredentialsComponent implements OnInit {
         label: 'ROC',
         link: './roc',
         index: 3
-      },];
+      },
+    ];
   }
 
 }

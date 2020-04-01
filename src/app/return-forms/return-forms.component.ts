@@ -7,6 +7,7 @@ import { map } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
 import { ReturnForm } from '../model/ReturnForm';
 import { MatTable } from '@angular/material/table';
+import { EditReturnFormDialogComponent } from './edit-return-form-dialog/edit-return-form-dialog.component';
 
 @Component({
   selector: 'app-return-forms',
@@ -38,8 +39,29 @@ export class ReturnFormsComponent implements OnInit {
     });
   }
 
+  openEditDialog(element: any): void {
+    const dialogRef = this.dialog.open(EditReturnFormDialogComponent, {
+      width: '600px',
+      height: '550px',
+      data: { returnForm: element, returnType: this.returnType }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log("Edit dialog is closed", result);
+      if (result != undefined) {
+        this.updateTableAfterEdit(result);
+      }
+    });
+  }
+
+  updateTableAfterEdit(result: any): void {
+    this.dataSource = this.dataSource.filter(({formName}) => formName != result.oldFormName);
+    if (result.oldReturnType == result.newReturnForm.returnType) {
+      this.onNewReturnFormAdded(result.newReturnForm);
+    }
+  }
+
   onNewReturnFormAdded(newReturnFormValue: ReturnForm): void {
-    console.log("event triggered");
     this.dataSource.push({
       formName: newReturnFormValue.formName,
       dueDateOfFiling: this.datepipe.transform(new Date(newReturnFormValue.dueDateOfFiling), 'MMM d, y'),
