@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { DataTransferService } from '../shared/data/data-transfer.service';
+import { ThemePalette } from '@angular/material/core';
 
 @Component({
   selector: 'app-return-credentials',
@@ -10,6 +12,8 @@ export class ReturnCredentialsComponent implements OnInit {
 
   navLinks: any[];
   activeLinkIndex = -1;
+  private clientType: string;
+  background: ThemePalette = undefined;
 
   ngOnInit() {
     this.router.events.subscribe((res) => {
@@ -17,28 +21,34 @@ export class ReturnCredentialsComponent implements OnInit {
   });
   }
 
-  constructor(private router: Router) {
-    this.navLinks = [
-      {
-        label: 'Income Tax',
-        link: './incomeTax',
-        index: 0
-      },
-      {
-        label: 'TDS',
-        link: './tds',
-        index: 1
-      },
-      {
-        label: 'GST',
-        link: './gst',
-        index: 2
-      },
-      {
-        label: 'ROC',
-        link: './roc',
-        index: 3
-      },];
-  }
-
-}
+  constructor(private router: Router, private dataTransferService: DataTransferService) {
+      this.dataTransferService.currentClientType.subscribe(clientType => this.clientType = clientType);
+        this.navLinks =  [
+          {
+            label: 'Income Tax',
+            link: './incomeTax',
+            index: 0
+          },
+          {
+            label: 'TDS',
+            link: './tds',
+            index: 1
+          },
+          {
+            label: 'GST',
+            link: './gst',
+            index: 2
+          },
+          {
+            label: 'ROC',
+            link: './roc',
+            index: 3
+          }
+         ];
+      }
+      checkClientType(label: any): boolean {
+            if((label.toString()=="ROC") && ((this.clientType=="company") || (this.clientType=="default")))
+                return true;
+            return false;
+      }
+   }
