@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DataTransferService } from '../shared/data/data-transfer.service';
-import { ThemePalette } from '@angular/material/core';
 
 @Component({
   selector: 'app-return-credentials',
@@ -13,7 +12,6 @@ export class ReturnCredentialsComponent implements OnInit {
   navLinks: any[];
   activeLinkIndex = -1;
   private clientType: string;
-  background: ThemePalette = undefined;
 
   ngOnInit() {
     this.router.events.subscribe((res) => {
