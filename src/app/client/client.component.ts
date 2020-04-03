@@ -13,12 +13,14 @@ import {SyncupApiService} from '../shared/api/syncup-api.service';
 export class ClientComponent implements OnInit {
 
   private clientId: string;
+  private clientType: string;
 
   constructor(private apiService: SyncupApiService, private router: Router, private dataTransferService: DataTransferService) {
   }
 
   ngOnInit() {
     this.dataTransferService.currentMessage.subscribe(message => this.clientId = message);
+    this.dataTransferService.currentClientType.subscribe(clientType => this.clientType = clientType);
   }
 
   createNewClient(f: NgForm): void {
@@ -31,6 +33,7 @@ export class ClientComponent implements OnInit {
           clientModel.setId = res;
           console.log(res);
           this.dataTransferService.changeMessage(res);
+          this.dataTransferService.updateClient(f.form.controls.clientType.value);
           this.router.navigateByUrl('/returnCredentials').then((e) => {
             if (e) {
               console.log('Navigation to return Credentials successful');
@@ -40,7 +43,7 @@ export class ClientComponent implements OnInit {
           });
         },
         err => {
-          alert('oops!!! Somthing went wrong');
+          alert('oops!!! Something went wrong');
         }
       );
     } else {
