@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Client} from '../../model/Client';
 import {Login} from '../../model/Login';
@@ -18,6 +18,7 @@ export class SyncupApiService {
   private ADD_RETURN_FORM_URL = `${this.BASE_URL}/returnform/add`;
   private GET_RETURN_FORMS_BY_RETURN_TYPE = `${this.BASE_URL}/returnform/get/`;
   private UPDATE_RETURN_FORM_BY_RETURN_TYPE_AND_RETURN_NAME = `${this.BASE_URL}/returnform/`;
+  private DELETE_RETURN_FORMS_BY_FORM_NAMES = `${this.BASE_URL}/returnform/`;
 
   constructor(private http: HttpClient) {
   }
@@ -48,5 +49,15 @@ export class SyncupApiService {
 
   updateReturnFormByReturnTypeAndReturnName(returnType: string, returnName: string, newReturnForm: ReturnForm): Observable<any> {
     return this.http.put(this.UPDATE_RETURN_FORM_BY_RETURN_TYPE_AND_RETURN_NAME + returnType + `/` + returnName, newReturnForm);
+  }
+
+  deleteReturnFormsByFormNames(returnType: string, formNameList: string[]): Observable<any> {
+    let options = {
+      headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      }),
+      body: JSON.stringify(formNameList)
+    };
+    return this.http.delete(this.DELETE_RETURN_FORMS_BY_FORM_NAMES + returnType, options);
   }
 }

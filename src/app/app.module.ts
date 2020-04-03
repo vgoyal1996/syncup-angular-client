@@ -18,6 +18,8 @@ import {MatNativeDateModule} from '@angular/material';
 import {MatSelectModule} from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -33,6 +35,7 @@ import { ReturnFormsComponent } from './return-forms/return-forms.component';
 import { AddReturnFormDialogComponent } from './return-forms/add-return-form-dialog/add-return-form-dialog.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { EditReturnFormDialogComponent } from './return-forms/edit-return-form-dialog/edit-return-form-dialog.component';
+import { DeleteReturnFormsDialogComponent } from './return-forms/delete-return-forms-dialog/delete-return-forms-dialog.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +48,7 @@ import { EditReturnFormDialogComponent } from './return-forms/edit-return-form-d
     ReturnFormsComponent,
     AddReturnFormDialogComponent,
     EditReturnFormDialogComponent,
+    DeleteReturnFormsDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -70,11 +74,13 @@ import { EditReturnFormDialogComponent } from './return-forms/edit-return-form-d
     MatFormFieldModule,
     MatNativeDateModule,
     MatSelectModule,
+    MatCheckboxModule,
     MatSnackBarModule,
   ],
   entryComponents: [
     AddReturnFormDialogComponent,
-    EditReturnFormDialogComponent
+    EditReturnFormDialogComponent,
+    DeleteReturnFormsDialogComponent
   ],
   providers: [
     DatePipe,

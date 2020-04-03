@@ -25,6 +25,21 @@
 
 <mat-table class="mat-elevation-z8" [dataSource]="dataSource">
 
+  <ng-container matColumnDef="select">
+    <mat-header-cell *matHeaderCellDef>
+      <mat-checkbox (change)="$event ? masterToggle() : null"
+                    [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()">
+      </mat-checkbox>
+    </mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <mat-checkbox (click)="$event.stopPropagation()"
+                    (change)="toggleSelection(row)"
+                    [checked]="selection.isSelected(row)">
+      </mat-checkbox>
+    </mat-cell>
+  </ng-container>
+
   <ng-container matColumnDef="formName">
     <mat-header-cell *matHeaderCellDef> Return Name </mat-header-cell>
     <mat-cell *matCellDef="let element"> {{element.formName}} </mat-cell>
@@ -51,4 +66,5 @@
   <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 </mat-table>
 
-<button mat-raised-button color="primary" (click)="openDialog()">Add New</button>
+<button mat-raised-button color="primary" (click)="openAddDialog()">Add New</button>
+<button mat-raised-button color="warn" [disabled]="isButtonDisabled" (click)="openDeleteDialog()">Delete</button>

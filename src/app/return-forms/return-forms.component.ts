@@ -8,6 +8,8 @@ import { DatePipe } from '@angular/common';
 import { ReturnForm } from '../model/ReturnForm';
 import { MatTable } from '@angular/material/table';
 import { EditReturnFormDialogComponent } from './edit-return-form-dialog/edit-return-form-dialog.component';
+import {SelectionModel} from '@angular/cdk/collections';
+import { DeleteReturnFormsDialogComponent } from './delete-return-forms-dialog/delete-return-forms-dialog.component';
 
 @Component({
   selector: 'app-return-forms',
@@ -16,15 +18,46 @@ import { EditReturnFormDialogComponent } from './edit-return-form-dialog/edit-re
 })
 export class ReturnFormsComponent implements OnInit {
   returnType: string;
-  displayedColumns: string[] = ['formName', 'periodicity', 'dueDateOfFiling', 'actions'];
+  displayedColumns: string[] = ['select', 'formName', 'periodicity', 'dueDateOfFiling', 'actions'];
   dataSource: any[] = [];
   @ViewChild(MatTable) table: MatTable<any>;
+  selection = new SelectionModel(true, []);
+  isButtonDisabled: boolean = true;
 
   constructor(private dialog: MatDialog, private router: ActivatedRoute, private apiService: SyncupApiService,
     private datepipe: DatePipe) {
   }
 
-  openDialog(): void {
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.length;
+    return numSelected === numRows;
+  }
+
+  isAnyCheckBoxSelected(): void {
+    this.isButtonDisabled = true;
+    this.dataSource.forEach(row => {
+      if (this.selection.isSelected(row)) {
+        this.isButtonDisabled = false;
+      }
+    });
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    this.isAllSelected() ?
+        this.selection.clear() :
+        this.dataSource.forEach(row => this.selection.select(row));
+    this.isAnyCheckBoxSelected();
+  }
+
+  toggleSelection(row: any) {
+    this.selection.toggle(row);
+    this.isAnyCheckBoxSelected();
+  }
+
+  openAddDialog(): void {
     const dialogRef = this.dialog.open(AddReturnFormDialogComponent, {
       width: '500px',
       height: '450px',
@@ -52,6 +85,41 @@ export class ReturnFormsComponent implements OnInit {
         this.updateTableAfterEdit(result);
       }
     });
+  }
+
+  openDeleteDialog(): void {
+    let rowList = [];
+    this.dataSource.forEach(row => {
+      if (this.selection.isSelected(row)) {
+        rowList.push({oldFormName: row.formName, dueDateOfFiling: row.dueDateOfFiling, periodicity: row.periodicity});
+      }
+    });
+    console.log(rowList);
+    const dialogRef = this.dialog.open(DeleteReturnFormsDialogComponent, {
+      width: '550px',
+      height: '400px',
+      data: { returnFormList: rowList, returnType: this.returnType }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log("Delete dialog is closed", result);
+      console.log(rowList);
+      console.log(rowList.length);
+      if (result == rowList.length) {
+        this.updateTableAfterDelete(rowList);
+      }
+    });
+  }
+
+  updateTableAfterDelete(formNameList: any): void {
+    let temp = [];
+    formNameList.forEach(item => {
+      temp.push(item.oldFormName);
+    })
+    console.log(temp);
+    this.dataSource = this.dataSource.filter(({formName}) => temp.indexOf(formName) == -1);
+    console.log(this.dataSource);
+    this.table.renderRows();
   }
 
   updateTableAfterEdit(result: any): void {
