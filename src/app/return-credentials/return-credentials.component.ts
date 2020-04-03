@@ -45,7 +45,7 @@ export class ReturnCredentialsComponent implements OnInit {
          ];
       }
       checkClientType(label: any): boolean {
-            if((label.toString()=="ROC") && ((this.clientType=="company") || (this.clientType=="default")))
+            if((label.toString()=="ROC") && ((this.clientType=="company") || (this.clientType=="llp")))
                 return true;
             return false;
       }
