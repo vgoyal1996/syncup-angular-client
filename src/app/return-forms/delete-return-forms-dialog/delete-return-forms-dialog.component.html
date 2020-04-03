@@ -1,0 +1,11 @@
+<h1 mat-dialog-title class="title-center">Delete Return Forms</h1>
+<div mat-dialog-content>
+  <mat-label>Do you want to Delete the Following Forms?</mat-label>
+  <mat-list role="list">
+    <mat-list-item *ngFor="let row of rowList; let i = index;">{{i+1 + '. '}} {{row.oldFormName}}</mat-list-item>
+  </mat-list>
+</div>
+<div mat-dialog-actions align="center">
+  <button mat-raised-button type="button" (click)="onNoClick()">No</button>
+  <button mat-raised-button cdkFocusInitial (click)="deleteReturnForms()">Yes</button>
+</div>

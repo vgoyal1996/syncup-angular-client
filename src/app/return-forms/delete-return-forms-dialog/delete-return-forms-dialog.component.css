@@ -1,0 +1,9 @@
+.title-center {
+  flex: 1 1 auto;
+  text-align: center;
+}
+
+mat-dialog-actions, mat-dialog-content {
+  display: flex;
+  justify-content: center;
+}
