@@ -1,15 +1,16 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AddReturnFormDialogComponent } from './add-return-form-dialog/add-return-form-dialog.component';
-import { ActivatedRoute } from '@angular/router';
-import {SyncupApiService} from '../shared/api/syncup-api.service';
+import { ActivatedRoute, ParamMap } from '@angular/router';
+import { SyncupApiService } from '../shared/api/syncup-api.service';
 import { map } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
 import { ReturnForm } from '../model/ReturnForm';
 import { MatTable } from '@angular/material/table';
 import { EditReturnFormDialogComponent } from './edit-return-form-dialog/edit-return-form-dialog.component';
-import {SelectionModel} from '@angular/cdk/collections';
+import { SelectionModel } from '@angular/cdk/collections';
 import { DeleteReturnFormsDialogComponent } from './delete-return-forms-dialog/delete-return-forms-dialog.component';
+import { NavBarService } from '../nav-bar/nav-bar.service';
 
 @Component({
   selector: 'app-return-forms',
@@ -23,9 +24,15 @@ export class ReturnFormsComponent implements OnInit {
   @ViewChild(MatTable) table: MatTable<any>;
   selection = new SelectionModel(true, []);
   isButtonDisabled: boolean = true;
+  private headings = {
+    incomeTax: 'Income Tax',
+    tds: 'TDS',
+    roc: 'ROC',
+    gst: 'GST'
+  };
 
   constructor(private dialog: MatDialog, private router: ActivatedRoute, private apiService: SyncupApiService,
-    private datepipe: DatePipe) {
+    private datepipe: DatePipe, private navBar: NavBarService) {
   }
 
   /** Whether the number of selected elements matches the total number of rows. */
@@ -47,8 +54,8 @@ export class ReturnFormsComponent implements OnInit {
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
     this.isAllSelected() ?
-        this.selection.clear() :
-        this.dataSource.forEach(row => this.selection.select(row));
+      this.selection.clear() :
+      this.dataSource.forEach(row => this.selection.select(row));
     this.isAnyCheckBoxSelected();
   }
 
@@ -91,7 +98,7 @@ export class ReturnFormsComponent implements OnInit {
     let rowList = [];
     this.dataSource.forEach(row => {
       if (this.selection.isSelected(row)) {
-        rowList.push({oldFormName: row.formName, dueDateOfFiling: row.dueDateOfFiling, periodicity: row.periodicity});
+        rowList.push({ oldFormName: row.formName, dueDateOfFiling: row.dueDateOfFiling, periodicity: row.periodicity });
       }
     });
     console.log(rowList);
@@ -117,13 +124,13 @@ export class ReturnFormsComponent implements OnInit {
       temp.push(item.oldFormName);
     })
     console.log(temp);
-    this.dataSource = this.dataSource.filter(({formName}) => temp.indexOf(formName) == -1);
+    this.dataSource = this.dataSource.filter(({ formName }) => temp.indexOf(formName) == -1);
     console.log(this.dataSource);
     this.table.renderRows();
   }
 
   updateTableAfterEdit(result: any): void {
-    this.dataSource = this.dataSource.filter(({formName}) => formName != result.oldFormName);
+    this.dataSource = this.dataSource.filter(({ formName }) => formName != result.oldFormName);
     if (result.oldReturnType == result.newReturnForm.returnType) {
       this.onNewReturnFormAdded(result.newReturnForm);
     }
@@ -140,24 +147,31 @@ export class ReturnFormsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.returnType = this.router.snapshot.paramMap.get('type');
-    this.apiService.getReturnFormsByReturnType(this.returnType)
-    .pipe(map(
-      res => {
-        return res.map(item => {
-          const resDate: Date = new Date(item.dueDateOfFiling);
+    this.navBar.show();
+    this.router.paramMap.subscribe(
+      (params: ParamMap) => {
+        this.returnType = params.get('type');
+        this.navBar.changeToolBarTitle("Return Forms: " + this.headings[this.returnType]);
+        this.apiService.getReturnFormsByReturnType(this.returnType)
+          .pipe(map(
+            res => {
+              return res.map(item => {
+                const resDate: Date = new Date(item.dueDateOfFiling);
 
-          return {
-            formName: item.formName,
-            dueDateOfFiling: this.datepipe.transform(resDate, 'MMM d, y'),
-            periodicity: item.periodicity
-          };
-        });
+                return {
+                  formName: item.formName,
+                  dueDateOfFiling: this.datepipe.transform(resDate, 'MMM d, y'),
+                  periodicity: item.periodicity
+                };
+              });
+            }
+          )).subscribe(res => {
+            console.log(res);
+            this.dataSource = res;
+          }
+        );
       }
-    )).subscribe(res => {
-      console.log(res);
-      this.dataSource = res;
-    });
+    );
   }
 
 }

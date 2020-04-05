@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {SyncupApiService} from '../shared/api/syncup-api.service';
 import {Router} from '@angular/router';
+import { NavBarService } from '../nav-bar/nav-bar.service';
 
 @Component({
   selector: 'app-signup',
@@ -16,9 +17,11 @@ export class SignupComponent implements OnInit {
     confirmPassword: ''
    };
 
-  constructor(private apiService: SyncupApiService, private router: Router) { }
+  constructor(private apiService: SyncupApiService, private router: Router, private navBar: NavBarService) { }
 
   ngOnInit() {
+    this.navBar.hide();
+    this.navBar.changeToolBarTitle("Sign Up");
   }
 
   createAccount() {
