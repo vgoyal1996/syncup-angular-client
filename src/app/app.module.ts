@@ -36,6 +36,9 @@ import { AddReturnFormDialogComponent } from './return-forms/add-return-form-dia
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { EditReturnFormDialogComponent } from './return-forms/edit-return-form-dialog/edit-return-form-dialog.component';
 import { DeleteReturnFormsDialogComponent } from './return-forms/delete-return-forms-dialog/delete-return-forms-dialog.component';
+import { DataTransferService } from './shared/data/data-transfer.service';
+import { NavBarService } from './nav-bar/nav-bar.service';
+import { NavBarComponent } from './nav-bar/nav-bar.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +52,7 @@ import { DeleteReturnFormsDialogComponent } from './return-forms/delete-return-f
     AddReturnFormDialogComponent,
     EditReturnFormDialogComponent,
     DeleteReturnFormsDialogComponent,
+    NavBarComponent,
   ],
   imports: [
     BrowserModule,
@@ -84,6 +88,8 @@ import { DeleteReturnFormsDialogComponent } from './return-forms/delete-return-f
   ],
   providers: [
     DatePipe,
+    DataTransferService,
+    NavBarService,
   ],
   bootstrap: [AppComponent]
 })

@@ -3,6 +3,7 @@ import {Login} from '../model/Login';
 import {SyncupApiService} from '../shared/api/syncup-api.service';
 import {Router} from '@angular/router';
 import {NgForm} from '@angular/forms';
+import { NavBarService } from '../nav-bar/nav-bar.service';
 
 @Component({
   selector: 'app-login',
@@ -26,9 +27,13 @@ export class LoginComponent implements OnInit {
   openForm = false;
   dbLoginModel: Login;
 
-  constructor(private apiService: SyncupApiService, private router: Router) { }
+  constructor(private apiService: SyncupApiService, private router: Router, private navBar: NavBarService) {
+
+  }
 
   ngOnInit() {
+    this.navBar.hide();
+    this.navBar.changeToolBarTitle("Login");
   }
 
   onClickOpenForm(): boolean {
@@ -44,7 +49,7 @@ export class LoginComponent implements OnInit {
         } else {
           this.dbLoginModel = res;
           if ((this.loginModel.userId === this.dbLoginModel.userId) && (this.loginModel.password === this.dbLoginModel.password)) {
-            this.router.navigateByUrl('/addclient').then((e) => {
+            this.router.navigateByUrl('/home').then((e) => {
               if (e) {
                 console.log('Navigation to home Page successful');
               } else {

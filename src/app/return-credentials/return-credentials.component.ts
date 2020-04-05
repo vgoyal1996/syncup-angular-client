@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DataTransferService } from '../shared/data/data-transfer.service';
+import { NavBarService } from '../nav-bar/nav-bar.service';
 
 @Component({
   selector: 'app-return-credentials',
@@ -14,12 +15,14 @@ export class ReturnCredentialsComponent implements OnInit {
   private clientType: string;
 
   ngOnInit() {
+    this.navBar.hide();
+    this.navBar.changeToolBarTitle("Return Credentials");
     this.router.events.subscribe((res) => {
       this.activeLinkIndex = this.navLinks.indexOf(this.navLinks.find(tab => tab.link === '.' + this.router.url));
   });
   }
 
-  constructor(private router: Router, private dataTransferService: DataTransferService) {
+  constructor(private router: Router, private dataTransferService: DataTransferService, private navBar: NavBarService) {
       this.dataTransferService.currentClientType.subscribe(clientType => this.clientType = clientType);
         this.navLinks =  [
           {

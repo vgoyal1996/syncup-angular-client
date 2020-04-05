@@ -4,6 +4,7 @@ import {Router} from '@angular/router';
 import {DataTransferService} from '../shared/data/data-transfer.service';
 import {NgForm} from '@angular/forms';
 import {SyncupApiService} from '../shared/api/syncup-api.service';
+import { NavBarService } from '../nav-bar/nav-bar.service';
 
 @Component({
   selector: 'app-client',
@@ -15,10 +16,13 @@ export class ClientComponent implements OnInit {
   private clientId: string;
   private clientType: string;
 
-  constructor(private apiService: SyncupApiService, private router: Router, private dataTransferService: DataTransferService) {
+  constructor(private apiService: SyncupApiService, private router: Router, 
+    private dataTransferService: DataTransferService, private navBar: NavBarService) {
   }
 
   ngOnInit() {
+    this.navBar.show();
+    this.navBar.changeToolBarTitle("Add Client");
     this.dataTransferService.currentMessage.subscribe(message => this.clientId = message);
     this.dataTransferService.currentClientType.subscribe(clientType => this.clientType = clientType);
   }
