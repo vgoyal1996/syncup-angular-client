@@ -72,6 +72,7 @@ export class ReturnFormsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      this.selection.clear();
       console.log('The dialog was closed', result);
       if (result != undefined) {
         this.onNewReturnFormAdded(result);
@@ -87,6 +88,7 @@ export class ReturnFormsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      this.selection.clear();
       console.log("Edit dialog is closed", result);
       if (result != undefined) {
         this.updateTableAfterEdit(result);
@@ -109,6 +111,7 @@ export class ReturnFormsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      this.selection.clear();
       console.log("Delete dialog is closed", result);
       console.log(rowList);
       console.log(rowList.length);
