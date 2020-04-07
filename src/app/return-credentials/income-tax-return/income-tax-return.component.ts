@@ -3,7 +3,7 @@ import {SyncupApiService} from 'src/app/shared/api/syncup-api.service';
 import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 import { ReturnCredentials } from '../../model/ReturnCredentials';
 import {DataTransferService} from '../../shared/data/data-transfer.service';
-import {Router} from '@angular/router';
+import { ApplicableReturnFormsService } from '../applicable-return-forms.service';
 
 @Component({
   selector: 'app-income-tax-return',
@@ -16,7 +16,8 @@ export class IncomeTaxReturnComponent implements OnInit {
   private clientId: string;
   private incomeTaxReturnForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private apiService: SyncupApiService, private dataTransferService: DataTransferService, private router: Router) {
+  constructor(private formBuilder: FormBuilder, private apiService: SyncupApiService, private dataTransferService: DataTransferService, 
+              private applicableReturnFormsService: ApplicableReturnFormsService) {
     this.incomeTaxReturnForm = formBuilder.group({
             incomeTaxUserName: this.formBuilder.control('', Validators.required),
             incomeTaxPassword: this.formBuilder.control('', Validators.required)
@@ -35,16 +36,21 @@ export class IncomeTaxReturnComponent implements OnInit {
     return this.incomeTaxReturnForm.get('incomeTaxPassword');
   }
 
-  private addIncomeTaxReturnInfo() {
+  addIncomeTaxReturnInfo() {
     this.submitted = true;
     if (this.incomeTaxReturnForm.invalid) {
       return;
+    }
+    if (this.applicableReturnFormsService.getSelectedReturnForms == undefined || 
+      this.applicableReturnFormsService.getSelectedReturnForms == []) {
+        return;
     }
     const incomeTaxCredentials: ReturnCredentials = new ReturnCredentials();
     incomeTaxCredentials.setUserId = this.incomeTaxReturnForm.controls.incomeTaxUserName.value;
     incomeTaxCredentials.setPassword = this.incomeTaxReturnForm.controls.incomeTaxPassword.value;
     incomeTaxCredentials.setId = +this.clientId;
     incomeTaxCredentials.setReturnType = "incomeTax";
+    incomeTaxCredentials.setApplicableReturnForms = this.applicableReturnFormsService.getSelectedReturnForms;
     this.apiService.addReturnCredentials(incomeTaxCredentials).subscribe(
       res => {
         console.log(incomeTaxCredentials + " insertion successful")

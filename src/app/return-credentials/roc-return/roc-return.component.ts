@@ -3,7 +3,7 @@ import {SyncupApiService} from 'src/app/shared/api/syncup-api.service';
 import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {ReturnCredentials} from '../../model/ReturnCredentials';
 import {DataTransferService} from '../../shared/data/data-transfer.service';
-import {Router} from '@angular/router';
+import { ApplicableReturnFormsService } from '../applicable-return-forms.service';
 
 @Component({
   selector: 'app-roc-return',
@@ -16,7 +16,8 @@ export class RocReturnComponent implements OnInit {
   private clientId: string;
   private rocReturnForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private apiService: SyncupApiService, private dataTransferService: DataTransferService, private router: Router) {
+  constructor(private formBuilder: FormBuilder, private apiService: SyncupApiService, private dataTransferService: DataTransferService, 
+              private applicableReturnFormsService: ApplicableReturnFormsService) {
     this.rocReturnForm = this.formBuilder.group({
                 rocUserName: this.formBuilder.control('', Validators.required),
                 rocPassword: this.formBuilder.control('', Validators.required)
@@ -40,12 +41,17 @@ export class RocReturnComponent implements OnInit {
       if (this.rocReturnForm.invalid) {
         return;
       }
+      if (this.applicableReturnFormsService.getSelectedReturnForms == undefined || 
+        this.applicableReturnFormsService.getSelectedReturnForms == []) {
+          return;
+      }
       console.log(this.rocReturnForm);
       const rocReturnCredentials: ReturnCredentials = new ReturnCredentials();
       rocReturnCredentials.setUserId = this.rocReturnForm.controls.rocUserName.value;
       rocReturnCredentials.setPassword = this.rocReturnForm.controls.rocPassword.value;
       rocReturnCredentials.setId = +this.clientId;
       rocReturnCredentials.setReturnType = "roc";
+      rocReturnCredentials.setApplicableReturnForms = this.applicableReturnFormsService.getSelectedReturnForms;
       this.apiService.addReturnCredentials(rocReturnCredentials).subscribe(
         res => {
           console.log(rocReturnCredentials + " insertion successful")

@@ -16,6 +16,7 @@ export class ReturnCredentials {
   private password: string;
   private tracesUserId: string;
   private tracesPassword: string;
+  private applicableReturnForms: string[];
 
   constructor() {
 
@@ -131,5 +132,13 @@ export class ReturnCredentials {
 
   set setTracesPassword(value: string) {
     this.tracesPassword = value;
+  }
+
+  get getApplicableReturnForms(): string[] {
+    return this.applicableReturnForms;
+  }
+
+  set setApplicableReturnForms(applicableReturnForms: string[]) {
+    this.applicableReturnForms = applicableReturnForms;
   }
 }

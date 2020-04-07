@@ -3,7 +3,7 @@ import {SyncupApiService} from 'src/app/shared/api/syncup-api.service';
 import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {ReturnCredentials} from '../../model/ReturnCredentials';
 import {DataTransferService} from '../../shared/data/data-transfer.service';
-import {Router} from '@angular/router';
+import { ApplicableReturnFormsService } from '../applicable-return-forms.service';
 
 @Component({
   selector: 'app-tds-return',
@@ -16,7 +16,8 @@ export class TdsReturnComponent implements OnInit {
   private clientId: string;
   private tdsReturnForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private apiService: SyncupApiService, private dataTransferService: DataTransferService, private router: Router) {
+  constructor(private formBuilder: FormBuilder, private apiService: SyncupApiService, private dataTransferService: DataTransferService, 
+              private applicableReturnFormsService: ApplicableReturnFormsService) {
     this.tdsReturnForm = this.formBuilder.group({
                     tdsTanNo: this.formBuilder.control('', Validators.required),
                     tdsUserName: this.formBuilder.control('', Validators.required),
@@ -50,10 +51,14 @@ export class TdsReturnComponent implements OnInit {
     return this.tdsReturnForm.get('tdsTanNo');
   }
 
-  private addTdsReturnInfo() {
+  addTdsReturnInfo() {
     this.submitted = true;
     if (this.tdsReturnForm.invalid) {
       return;
+    }
+    if (this.applicableReturnFormsService.getSelectedReturnForms == undefined || 
+      this.applicableReturnFormsService.getSelectedReturnForms == []) {
+        return;
     }
     console.log(this.tdsReturnForm.value);
     const tdsReturnCredentials: ReturnCredentials = new ReturnCredentials();
@@ -64,6 +69,7 @@ export class TdsReturnComponent implements OnInit {
     tdsReturnCredentials.setTanNo = this.tdsReturnForm.controls.tdsTanNo.value;
     tdsReturnCredentials.setId = +this.clientId;
     tdsReturnCredentials.setReturnType = "tds";
+    tdsReturnCredentials.setApplicableReturnForms = this.applicableReturnFormsService.getSelectedReturnForms;;
     this.apiService.addReturnCredentials(tdsReturnCredentials).subscribe(
       res => {
         console.log(tdsReturnCredentials + " insertion successful")

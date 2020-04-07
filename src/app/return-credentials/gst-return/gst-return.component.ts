@@ -3,7 +3,7 @@ import {SyncupApiService} from 'src/app/shared/api/syncup-api.service';
 import {FormGroup, FormBuilder, FormArray, Validators, FormControl} from '@angular/forms';
 import { ReturnCredentials } from '../../model/ReturnCredentials';
 import {DataTransferService} from '../../shared/data/data-transfer.service';
-import {Router} from '@angular/router';
+import { ApplicableReturnFormsService } from '../applicable-return-forms.service';
 
 @Component({
   selector: 'app-gst-return',
@@ -15,7 +15,8 @@ export class GstReturnComponent implements OnInit {
   private clientId: string;
   private gstReturnForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private apiService: SyncupApiService, private dataTransferService: DataTransferService, private router: Router) {
+  constructor(private formBuilder: FormBuilder, private apiService: SyncupApiService, private dataTransferService: DataTransferService, 
+              private applicableReturnFormsService: ApplicableReturnFormsService) {
       this.gstReturnForm = this.formBuilder.group({
         returnForms: this.formBuilder.array([
           this.getReturnForm()
@@ -61,6 +62,10 @@ export class GstReturnComponent implements OnInit {
         alert("GST Return Form is invalid");
         return;
       }
+      if (this.applicableReturnFormsService.getSelectedReturnForms == undefined || 
+        this.applicableReturnFormsService.getSelectedReturnForms == []) {
+          return;
+      }
       for (const control of (<FormArray>this.gstReturnForm.get('returnForms')).controls) {
         const gstCredentials: ReturnCredentials = new ReturnCredentials();
         gstCredentials.setId = +this.clientId;
@@ -73,6 +78,7 @@ export class GstReturnComponent implements OnInit {
         gstCredentials.setUserId = control.get('gstUserName').value;
         gstCredentials.setPassword = control.get('gstPassword').value;
         gstCredentials.setReturnType = "gst";
+        gstCredentials.setApplicableReturnForms = this.applicableReturnFormsService.getSelectedReturnForms;
         this.apiService.addReturnCredentials(gstCredentials).subscribe(
           res => {
             console.log(gstCredentials + " insertion successful")
