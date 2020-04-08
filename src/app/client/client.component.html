@@ -23,6 +23,46 @@
             </div>
           </div>
         </div>
+        <!--Client Code-->
+        <div class="form-group row">
+          <label for="clientCode" class="col-sm-2 col-form-label">Client Code</label>
+          <div class="col-sm-10">
+            <input type="text"
+                   id="clientCode"
+                   class="form-control"
+                   name="clientCode"
+                   placeholder="Client Code"
+                   ngModel
+                   #clientCode="ngModel"
+                   [ngClass]="{ 'is-invalid': f.submitted && clientCode.invalid }"
+                   required/>
+            <!-- input validation group -->
+            <div *ngIf="f.submitted && clientCode.invalid" class="invalid-input">
+              <!-- individual validation errors -->
+              <div *ngIf="clientCode.errors.required">Client Code is required</div>
+            </div>
+          </div>
+        </div>
+        <!--Father Name-->
+        <div class="form-group row">
+          <label for="fatherName" class="col-sm-2 col-form-label">Father Name</label>
+          <div class="col-sm-10">
+            <input type="text"
+                   id="fatherName"
+                   class="form-control"
+                   name="fatherName"
+                   placeholder="Father Name"
+                   ngModel
+                   #fatherName="ngModel"
+                   [ngClass]="{ 'is-invalid': f.submitted && fatherName.invalid }"
+                   required/>
+            <!-- input validation group -->
+            <div *ngIf="f.submitted && fatherName.invalid" class="invalid-input">
+              <!-- individual validation errors -->
+              <div *ngIf="fatherName.errors.required">Father Name is required</div>
+            </div>
+          </div>
+        </div>
         <!--Flat No.-->
         <div class="form-group row">
           <label for="flatNo" class="col-sm-2 col-form-label">Flat No.</label>
