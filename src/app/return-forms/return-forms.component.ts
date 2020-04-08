@@ -11,6 +11,7 @@ import { EditReturnFormDialogComponent } from './edit-return-form-dialog/edit-re
 import { SelectionModel } from '@angular/cdk/collections';
 import { DeleteReturnFormsDialogComponent } from './delete-return-forms-dialog/delete-return-forms-dialog.component';
 import { NavBarService } from '../nav-bar/nav-bar.service';
+import { Constants } from '../shared/global/constants';
 
 @Component({
   selector: 'app-return-forms',
@@ -142,7 +143,7 @@ export class ReturnFormsComponent implements OnInit {
   onNewReturnFormAdded(newReturnFormValue: ReturnForm): void {
     this.dataSource.push({
       formName: newReturnFormValue.formName,
-      dueDateOfFiling: this.datepipe.transform(new Date(newReturnFormValue.dueDateOfFiling), 'MMM d, y'),
+      dueDateOfFiling: this.datepipe.transform(new Date(newReturnFormValue.dueDateOfFiling), Constants.DUE_DATE_OF_FILING_DISPLAY_FORMAT),
       periodicity: newReturnFormValue.periodicity
     });
     console.log(this.dataSource);
@@ -163,7 +164,7 @@ export class ReturnFormsComponent implements OnInit {
 
                 return {
                   formName: item.formName,
-                  dueDateOfFiling: this.datepipe.transform(resDate, 'MMM d, y'),
+                  dueDateOfFiling: this.datepipe.transform(resDate, Constants.DUE_DATE_OF_FILING_DISPLAY_FORMAT),
                   periodicity: item.periodicity
                 };
               });
