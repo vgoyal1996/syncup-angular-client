@@ -19,6 +19,7 @@ export class SyncupApiService {
   private GET_RETURN_FORMS_BY_RETURN_TYPE = `${this.BASE_URL}/returnform/get/`;
   private UPDATE_RETURN_FORM_BY_RETURN_TYPE_AND_RETURN_NAME = `${this.BASE_URL}/returnform/`;
   private DELETE_RETURN_FORMS_BY_FORM_NAMES = `${this.BASE_URL}/returnform/`;
+  private GET_ALL_RETURN_FORMS = `${this.BASE_URL}/returnform/all`;
 
   constructor(private http: HttpClient) {
   }
@@ -59,5 +60,9 @@ export class SyncupApiService {
       body: JSON.stringify(formNameList)
     };
     return this.http.delete(this.DELETE_RETURN_FORMS_BY_FORM_NAMES + returnType, options);
+  }
+
+  getAllReturnForms(): Observable<ReturnForm[]> {
+    return <Observable<ReturnForm[]>>this.http.get(this.GET_ALL_RETURN_FORMS);
   }
 }
