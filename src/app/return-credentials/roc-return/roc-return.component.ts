@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {SyncupApiService} from 'src/app/shared/api/syncup-api.service';
-import {FormGroup, FormBuilder, Validators} from '@angular/forms';
+import {FormGroup, FormBuilder} from '@angular/forms';
 import {ReturnCredentials} from '../../model/ReturnCredentials';
 import {DataTransferService} from '../../shared/data/data-transfer.service';
 import { ApplicableReturnFormsService } from '../applicable-return-forms.service';
@@ -19,8 +19,8 @@ export class RocReturnComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private apiService: SyncupApiService, private dataTransferService: DataTransferService, 
               private applicableReturnFormsService: ApplicableReturnFormsService) {
     this.rocReturnForm = this.formBuilder.group({
-                rocUserName: this.formBuilder.control('', Validators.required),
-                rocPassword: this.formBuilder.control('', Validators.required)
+                rocUserName: this.formBuilder.control(''),
+                rocPassword: this.formBuilder.control('')
               });
    }
 
