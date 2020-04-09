@@ -24,7 +24,8 @@ export class EditReturnFormDialogComponent implements OnInit {
       returnFormName: this.formBuilder.control(data.returnForm.formName, Validators.required),
       returnType: this.formBuilder.control(data.returnType, Validators.required),
       periodicity: this.formBuilder.control(data.returnForm.periodicity, Validators.required),
-      dueDateOfFiling: this.formBuilder.control(new Date(this.datepipe.transform(new Date(data.returnForm.dueDateOfFiling), 'M/d/yyyy')), Validators.required)
+      dueDateOfFiling: this.formBuilder.control(new Date(this.datepipe.transform(new Date(data.returnForm.dueDateOfFiling), 'M/d/yyyy')), Validators.required),
+      revisedDueDateOfFiling: this.formBuilder.control(new Date(this.datepipe.transform(new Date(data.returnForm.revisedDueDateOfFiling), 'M/d/yyyy')), Validators.required)
     });
     this.oldReturnType = data.returnType;
     this.oldReturnName = data.returnForm.formName;
@@ -44,6 +45,10 @@ export class EditReturnFormDialogComponent implements OnInit {
 
   get returnType() {
     return this.returnForm.get('returnType');
+  }
+
+  get revisedDueDateOfFiling() {
+    return this.returnForm.get('revisedDueDateOfFiling');
   }
 
   onNoClick(): void {
@@ -66,7 +71,8 @@ export class EditReturnFormDialogComponent implements OnInit {
     const returnFormModel: ReturnForm = new ReturnForm(this.returnForm.get('returnFormName').value,
       this.returnForm.get('returnType').value,
       new Date(this.returnForm.get('dueDateOfFiling').value).toISOString().slice(0, 19).replace('T', ' '),
-      this.returnForm.get('periodicity').value);
+      this.returnForm.get('periodicity').value,
+      new Date(this.returnForm.get('revisedDueDateOfFiling').value).toISOString().slice(0, 19).replace('T', ' '));
 
     this.apiService.updateReturnFormByReturnTypeAndReturnName(this.oldReturnType, this.oldReturnName, returnFormModel).subscribe(
       res => {

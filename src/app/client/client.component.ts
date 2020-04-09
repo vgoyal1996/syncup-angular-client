@@ -13,9 +13,6 @@ import { NavBarService } from '../nav-bar/nav-bar.service';
 })
 export class ClientComponent implements OnInit {
 
-  private clientId: string;
-  private clientType: string;
-
   constructor(private apiService: SyncupApiService, private router: Router, 
     private dataTransferService: DataTransferService, private navBar: NavBarService) {
   }
@@ -23,8 +20,6 @@ export class ClientComponent implements OnInit {
   ngOnInit() {
     this.navBar.show();
     this.navBar.changeToolBarTitle("Add Client");
-    this.dataTransferService.currentMessage.subscribe(message => this.clientId = message);
-    this.dataTransferService.currentClientType.subscribe(clientType => this.clientType = clientType);
   }
 
   createNewClient(f: NgForm): void {

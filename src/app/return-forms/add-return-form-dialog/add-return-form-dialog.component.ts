@@ -20,7 +20,8 @@ export class AddReturnFormDialogComponent implements OnInit {
     this.returnForm = formBuilder.group({
       returnFormName: this.formBuilder.control('', Validators.required),
       periodicity: this.formBuilder.control('', Validators.required),
-      dueDateOfFiling: this.formBuilder.control('', Validators.required)
+      dueDateOfFiling: this.formBuilder.control('', Validators.required),
+      revisedDueDateOfFiling: this.formBuilder.control('', Validators.required)
     });
     this.returnType = data.returnType;
   }
@@ -35,6 +36,10 @@ export class AddReturnFormDialogComponent implements OnInit {
 
   get dueDateOfFiling() {
     return this.returnForm.get('dueDateOfFiling');
+  }
+
+  get revisedDueDateOfFiling() {
+    return this.returnForm.get('revisedDueDateOfFiling');
   }
 
   onNoClick(): void {
@@ -57,7 +62,8 @@ export class AddReturnFormDialogComponent implements OnInit {
     const returnFormModel: ReturnForm = new ReturnForm(this.returnForm.get('returnFormName').value,
       this.returnType,
       new Date(this.returnForm.get('dueDateOfFiling').value).toISOString().slice(0, 19).replace('T', ' '),
-      this.returnForm.get('periodicity').value);
+      this.returnForm.get('periodicity').value,
+      new Date(this.returnForm.get('revisedDueDateOfFiling').value).toISOString().slice(0, 19).replace('T', ' '));
 
     this.apiService.addReturnForm(returnFormModel).subscribe(
       res => {

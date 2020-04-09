@@ -3,6 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import { ReturnForm } from '../model/ReturnForm';
 import {SyncupApiService} from 'src/app/shared/api/syncup-api.service';
 import { DatePipe } from '@angular/common';
+import { Constants } from '../shared/global/constants';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ export class ApplicableReturnFormsService {
     this.apiService.getAllReturnForms().subscribe(
       res => {
         console.log(res);
-        res.forEach(returnForm => returnForm.dueDateOfFiling = this.datePipe.transform(returnForm.dueDateOfFiling, 'MMM d, y'))
+        res.forEach(returnForm => returnForm.dueDateOfFiling = this.datePipe.transform(returnForm.dueDateOfFiling, Constants.DUE_DATE_OF_FILING_DISPLAY_FORMAT))
         this.dataSource.next(res);
       },
       err => {

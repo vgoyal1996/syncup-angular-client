@@ -11,6 +11,7 @@ import { EditReturnFormDialogComponent } from './edit-return-form-dialog/edit-re
 import { SelectionModel } from '@angular/cdk/collections';
 import { DeleteReturnFormsDialogComponent } from './delete-return-forms-dialog/delete-return-forms-dialog.component';
 import { NavBarService } from '../nav-bar/nav-bar.service';
+import { Constants } from '../shared/global/constants';
 
 @Component({
   selector: 'app-return-forms',
@@ -19,7 +20,7 @@ import { NavBarService } from '../nav-bar/nav-bar.service';
 })
 export class ReturnFormsComponent implements OnInit {
   returnType: string;
-  displayedColumns: string[] = ['select', 'formName', 'periodicity', 'dueDateOfFiling', 'actions'];
+  displayedColumns: string[] = ['select', 'formName', 'periodicity', 'dueDateOfFiling', 'revisedDueDateOfFiling', 'actions'];
   dataSource: any[] = [];
   @ViewChild(MatTable) table: MatTable<any>;
   selection = new SelectionModel(true, []);
@@ -66,8 +67,8 @@ export class ReturnFormsComponent implements OnInit {
 
   openAddDialog(): void {
     const dialogRef = this.dialog.open(AddReturnFormDialogComponent, {
-      width: '500px',
-      height: '450px',
+      width: '600px',
+      height: '500px',
       data: { returnType: this.returnType }
     });
 
@@ -100,7 +101,7 @@ export class ReturnFormsComponent implements OnInit {
     let rowList = [];
     this.dataSource.forEach(row => {
       if (this.selection.isSelected(row)) {
-        rowList.push({ oldFormName: row.formName, dueDateOfFiling: row.dueDateOfFiling, periodicity: row.periodicity });
+        rowList.push({ oldFormName: row.formName, dueDateOfFiling: row.dueDateOfFiling, periodicity: row.periodicity, revisedDueDateOfFiling: row.revisedDueDateOfFiling });
       }
     });
     console.log(rowList);
@@ -142,8 +143,9 @@ export class ReturnFormsComponent implements OnInit {
   onNewReturnFormAdded(newReturnFormValue: ReturnForm): void {
     this.dataSource.push({
       formName: newReturnFormValue.formName,
-      dueDateOfFiling: this.datepipe.transform(new Date(newReturnFormValue.dueDateOfFiling), 'MMM d, y'),
-      periodicity: newReturnFormValue.periodicity
+      dueDateOfFiling: this.datepipe.transform(new Date(newReturnFormValue.dueDateOfFiling), Constants.DUE_DATE_OF_FILING_DISPLAY_FORMAT),
+      periodicity: newReturnFormValue.periodicity,
+      revisedDueDateOfFiling: this.datepipe.transform(new Date(newReturnFormValue.revisedDueDateOfFiling), Constants.REVISED_DUE_DATE_OF_FILING_DISPLAY_FORMAT)
     });
     console.log(this.dataSource);
     this.table.renderRows();
@@ -160,11 +162,13 @@ export class ReturnFormsComponent implements OnInit {
             res => {
               return res.map(item => {
                 const resDate: Date = new Date(item.dueDateOfFiling);
+                const revDateOfFiling = new Date(item.revisedDueDateOfFiling);
 
                 return {
                   formName: item.formName,
-                  dueDateOfFiling: this.datepipe.transform(resDate, 'MMM d, y'),
-                  periodicity: item.periodicity
+                  dueDateOfFiling: this.datepipe.transform(resDate, Constants.DUE_DATE_OF_FILING_DISPLAY_FORMAT),
+                  periodicity: item.periodicity,
+                  revisedDueDateOfFiling: this.datepipe.transform(revDateOfFiling, Constants.REVISED_DUE_DATE_OF_FILING_DISPLAY_FORMAT)
                 };
               });
             }

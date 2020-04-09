@@ -4,6 +4,8 @@ export class Client {
 
   private id: number;
   private name: string;
+  private clientCode: string;
+  private fatherName: string;
   private flatNo: string;
   private area: string;
   private city: string;
@@ -22,6 +24,8 @@ export class Client {
 
   constructor(form: NgForm) {
     this.name = form.form.controls.clientName.value;
+    this.clientCode = form.form.controls.clientCode.value;
+    this.fatherName = form.form.controls.fatherName.value;
     this.flatNo = form.form.controls.flatNo.value;
     this.area = form.form.controls.area.value;
     this.city = form.form.controls.city.value;
@@ -46,6 +50,22 @@ export class Client {
 
   set setName(value: string) {
     this.name = value;
+  }
+
+  get getClientCode(): string {
+    return this.clientCode;
+  }
+
+  set setClientCode(value: string) {
+    this.clientCode = value;
+  }
+
+  get getFatherName(): string {
+    return this.fatherName;
+  }
+
+  set setFatherName(value: string) {
+    this.fatherName = value;
   }
 
   get getId(): number {

@@ -4,12 +4,14 @@ export class ReturnForm {
   returnType: string;
   dueDateOfFiling: string;
   periodicity: string;
+  revisedDueDateOfFiling: string;
 
-  constructor(formName: string, returnType: string, dueDateOfFiling: string, periodicity: string) {
+  constructor(formName: string, returnType: string, dueDateOfFiling: string, periodicity: string, revisedDueDateOfFiling: string) {
     this.formName = formName;
     this.returnType = returnType;
     this.dueDateOfFiling = dueDateOfFiling;
     this.periodicity = periodicity;
+    this.revisedDueDateOfFiling = revisedDueDateOfFiling;
   }
 
   get getFormId(): number {
@@ -50,6 +52,14 @@ export class ReturnForm {
 
   set setPeriodicity(value: string) {
     this.periodicity = value;
+  }
+
+  get getRevisedDueDateOfFiling(): string {
+    return this.revisedDueDateOfFiling;
+  }
+
+  set setRevisedDueDateOfFiling(value: string) {
+    this.revisedDueDateOfFiling = value;
   }
 
 }
