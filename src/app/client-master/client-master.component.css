@@ -1,0 +1,61 @@
+table {
+  width: 100%;
+}
+
+tr.example-detail-row {
+  height: 0;
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+  background: #7b1fa2;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+  background: #7b1fa2;
+}
+
+.example-element-row td {
+  border-bottom-width: 0;
+}
+
+.example-element-detail {
+  overflow: hidden;
+  /* display: flex; */
+  flex-direction: column;
+  justify-content: flex-start;
+  width: auto;
+}
+
+.expanded-row-mat-cell {
+  border-bottom-style: none;
+  padding: 8px 8px 8px 0;
+}
+
+.row {
+  display: flex; /* equal height of the children */
+}
+
+.col {
+  flex: 1; /* additionally, equal width */
+  
+  padding: 1em;
+  border: solid;
+}
+
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 1em 0;
+  padding: 0;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+.detailed-element {
+  padding: 16px;
+}

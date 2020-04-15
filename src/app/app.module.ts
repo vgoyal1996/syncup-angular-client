@@ -19,6 +19,9 @@ import {MatSelectModule} from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MatSortModule } from '@angular/material/sort';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; 
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -39,6 +42,9 @@ import { DeleteReturnFormsDialogComponent } from './return-forms/delete-return-f
 import { DataTransferService } from './shared/data/data-transfer.service';
 import { NavBarService } from './nav-bar/nav-bar.service';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
+import { ClientMasterComponent } from './client-master/client-master.component';
+import { DeleteClientsDialogComponent } from './client-master/delete-clients-dialog/delete-clients-dialog.component';
+import { EditClientComponent } from './edit-client/edit-client.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +58,10 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
     AddReturnFormDialogComponent,
     EditReturnFormDialogComponent,
     DeleteReturnFormsDialogComponent,
+    DeleteClientsDialogComponent,
     NavBarComponent,
+    ClientMasterComponent,
+    EditClientComponent,
   ],
   imports: [
     BrowserModule,
@@ -80,11 +89,15 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
     MatSelectModule,
     MatCheckboxModule,
     MatSnackBarModule,
+    MatSortModule,
+    MatPaginatorModule,
+    MatProgressSpinnerModule,
   ],
   entryComponents: [
     AddReturnFormDialogComponent,
     EditReturnFormDialogComponent,
-    DeleteReturnFormsDialogComponent
+    DeleteReturnFormsDialogComponent,
+    DeleteClientsDialogComponent,
   ],
   providers: [
     DatePipe,

@@ -1,4 +1,4 @@
-import {NgForm} from '@angular/forms';
+import {NgForm, FormGroup} from '@angular/forms';
 
 export class Client {
 
@@ -22,27 +22,28 @@ export class Client {
   private responsiblePersonAadhaar: string;
   private cin: string;
 
-  constructor(form: NgForm) {
-    this.name = form.form.controls.clientName.value;
-    this.clientCode = form.form.controls.clientCode.value;
-    this.fatherName = form.form.controls.fatherName.value;
-    this.flatNo = form.form.controls.flatNo.value;
-    this.area = form.form.controls.area.value;
-    this.city = form.form.controls.city.value;
-    this.state = form.form.controls.state.value;
-    this.pin = form.form.controls.pin.value;
-    this.clientType = form.form.controls.clientType.value;
-    this.mobile = form.form.controls.mobile.value;
-    this.clientEmail = form.form.controls.emailId.value;
-    this.pan = form.form.controls.pan.value;
-    this.doiOrDob = form.form.controls.dobOrDoi.value;
-    this.responsiblePersonName = form.form.controls.responsiblePersonName.value;
-    this.responsiblePersonPAN = form.form.controls.responsiblePersonPAN.value;
-    this.responsiblePersonDOB = form.form.controls.responsiblePersonDOB.value;
-    this.responsiblePersonAadhaar = form.form.controls.responsiblePersonAadhaar.value;
-    this.cin = form.form.controls.cin.value;
-  }
+  constructor() {}
 
+  public setFieldsFromForm(clientForm: FormGroup) {
+    this.name = clientForm.controls.clientName.value;
+    this.clientCode = clientForm.controls.clientCode.value;
+    this.fatherName = clientForm.controls.fatherName.value;
+    this.flatNo = clientForm.controls.flatNo.value;
+    this.area = clientForm.controls.area.value;
+    this.city = clientForm.controls.city.value;
+    this.state = clientForm.controls.state.value;
+    this.pin = clientForm.controls.pin.value;
+    this.clientType = clientForm.controls.clientType.value;
+    this.mobile = clientForm.controls.mobile.value;
+    this.clientEmail = clientForm.controls.emailId.value;
+    this.pan = clientForm.controls.pan.value;
+    this.doiOrDob = clientForm.controls.dobOrDoi.value;
+    this.responsiblePersonName = clientForm.controls.responsiblePersonName.value;
+    this.responsiblePersonPAN = clientForm.controls.responsiblePersonPan.value;
+    this.responsiblePersonDOB = clientForm.controls.responsiblePersonDob.value;
+    this.responsiblePersonAadhaar = clientForm.controls.responsiblePersonAadhaar.value;
+    this.cin = clientForm.controls.cin.value;
+  }
 
   get getName(): string {
     return this.name;
