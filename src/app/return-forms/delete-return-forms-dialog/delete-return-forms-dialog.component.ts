@@ -39,7 +39,7 @@ export class DeleteReturnFormsDialogComponent implements OnInit {
           });
         } else {
           console.log(res + " forms deleted");
-          this.snackBar.open("OOPS!! something went wrong. " + res + " forms deleted. Please", null, {
+          this.snackBar.open("OOPS!! something went wrong. " + res + " forms deleted. Please refresh.", null, {
             duration: 3000,
           });
         }

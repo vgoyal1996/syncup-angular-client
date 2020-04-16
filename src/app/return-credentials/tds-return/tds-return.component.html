@@ -1,97 +1,70 @@
-<div class="container container-bg-color">
-  <div class="card card-primary">
-    <div class="card-block">
-      <form [formGroup]="tdsReturnForm" (ngSubmit)="addTdsReturnInfo()">
-        <div class=".container-fluid p-1">
-          <div class="row">
-            <label for="tdsUserName" class="col-sm-2 col-form-label">User Name</label>
-            <div class="col-sm-4">
-              <input type="text"
-                     id="tdsUserName"
-                     class="form-control"
-                     name="tdsUserName"
-                     placeholder="User Name"
-                     formControlName="tdsUserName"
-                     [ngClass]="{ 'is-invalid': submitted && tdsUserName.invalid }"/>
-              <div *ngIf="submitted && tdsUserName.invalid" class="invalid-input">
-                <!-- validation errors -->
-                <div *ngIf="tdsUserName.errors.required">TDS User name is required</div>
-              </div>
-            </div>
-            <label for="tdsPassword" class="col-sm-2 col-form-label">Password</label>
-            <div class="col-sm-4">
-              <input type="password"
-                     id="tdsPassword"
-                     class="form-control"
-                     name="tdsPassword"
-                     placeholder="Password"
-                     formControlName="tdsPassword"
-                     [ngClass]="{ 'is-invalid': submitted && tdsPassword.invalid }"/>
-              <div *ngIf="submitted && tdsPassword.invalid" class="invalid-input">
-                <!-- validation errors -->
-                <div *ngIf="tdsPassword.errors.required">TDS Password is required</div>
-              </div>
-            </div>
+<div class="container">
+  <form [formGroup]="tdsReturnForm" (ngSubmit)="addTdsReturnInfo()">
+    <div class=".container-fluid p-1">
+      <div class="row">
+        <label for="tdsUserName" class="col-sm-2 col-form-label">User Name</label>
+        <div class="col-sm-4">
+          <input type="text" id="tdsUserName" class="form-control" name="tdsUserName" placeholder="User Name"
+            formControlName="tdsUserName" [ngClass]="{ 'is-invalid': submitted && tdsUserName.invalid }" />
+          <div *ngIf="submitted && tdsUserName.invalid" class="invalid-input">
+            <!-- validation errors -->
+            <div *ngIf="tdsUserName.errors.required">TDS User name is required</div>
           </div>
         </div>
-        <div class=".container-fluid p-1">
-          <div class="row">
-            <label for="tracesTdsUserName" class="col-sm-2 col-form-label">Traces User Name</label>
-            <div class="col-sm-4">
-              <input type="text"
-                     id="tracesTdsUserName"
-                     class="form-control"
-                     name="tracesTdsUserName"
-                     placeholder="User Name"
-                     formControlName="tracesTdsUserName"
-                     [ngClass]="{ 'is-invalid': submitted && tracesTdsUserName.invalid }"/>
-              <div *ngIf="submitted && tracesTdsUserName.invalid" class="invalid-input">
-                <!-- validation errors -->
-                <div *ngIf="tracesTdsUserName.errors.required">TDS Traces User name is required</div>
-              </div>
-            </div>
-            <label for="tracesTdsPassword" class="col-sm-2 col-form-label">Traces Password</label>
-            <div class="col-sm-4">
-              <input type="password"
-                     id="tracesTdsPassword"
-                     class="form-control"
-                     name="tracesTdsPassword"
-                     placeholder="Password"
-                     formControlName="tracesTdsPassword"
-                     [ngClass]="{ 'is-invalid': submitted && tracesTdsPassword.invalid }"/>
-              <div *ngIf="submitted && tracesTdsPassword.invalid" class="invalid-input">
-                <!-- validation errors -->
-                <div *ngIf="tracesTdsPassword.errors.required">TDS Traces Password is required</div>
-              </div>
-            </div>
+        <label for="tdsPassword" class="col-sm-2 col-form-label">Password</label>
+        <div class="col-sm-4">
+          <input type="password" id="tdsPassword" class="form-control" name="tdsPassword" placeholder="Password"
+            formControlName="tdsPassword" [ngClass]="{ 'is-invalid': submitted && tdsPassword.invalid }" />
+          <div *ngIf="submitted && tdsPassword.invalid" class="invalid-input">
+            <!-- validation errors -->
+            <div *ngIf="tdsPassword.errors.required">TDS Password is required</div>
           </div>
         </div>
-        <div class="container p-1">
-          <div class="row justify-content-md-center">
-            <label for="tdsTanNo" class="col-sm-2 col-form-label">TAN No</label>
-            <div class="col-sm-4">
-              <input type="text"
-                     id="tdsTanNo"
-                     class="form-control"
-                     name="tdsTanNo"
-                     placeholder="TAN No"
-                     formControlName="tdsTanNo"
-                     [ngClass]="{ 'is-invalid': submitted && tdsTanNo.invalid }"/>
-              <div *ngIf="submitted && tdsTanNo.invalid" class="invalid-input">
-                <!-- validation errors -->
-                <div *ngIf="tdsTanNo.errors.required">TAN No. is required</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class=".container-fluid p-5">
-          <div class="col text-center">
-            <button type="submit" class="btn btn-primary">
-              <span>Add Return Information</span>
-            </button>
-          </div>
-        </div>
-      </form>
+      </div>
     </div>
-  </div>
+    <div class=".container-fluid p-1">
+      <div class="row">
+        <label for="tracesTdsUserName" class="col-sm-2 col-form-label">Traces User Name</label>
+        <div class="col-sm-4">
+          <input type="text" id="tracesTdsUserName" class="form-control" name="tracesTdsUserName"
+            placeholder="User Name" formControlName="tracesTdsUserName"
+            [ngClass]="{ 'is-invalid': submitted && tracesTdsUserName.invalid }" />
+          <div *ngIf="submitted && tracesTdsUserName.invalid" class="invalid-input">
+            <!-- validation errors -->
+            <div *ngIf="tracesTdsUserName.errors.required">TDS Traces User name is required</div>
+          </div>
+        </div>
+        <label for="tracesTdsPassword" class="col-sm-2 col-form-label">Traces Password</label>
+        <div class="col-sm-4">
+          <input type="password" id="tracesTdsPassword" class="form-control" name="tracesTdsPassword"
+            placeholder="Password" formControlName="tracesTdsPassword"
+            [ngClass]="{ 'is-invalid': submitted && tracesTdsPassword.invalid }" />
+          <div *ngIf="submitted && tracesTdsPassword.invalid" class="invalid-input">
+            <!-- validation errors -->
+            <div *ngIf="tracesTdsPassword.errors.required">TDS Traces Password is required</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container p-1">
+      <div class="row justify-content-md-center">
+        <label for="tdsTanNo" class="col-sm-2 col-form-label">TAN No</label>
+        <div class="col-sm-4">
+          <input type="text" id="tdsTanNo" class="form-control" name="tdsTanNo" placeholder="TAN No"
+            formControlName="tdsTanNo" [ngClass]="{ 'is-invalid': submitted && tdsTanNo.invalid }" />
+          <div *ngIf="submitted && tdsTanNo.invalid" class="invalid-input">
+            <!-- validation errors -->
+            <div *ngIf="tdsTanNo.errors.required">TAN No. is required</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class=".container-fluid p-5">
+      <div class="col text-center">
+        <button type="submit" class="btn btn-primary">
+          <span>Add Return Information</span>
+        </button>
+      </div>
+    </div>
+  </form>
 </div>

@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import {ReactiveFormsModule} from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatButtonModule } from '@angular/material/button';
 
 import { ReturnCredentialsRoutingModule } from './return-credentials-routing.module';
 import { RocReturnComponent } from './roc-return/roc-return.component';
@@ -31,6 +32,7 @@ import { ApplicableReturnFormsService } from './applicable-return-forms.service'
     MatCheckboxModule,
     MatTableModule,
     ReactiveFormsModule, 
+    MatButtonModule,
     ReturnCredentialsRoutingModule
   ],
   providers: [

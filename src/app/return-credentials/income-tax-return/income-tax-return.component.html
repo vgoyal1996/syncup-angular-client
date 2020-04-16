@@ -1,43 +1,30 @@
-<div class="container container-bg-color">
-  <div class="card card-primary">
-    <div class="card-block">
-      <form [formGroup]="incomeTaxReturnForm" (ngSubmit)="addIncomeTaxReturnInfo()">
-        <div class="form-group row">
-          <label for="incomeTaxUserName" class="col-sm-2 col-form-label">User Name</label>
-          <div class="col-sm-4">
-            <input type="text"
-                   id="incomeTaxUserName"
-                   class="form-control"
-                   name="incomeTaxUserName"
-                   placeholder="User Name"
-                   formControlName="incomeTaxUserName"
-                   [ngClass]="{ 'is-invalid': submitted && incomeTaxUserName.invalid }"/>
-            <div *ngIf="submitted && incomeTaxUserName.invalid" class="invalid-input">
-              <!-- validation errors -->
-              <div *ngIf="incomeTaxUserName.errors.required">Income Tax User name is required</div>
-            </div>
-          </div>
-          <label for="incomeTaxPassword" class="col-sm-2 col-form-label">Password</label>
-          <div class="col-sm-4">
-            <input type="password"
-                   id="incomeTaxPassword"
-                   class="form-control"
-                   name="incomeTaxPassword"
-                   placeholder="Password"
-                   formControlName="incomeTaxPassword"
-                   [ngClass]="{ 'is-invalid': submitted && incomeTaxPassword.invalid }"/>
-            <div *ngIf="submitted && incomeTaxPassword.invalid" class="invalid-input">
-              <!-- validation errors -->
-              <div *ngIf="incomeTaxPassword.errors.required">Income Tax Password is required</div>
-            </div>
-          </div>
-          <div class="col text-center p-4">
-            <button type="submit" class="btn btn-primary">
-              <span>Add Return Information</span>
-            </button>
-          </div>
+<div class="container">
+  <form [formGroup]="incomeTaxReturnForm" (ngSubmit)="addIncomeTaxReturnInfo()">
+    <div class="form-group row">
+      <label for="incomeTaxUserName" class="col-sm-2 col-form-label">User Name</label>
+      <div class="col-sm-4">
+        <input type="text" id="incomeTaxUserName" class="form-control" name="incomeTaxUserName" placeholder="User Name"
+          formControlName="incomeTaxUserName" [ngClass]="{ 'is-invalid': submitted && incomeTaxUserName.invalid }" />
+        <div *ngIf="submitted && incomeTaxUserName.invalid" class="invalid-input">
+          <!-- validation errors -->
+          <div *ngIf="incomeTaxUserName.errors.required">Income Tax User name is required</div>
         </div>
-      </form>
+      </div>
+      <label for="incomeTaxPassword" class="col-sm-2 col-form-label">Password</label>
+      <div class="col-sm-4">
+        <input type="password" id="incomeTaxPassword" class="form-control" name="incomeTaxPassword"
+          placeholder="Password" formControlName="incomeTaxPassword"
+          [ngClass]="{ 'is-invalid': submitted && incomeTaxPassword.invalid }" />
+        <div *ngIf="submitted && incomeTaxPassword.invalid" class="invalid-input">
+          <!-- validation errors -->
+          <div *ngIf="incomeTaxPassword.errors.required">Income Tax Password is required</div>
+        </div>
+      </div>
+      <div class="col text-center p-4">
+        <button type="submit" class="btn btn-primary">
+          <span>Add Return Information</span>
+        </button>
+      </div>
     </div>
-  </div>
+  </form>
 </div>

@@ -97,4 +97,14 @@ export class ReturnCredentialsComponent implements OnInit {
       return true;
     return false;
   }
+
+  navigateToClientMaster() {
+    this.router.navigateByUrl("/client-master").then((e) => {
+      if (e) {
+        console.log("successfully navigated to client master");
+      } else {
+        console.log("Navigation to client master failed");
+      }
+    });
+  }
 }

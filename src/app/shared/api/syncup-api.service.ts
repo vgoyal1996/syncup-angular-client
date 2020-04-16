@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {Client} from '../../model/Client';
-import {Login} from '../../model/Login';
-import {ReturnCredentials} from '../../model/ReturnCredentials';
-import {ReturnForm} from '../../model/ReturnForm';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Client } from '../../model/Client';
+import { Login } from '../../model/Login';
+import { ReturnCredentials } from '../../model/ReturnCredentials';
+import { ReturnForm } from '../../model/ReturnForm';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +20,8 @@ export class SyncupApiService {
   private UPDATE_RETURN_FORM_BY_RETURN_TYPE_AND_RETURN_NAME = `${this.BASE_URL}/returnform/`;
   private DELETE_RETURN_FORMS_BY_FORM_NAMES = `${this.BASE_URL}/returnform/`;
   private GET_ALL_RETURN_FORMS = `${this.BASE_URL}/returnform/all`;
+  private GET_ALL_CLIENTS = `${this.BASE_URL}/client`;
+  private UPDATE_CLIENT = `${this.BASE_URL}/client/`
 
   constructor(private http: HttpClient) {
   }
@@ -52,17 +54,35 @@ export class SyncupApiService {
     return this.http.put(this.UPDATE_RETURN_FORM_BY_RETURN_TYPE_AND_RETURN_NAME + returnType + `/` + returnName, newReturnForm);
   }
 
+  updateClientByClientCode(clientCode: string, newClient: Client): Observable<any> {
+    return this.http.put(this.UPDATE_CLIENT + clientCode, newClient);
+  }
+
   deleteReturnFormsByFormNames(returnType: string, formNameList: string[]): Observable<any> {
     let options = {
       headers: new HttpHeaders({
-      'Content-Type': 'application/json',
+        'Content-Type': 'application/json',
       }),
       body: JSON.stringify(formNameList)
     };
     return this.http.delete(this.DELETE_RETURN_FORMS_BY_FORM_NAMES + returnType, options);
   }
 
+  deleteClientsByClientCodes(clientCodeList: string[]): Observable<any> {
+    let options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      body: JSON.stringify(clientCodeList)
+    };
+    return this.http.delete(this.GET_ALL_CLIENTS, options);
+  }
+
   getAllReturnForms(): Observable<ReturnForm[]> {
     return <Observable<ReturnForm[]>>this.http.get(this.GET_ALL_RETURN_FORMS);
+  }
+
+  getAllClients(): Observable<any> {
+    return this.http.get(this.GET_ALL_CLIENTS);
   }
 }
