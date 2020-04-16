@@ -2,9 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {Client} from '../model/Client';
 import {Router} from '@angular/router';
 import {DataTransferService} from '../shared/data/data-transfer.service';
-import {NgForm, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {SyncupApiService} from '../shared/api/syncup-api.service';
 import { NavBarService } from '../nav-bar/nav-bar.service';
+import { Constants } from '../shared/global/constants';
 
 @Component({
   selector: 'app-client',
@@ -15,6 +16,7 @@ export class ClientComponent implements OnInit {
 
   private clientForm: FormGroup;
   private submitted = false;
+  private stateList = Constants.STATES_AND_UT_LIST;
 
   constructor(private apiService: SyncupApiService, private router: Router, 
     private dataTransferService: DataTransferService, private navBar: NavBarService, private formBuilder: FormBuilder) {

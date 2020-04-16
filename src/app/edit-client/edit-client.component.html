@@ -59,11 +59,16 @@
         <div class="container-fluid p-1 row">
             <label for="state" class="col-sm-2 col-form-label">State</label>
             <div class="col-sm-10">
-                <input type="text" id="state" class="form-control" name="state" placeholder="State"
-                    formControlName="state" [ngClass]="{ 'is-invalid': submitted && state.invalid }" />
+                <select class="form-control" id="state" name="state" formControlName="state"
+                    [ngClass]="{ 'is-invalid': submitted && state.invalid }">
+                    <option value="" selected></option>
+                    <option *ngFor="let element of stateList" [value]="element.value" [innerHTML]="element.display">
+                    </option>
+                </select>
+                <!-- input validation group -->
                 <div *ngIf="submitted && state.invalid" class="invalid-input">
-                    <!-- validation errors -->
-                    <div *ngIf="state.errors.required">State is required</div>
+                    <!-- individual validation errors -->
+                    <div *ngIf="state.errors.required">State cannot be blank</div>
                 </div>
             </div>
         </div>
@@ -117,8 +122,8 @@
         <div class="container-fluid p-1 row">
             <label for="mobile" class="col-sm-2 col-form-label">Mobile No.</label>
             <div class="col-sm-10">
-                <input type="text" id="mobile" class="form-control" name="mobile" placeholder="Mobile No." formControlName="mobile"
-                    [ngClass]="{ 'is-invalid': submitted && mobile.invalid }" />
+                <input type="text" id="mobile" class="form-control" name="mobile" placeholder="Mobile No."
+                    formControlName="mobile" [ngClass]="{ 'is-invalid': submitted && mobile.invalid }" />
                 <div *ngIf="submitted && mobile.invalid" class="invalid-input">
                     <!-- validation errors -->
                     <div *ngIf="mobile.errors.required">Mobile No. is required</div>
@@ -130,8 +135,8 @@
         <div class="container-fluid p-1 row">
             <label for="emailId" class="col-sm-2 col-form-label">Client Email Id</label>
             <div class="col-sm-10">
-                <input type="text" id="emailId" class="form-control" name="emailId" placeholder="Client Email Id" formControlName="emailId"
-                    [ngClass]="{ 'is-invalid': submitted && emailId.invalid }" />
+                <input type="text" id="emailId" class="form-control" name="emailId" placeholder="Client Email Id"
+                    formControlName="emailId" [ngClass]="{ 'is-invalid': submitted && emailId.invalid }" />
                 <div *ngIf="submitted && emailId.invalid" class="invalid-input">
                     <!-- validation errors -->
                     <div *ngIf="emailId.errors.required">Client Email Id is required</div>
@@ -158,20 +163,21 @@
             <div class="col-sm-10">
                 <div class='input-group date' id='datetimepicker1'>
                     <input type="date" class="form-control" id="dobOrDoi" name="dobOrDoi" formControlName="dobOrDoi"
-                      [ngClass]="{'is-invalid': submitted && dobOrDoi.invalid}"/>
-                  </div>
+                        [ngClass]="{'is-invalid': submitted && dobOrDoi.invalid}" />
+                </div>
                 <div *ngIf="submitted && dobOrDoi.invalid" class="invalid-input">
                     <!-- validation errors -->
                     <div *ngIf="dobOrDoi.errors.required">Date of birth/Date of Incorporation is required</div>
                 </div>
             </div>
         </div>
-        <div class="container-fluid p-1 row" [ngClass]="{ 'd-none' : clientType.value==='' || clientType.value==='individual',
+        <div class="container-fluid p-1 row"
+            [ngClass]="{ 'd-none' : clientType.value==='' || clientType.value==='individual',
                                                     'd-flex' : clientType.value!=='' && clientType.value!=='individual'}">
             <label for="responsiblePersonName" class="col-sm-2 col-form-label">Name of Responsible Person</label>
             <div class="col-sm-10">
-                <input type="text" id="responsiblePersonName" class="form-control" name="responsiblePersonName" placeholder="Name of Responsible Person" 
-                formControlName="responsiblePersonName"
+                <input type="text" id="responsiblePersonName" class="form-control" name="responsiblePersonName"
+                    placeholder="Name of Responsible Person" formControlName="responsiblePersonName"
                     [ngClass]="{ 'is-invalid': submitted && responsiblePersonName.invalid }" />
                 <div *ngIf="submitted && responsiblePersonName.invalid" class="invalid-input">
                     <!-- validation errors -->
@@ -183,8 +189,8 @@
                                                 'd-flex' : clientType.value!=='' && clientType.value!=='individual'}">
             <label for="responsiblePersonPan" class="col-sm-2 col-form-label">PAN No. of Responsible Person</label>
             <div class="col-sm-10">
-                <input type="text" id="responsiblePersonPan" class="form-control" name="responsiblePersonPan" placeholder="PAN No. of Responsible Person" 
-                formControlName="responsiblePersonPan"
+                <input type="text" id="responsiblePersonPan" class="form-control" name="responsiblePersonPan"
+                    placeholder="PAN No. of Responsible Person" formControlName="responsiblePersonPan"
                     [ngClass]="{ 'is-invalid': submitted && responsiblePersonPan.invalid }" />
                 <div *ngIf="submitted && responsiblePersonPan.invalid" class="invalid-input">
                     <!-- validation errors -->
@@ -197,15 +203,18 @@
         </div>
         <div class="container-fluid p-1 row" [ngClass]="{ 'd-none' : clientType.value==='' || clientType.value==='individual',
                                                 'd-flex' : clientType.value!=='' && clientType.value!=='individual'}">
-            <label for="responsiblePersonDob" class="col-sm-2 col-form-label">Date of birth/Date of Incorporation</label>
+            <label for="responsiblePersonDob" class="col-sm-2 col-form-label">Date of birth/Date of
+                Incorporation</label>
             <div class="col-sm-10">
                 <div class='input-group date' id='datetimepicker2'>
-                    <input type="date" class="form-control" id="responsiblePersonDob" name="responsiblePersonDob" formControlName="responsiblePersonDob"
-                      [ngClass]="{'is-invalid': submitted && responsiblePersonDob.invalid}"/>
-                  </div>
+                    <input type="date" class="form-control" id="responsiblePersonDob" name="responsiblePersonDob"
+                        formControlName="responsiblePersonDob"
+                        [ngClass]="{'is-invalid': submitted && responsiblePersonDob.invalid}" />
+                </div>
                 <div *ngIf="submitted && responsiblePersonDob.invalid" class="invalid-input">
                     <!-- validation errors -->
-                    <div *ngIf="responsiblePersonDob.errors.required">Date of birth/Date of Incorporation is required</div>
+                    <div *ngIf="responsiblePersonDob.errors.required">Date of birth/Date of Incorporation is required
+                    </div>
                 </div>
             </div>
         </div>
@@ -213,8 +222,8 @@
                                                         'd-flex' : clientType.value==='individual'}">
             <label for="responsiblePersonAadhaar" class="col-sm-2 col-form-label">Aadhaar of Responsible Person</label>
             <div class="col-sm-10">
-                <input type="text" id="responsiblePersonAadhaar" class="form-control" name="responsiblePersonAadhaar" placeholder="Aadhaar of Responsible Person" 
-                formControlName="responsiblePersonAadhaar"
+                <input type="text" id="responsiblePersonAadhaar" class="form-control" name="responsiblePersonAadhaar"
+                    placeholder="Aadhaar of Responsible Person" formControlName="responsiblePersonAadhaar"
                     [ngClass]="{ 'is-invalid': submitted && responsiblePersonAadhaar.invalid }" />
                 <div *ngIf="submitted && responsiblePersonAadhaar.invalid" class="invalid-input">
                     <!-- validation errors -->
@@ -224,12 +233,12 @@
                 </div>
             </div>
         </div>
-        <div class="container-fluid p-1 row" [ngClass]="{'d-none' : clientType.value!=='company' && clientType.value!=='llp',
+        <div class="container-fluid p-1 row"
+            [ngClass]="{'d-none' : clientType.value!=='company' && clientType.value!=='llp',
                                                     'd-flex' : clientType.value==='company'|| clientType.value==='llp'}">
             <label for="cin" class="col-sm-2 col-form-label">CIN No.</label>
             <div class="col-sm-10">
-                <input type="text" id="cin" class="form-control" name="cin" placeholder="CIN No." 
-                formControlName="cin"
+                <input type="text" id="cin" class="form-control" name="cin" placeholder="CIN No." formControlName="cin"
                     [ngClass]="{ 'is-invalid': submitted && cin.invalid }" />
                 <div *ngIf="submitted && cin.invalid" class="invalid-input">
                     <!-- validation errors -->
@@ -241,9 +250,9 @@
         </div>
         <div class=".container-fluid p-5">
             <div class="col text-center">
-              <button mat-raised-button type="submit" color="primary">
-                Update Client
-              </button>
+                <button mat-raised-button type="submit" color="primary">
+                    Update Client
+                </button>
             </div>
         </div>
     </form>
