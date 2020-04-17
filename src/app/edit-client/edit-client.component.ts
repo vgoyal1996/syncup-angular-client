@@ -3,9 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SyncupApiService } from '../shared/api/syncup-api.service';
 import { NavBarService } from '../nav-bar/nav-bar.service';
 import { Client } from '../model/Client';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 import { DataTransferService } from '../shared/data/data-transfer.service';
+import { Constants } from '../shared/global/constants';
 
 @Component({
   selector: 'app-edit-client',
@@ -18,9 +19,10 @@ export class EditClientComponent implements OnInit {
   private oldClient: any;
   submitted = false;
   private oldClientCode: string;
+  private stateList = Constants.STATES_AND_UT_LIST;
 
   constructor(private formBuilder: FormBuilder, private apiService: SyncupApiService,
-    private navBar: NavBarService, private activatedRoute: ActivatedRoute, private snackBar: MatSnackBar,
+    private navBar: NavBarService, private snackBar: MatSnackBar,
     private router: Router, private dataTransferService: DataTransferService) {
     this.editClientForm = this.formBuilder.group({
       clientName: this.formBuilder.control('', Validators.required),
@@ -45,13 +47,14 @@ export class EditClientComponent implements OnInit {
     this.dataTransferService.currentClientObject.subscribe(
       clientObject => {
         this.oldClient = clientObject;
+        this.stateList = Constants.STATES_AND_UT_LIST;
         this.editClientForm.patchValue({
           clientName: this.oldClient.name,
           clientCode: this.oldClient.clientCode,
           fatherName: this.oldClient.fatherName,
           flatNo: this.oldClient.flatNo,
           area: this.oldClient.area,
-          state: this.oldClient.state,
+          state: this.stateList[this.stateList.findIndex(obj => obj.value == this.oldClient.state)].display,
           city: this.oldClient.city,
           pin: this.oldClient.pin,
           clientType: this.oldClient.clientType,

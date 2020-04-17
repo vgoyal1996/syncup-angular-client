@@ -4,6 +4,7 @@ import {FormGroup, FormBuilder, FormArray, Validators, FormControl} from '@angul
 import { ReturnCredentials } from '../../model/ReturnCredentials';
 import {DataTransferService} from '../../shared/data/data-transfer.service';
 import { ApplicableReturnFormsService } from '../applicable-return-forms.service';
+import { Client } from 'src/app/model/Client';
 
 @Component({
   selector: 'app-gst-return',
@@ -14,6 +15,7 @@ export class GstReturnComponent implements OnInit {
 
   private clientId: string;
   private gstReturnForm: FormGroup;
+  private clientObject: Client;
 
   constructor(private formBuilder: FormBuilder, private apiService: SyncupApiService, private dataTransferService: DataTransferService, 
               private applicableReturnFormsService: ApplicableReturnFormsService) {
@@ -26,6 +28,7 @@ export class GstReturnComponent implements OnInit {
 
   ngOnInit() {
     this.dataTransferService.currentMessage.subscribe(message => this.clientId = message);
+    this.dataTransferService.currentClientObject.subscribe(client => this.clientObject = client);
   }
 
    getReturnForm(): FormGroup {
@@ -51,6 +54,17 @@ export class GstReturnComponent implements OnInit {
      if(returnFormArray.length > 1) {
        returnFormArray.removeAt(rowIndex);
      }
+   }
+
+   setFormFieldsAsMaster() {
+    let control = (<FormArray>this.gstReturnForm.get('returnForms')).controls[0];
+    control.patchValue({
+      gstFlatNo: this.clientObject.getFlatNo, 
+      getArea: this.clientObject.getArea,
+      gstCity: this.clientObject.getCity,
+      gstState: this.clientObject.getState,
+      gstPin: this.clientObject.getPin
+    });
    }
 
    get returnForms(): FormArray {

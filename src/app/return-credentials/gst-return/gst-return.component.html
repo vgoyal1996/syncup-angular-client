@@ -3,6 +3,7 @@
     <div formArrayName="returnForms"
       *ngFor="let returnForm of gstReturnForm.get('returnForms').controls; let i = index">
       <h3 class="p-3">{{i+1}}. GST Return Credentials</h3>
+      <button mat-raised-button *ngIf="i == 0" color="primary" (click)="setFormFieldsAsMaster()">Set As Master</button>
       <div [formGroupName]="i">
         <div class=".container-fluid p-1">
           <div class="row">

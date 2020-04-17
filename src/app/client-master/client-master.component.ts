@@ -10,6 +10,7 @@ import { MatPaginator, MatDialog } from '@angular/material';
 import {Router, NavigationExtras} from '@angular/router';
 import { DeleteClientsDialogComponent } from './delete-clients-dialog/delete-clients-dialog.component';
 import { DataTransferService } from '../shared/data/data-transfer.service';
+import { Constants } from '../shared/global/constants';
 
 @Component({
   selector: 'app-client-master',
@@ -36,6 +37,7 @@ export class ClientMasterComponent implements OnInit {
   private isLoading = true;
   isButtonDisabled: boolean = true;
   @ViewChild(MatTable) table: MatTable<any>;
+  private stateList = Constants.STATES_AND_UT_LIST;
 
 
   constructor(private navBar: NavBarService, private apiService: SyncupApiService, private router: Router,
@@ -87,7 +89,7 @@ export class ClientMasterComponent implements OnInit {
           childData.push(temp);
           temp = {};
           temp['heading'] = 'State',
-          temp['value'] = element.state;
+          temp['value'] = this.stateList[this.stateList.findIndex(obj => obj.value == element.state)].display;
           childData.push(temp);
           temp = {};
           temp['heading'] = 'PIN Code',
