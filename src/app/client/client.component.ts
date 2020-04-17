@@ -171,6 +171,7 @@ export class ClientComponent implements OnInit {
         console.log(res);
         this.dataTransferService.changeMessage(res);
         this.dataTransferService.updateClient(this.clientForm.get('clientType').value);
+        this.dataTransferService.updateClientObject(newClient);
         this.router.navigateByUrl('/returnCredentials').then((e) => {
           if (e) {
             console.log('Navigation to return Credentials successful');
