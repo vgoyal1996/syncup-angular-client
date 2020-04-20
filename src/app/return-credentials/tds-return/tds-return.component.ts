@@ -4,6 +4,7 @@ import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {ReturnCredentials} from '../../model/ReturnCredentials';
 import {DataTransferService} from '../../shared/data/data-transfer.service';
 import { ApplicableReturnFormsService } from '../applicable-return-forms.service';
+import { SelectionModel } from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-tds-return',
@@ -13,6 +14,9 @@ import { ApplicableReturnFormsService } from '../applicable-return-forms.service
 export class TdsReturnComponent implements OnInit {
 
   submitted = false;
+  selection = new SelectionModel(true, []);
+  displayedColumns: string[] = ['select', 'formName', 'periodicity', 'dueDateOfFiling'];
+  dataSource: any[] = [];
   private clientId: string;
   private tdsReturnForm: FormGroup;
 
@@ -29,6 +33,40 @@ export class TdsReturnComponent implements OnInit {
 
   ngOnInit() {
     this.dataTransferService.currentMessage.subscribe(message => this.clientId = message);
+    this.applicableReturnFormsService.currentDataSource.subscribe(
+      (source) => {
+        this.dataSource = this.applicableReturnFormsService.getDataSourceByReturnType('tds');
+      }
+    );
+  }
+
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    if (this.isAllSelected()) {
+      this.selection.clear();
+      this.applicableReturnFormsService.clearSelectedReturnForms('tds');
+    } else {
+      this.dataSource.forEach(row => {
+        this.selection.select(row);
+        this.applicableReturnFormsService.addSelectedReturnForm('tds', row.formName);
+      });
+    } 
+  }
+
+  toggleSelection(row: any) {
+    this.selection.toggle(row);
+    if (this.selection.isSelected(row)) {
+      this.applicableReturnFormsService.addSelectedReturnForm('tds', row.formName);
+    } else {
+      this.applicableReturnFormsService.removeReturnForm('tds', row.formName);
+    }
   }
 
   get tdsUserName() {
@@ -57,7 +95,8 @@ export class TdsReturnComponent implements OnInit {
       return;
     }
     if (this.applicableReturnFormsService.getSelectedReturnForms == undefined || 
-      this.applicableReturnFormsService.getSelectedReturnForms == []) {
+      this.applicableReturnFormsService.getSelectedReturnForms('tds') == undefined ||
+      this.applicableReturnFormsService.getSelectedReturnForms('tds') == []) {
         return;
     }
     console.log(this.tdsReturnForm.value);
@@ -69,7 +108,7 @@ export class TdsReturnComponent implements OnInit {
     tdsReturnCredentials.setTanNo = this.tdsReturnForm.controls.tdsTanNo.value;
     tdsReturnCredentials.setId = +this.clientId;
     tdsReturnCredentials.setReturnType = "tds";
-    tdsReturnCredentials.setApplicableReturnForms = this.applicableReturnFormsService.getSelectedReturnForms;;
+    tdsReturnCredentials.setApplicableReturnForms = this.applicableReturnFormsService.getSelectedReturnForms('tds');
     this.apiService.addReturnCredentials(tdsReturnCredentials).subscribe(
       res => {
         console.log(tdsReturnCredentials + " insertion successful")

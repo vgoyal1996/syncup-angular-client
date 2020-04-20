@@ -11,8 +11,7 @@ import { Constants } from '../shared/global/constants';
 export class ApplicableReturnFormsService {
   private dataSource = new BehaviorSubject<ReturnForm[]>([]);
   currentDataSource = this.dataSource.asObservable();
-  private selectedReturnForms = new BehaviorSubject<string[]>([]);
-  currentSelectedReturnForms = this.selectedReturnForms.asObservable();
+  private selectedReturnForms  = new BehaviorSubject<Map<string, string[]>>(new Map<string, string[]>());
 
   constructor(private apiService: SyncupApiService, private datePipe: DatePipe) { }
 
@@ -29,29 +28,36 @@ export class ApplicableReturnFormsService {
     );
   }
 
-  public clearSelectedReturnForms() {
-    this.selectedReturnForms.next([]);
+  public clearSelectedReturnForms(returnType: string) {
+    this.selectedReturnForms.getValue().delete(returnType);
   }
 
-get getSelectedReturnForms(): string[] {
-  return this.selectedReturnForms.getValue();
-}
+  public getSelectedReturnForms(returnType: string): string[] {
+    return this.selectedReturnForms.getValue().get(returnType);
+  }
 
   public getDataSourceByReturnType(returnType: string): ReturnForm[] {
     let temp = this.dataSource.getValue();
-    this.clearSelectedReturnForms();
+    this.clearSelectedReturnForms(returnType);
     return temp.filter( returnForm => returnForm.returnType == returnType);
   }
 
-  public addSelectedReturnForm(returnFormName: string) {
-    this.selectedReturnForms.getValue().push(returnFormName);
+  public addSelectedReturnForm(returnType: string, returnFormName: string) {
+    let returnFormsArray = this.selectedReturnForms.getValue().get(returnType);
+    if (returnFormsArray == undefined) {
+      returnFormsArray = [];
+    }
+    returnFormsArray.push(returnFormName);
+    this.selectedReturnForms.getValue().set(returnType, returnFormsArray);
     console.log(this.selectedReturnForms.getValue());
   }
 
-  public removeReturnForm(returnFormName: string) {
-    let index = this.selectedReturnForms.getValue().indexOf(returnFormName);
-    this.selectedReturnForms.getValue().splice(index, 1);
-    console.log(this.selectedReturnForms.getValue());
+  public removeReturnForm(returnType: string, returnFormName: string) {
+    let returnFormsArray = this.selectedReturnForms.getValue().get(returnType);
+    let index = returnFormsArray.indexOf(returnFormName);
+    returnFormsArray.splice(index, 1);
+    this.selectedReturnForms.getValue().set(returnType, returnFormsArray);
+    console.log(this.selectedReturnForms.getValue().get(returnType));
   }
 
 }
