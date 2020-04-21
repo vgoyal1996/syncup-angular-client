@@ -43,21 +43,19 @@ export class ApplicableReturnFormsService {
   }
 
   public addSelectedReturnForm(returnType: string, returnFormName: string) {
-    let returnFormsArray = this.selectedReturnForms.getValue().get(returnType);
+    let returnFormsArray = this.getSelectedReturnForms(returnType);
     if (returnFormsArray == undefined) {
       returnFormsArray = [];
     }
     returnFormsArray.push(returnFormName);
     this.selectedReturnForms.getValue().set(returnType, returnFormsArray);
-    console.log(this.selectedReturnForms.getValue());
   }
 
   public removeReturnForm(returnType: string, returnFormName: string) {
-    let returnFormsArray = this.selectedReturnForms.getValue().get(returnType);
+    let returnFormsArray = this.getSelectedReturnForms(returnType);
     let index = returnFormsArray.indexOf(returnFormName);
     returnFormsArray.splice(index, 1);
     this.selectedReturnForms.getValue().set(returnType, returnFormsArray);
-    console.log(this.selectedReturnForms.getValue().get(returnType));
   }
 
 }

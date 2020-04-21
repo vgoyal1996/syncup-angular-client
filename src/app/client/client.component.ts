@@ -169,7 +169,7 @@ export class ClientComponent implements OnInit {
       res => {
         newClient.setId = res;
         console.log(res);
-        this.dataTransferService.changeMessage(res);
+        this.dataTransferService.changeMessage(res.toString());
         this.dataTransferService.updateClient(this.clientForm.get('clientType').value);
         this.dataTransferService.updateClientObject(newClient);
         this.router.navigateByUrl('/returnCredentials').then((e) => {

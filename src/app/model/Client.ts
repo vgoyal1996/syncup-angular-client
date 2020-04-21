@@ -45,6 +45,27 @@ export class Client {
     this.cin = clientForm.controls.cin.value;
   }
 
+  mapResponseToClientObject(response) {
+    this.name = response.name;
+    this.clientCode = response.clientCode;
+    this.fatherName = response.fatherName;
+    this.flatNo = response.flatNo;
+    this.area = response.area;
+    this.city = response.city;
+    this.state = response.state;
+    this.pin = response.pin;
+    this.clientType = response.clientType;
+    this.mobile = response.mobile;
+    this.clientEmail = response.clientEmail;
+    this.pan = response.pan;
+    this.doiOrDob = response.doiOrDob;
+    this.responsiblePersonName = response.responsiblePersonName;
+    this.responsiblePersonPAN = response.responsiblePersonPAN;
+    this.responsiblePersonDOB = response.responsiblePersonDOB;
+    this.responsiblePersonAadhaar = response.responsiblePersonAadhaar;
+    this.cin = response.cin;
+  }
+
   get getName(): string {
     return this.name;
   }
