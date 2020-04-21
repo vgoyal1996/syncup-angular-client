@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Client } from '../../model/Client';
 import { Login } from '../../model/Login';
 import { ReturnCredentials } from '../../model/ReturnCredentials';
 import { ReturnForm } from '../../model/ReturnForm';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -26,8 +27,8 @@ export class SyncupApiService {
   constructor(private http: HttpClient) {
   }
 
-  addClient(client: Client): Observable<any> {
-    return this.http.post(this.ADD_CLIENT_URL, client);
+  addClient(client: Client): Observable<number> {
+    return this.http.post(this.ADD_CLIENT_URL, client).pipe(map(id => Number(id)));
   }
 
   checkLoginCredentials(userId: string): Observable<any> {
@@ -54,8 +55,8 @@ export class SyncupApiService {
     return this.http.put(this.UPDATE_RETURN_FORM_BY_RETURN_TYPE_AND_RETURN_NAME + returnType + `/` + returnName, newReturnForm);
   }
 
-  updateClientByClientCode(clientCode: string, newClient: Client): Observable<any> {
-    return this.http.put(this.UPDATE_CLIENT + clientCode, newClient);
+  updateClientByClientCode(clientCode: string, newClient: Client): Observable<boolean> {
+    return this.http.put(this.UPDATE_CLIENT + clientCode, newClient).pipe(map(data => Boolean(data)));
   }
 
   deleteReturnFormsByFormNames(returnType: string, formNameList: string[]): Observable<any> {
@@ -68,21 +69,30 @@ export class SyncupApiService {
     return this.http.delete(this.DELETE_RETURN_FORMS_BY_FORM_NAMES + returnType, options);
   }
 
-  deleteClientsByClientCodes(clientCodeList: string[]): Observable<any> {
+  deleteClientsByClientCodes(clientCodeList: string[]): Observable<number> {
     let options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       }),
       body: JSON.stringify(clientCodeList)
     };
-    return this.http.delete(this.GET_ALL_CLIENTS, options);
+    return this.http.delete(this.GET_ALL_CLIENTS, options).pipe(map(res => Number(res)));
   }
 
   getAllReturnForms(): Observable<ReturnForm[]> {
     return <Observable<ReturnForm[]>>this.http.get(this.GET_ALL_RETURN_FORMS);
   }
 
-  getAllClients(): Observable<any> {
-    return this.http.get(this.GET_ALL_CLIENTS);
+  getAllClients(): Observable<Client[]> {
+    return this.http.get(this.GET_ALL_CLIENTS).pipe(
+      map(response => {
+        const res: any =  response || [];
+        return res.map((item) => {
+          let client = new Client();
+          client.mapResponseToClientObject(item);
+          return client;
+        })
+      })
+    );
   }
 }

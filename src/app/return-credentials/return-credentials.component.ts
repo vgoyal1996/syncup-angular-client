@@ -12,9 +12,6 @@ import { ApplicableReturnFormsService } from './applicable-return-forms.service'
 })
 export class ReturnCredentialsComponent implements OnInit {
 
-  displayedColumns: string[] = ['select', 'formName', 'periodicity', 'dueDateOfFiling'];
-  selection = new SelectionModel(true, []);
-  dataSource: any[] = [];
   navLinks: any[];
   activeLinkIndex = -1;
   private clientType: string;
@@ -24,45 +21,6 @@ export class ReturnCredentialsComponent implements OnInit {
     this.navBar.hide();
     this.navBar.changeToolBarTitle("Return Credentials");
     this.activeLinkIndex = this.navLinks.indexOf(this.navLinks.find(tab => tab.link === this.router.url));
-    this.router.events.subscribe((res) => {
-          this.selection.clear();
-          this.activeLinkIndex = this.navLinks.indexOf(this.navLinks.find(tab => tab.link === this.router.url));
-          this.dataSource = this.applicableReturnFormsService.getDataSourceByReturnType(this.arr[this.activeLinkIndex]);
-    });
-    this.applicableReturnFormsService.currentDataSource.subscribe(
-      (source) => {
-        this.dataSource = this.applicableReturnFormsService.getDataSourceByReturnType(this.arr[this.activeLinkIndex]);
-      }
-    );
-  }
-
-  /** Whether the number of selected elements matches the total number of rows. */
-  isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.length;
-    return numSelected === numRows;
-  }
-
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
-  masterToggle() {
-    if (this.isAllSelected()) {
-      this.selection.clear();
-      this.applicableReturnFormsService.clearSelectedReturnForms();
-    } else {
-      this.dataSource.forEach(row => {
-        this.selection.select(row);
-        this.applicableReturnFormsService.addSelectedReturnForm(row.formName);
-      });
-    } 
-  }
-
-  toggleSelection(row: any) {
-    this.selection.toggle(row);
-    if (this.selection.isSelected(row)) {
-      this.applicableReturnFormsService.addSelectedReturnForm(row.formName);
-    } else {
-      this.applicableReturnFormsService.removeReturnForm(row.formName);
-    }
   }
 
   constructor(private router: Router, private dataTransferService: DataTransferService, private navBar: NavBarService,

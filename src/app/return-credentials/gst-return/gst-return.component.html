@@ -5,6 +5,42 @@
       <h3 class="p-3">{{i+1}}. GST Return Credentials</h3>
       <button mat-raised-button *ngIf="i == 0" color="primary" (click)="setFormFieldsAsMaster()">Set As Master</button>
       <div [formGroupName]="i">
+        <br><br>
+        <mat-table class="mat-elevation-z8" [dataSource]="dataSources[i]">
+
+          <ng-container matColumnDef="select">
+            <mat-header-cell *matHeaderCellDef>
+              <mat-checkbox (change)="$event ? masterToggle(i) : null"
+                [checked]="selections[i].hasValue() && isAllSelected(i)"
+                [indeterminate]="selections[i].hasValue() && !isAllSelected(i)">
+              </mat-checkbox>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              <mat-checkbox (click)="$event.stopPropagation()" (change)="toggleSelection(i, row)"
+                [checked]="selections[i].isSelected(row)">
+              </mat-checkbox>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="formName">
+            <mat-header-cell *matHeaderCellDef> Return Name </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.formName}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="periodicity">
+            <mat-header-cell *matHeaderCellDef> Periodicity </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.periodicity}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="dueDateOfFiling">
+            <mat-header-cell *matHeaderCellDef> Due Date of Filing </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.dueDateOfFiling}} </mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+        <br><br>
         <div class=".container-fluid p-1">
           <div class="row">
             <label [attr.for]="'gstFlatNo'+i" class="col-sm-2 col-form-label">Flat No.</label>

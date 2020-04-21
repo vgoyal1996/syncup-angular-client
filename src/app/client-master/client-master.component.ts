@@ -45,7 +45,6 @@ export class ClientMasterComponent implements OnInit {
    }
 
   changeChildDataSource(element: any) {
-    console.log(element);
     this.childDataSource = this.childColumnsMap.get(element.clientCode);
   }
 
@@ -77,59 +76,59 @@ export class ClientMasterComponent implements OnInit {
           let childData = [];
           let temp = {};
           temp['heading'] = 'Flat No',
-          temp['value'] = element.flatNo;
+          temp['value'] = element.getFlatNo;
           childData.push(temp);
           temp = {};
           temp['heading'] = 'Area',
-          temp['value'] = element.area;
+          temp['value'] = element.getArea;
           childData.push(temp);
           temp = {};
           temp['heading'] = 'City',
-          temp['value'] = element.city;
+          temp['value'] = element.getCity;
           childData.push(temp);
           temp = {};
           temp['heading'] = 'State',
-          temp['value'] = this.stateList[this.stateList.findIndex(obj => obj.value == element.state)].display;
+          temp['value'] = this.stateList[this.stateList.findIndex(obj => obj.value == element.getState)].display;
           childData.push(temp);
           temp = {};
           temp['heading'] = 'PIN Code',
-          temp['value'] = element.pin;
+          temp['value'] = element.getPin;
           childData.push(temp);
           temp = {};
           temp['heading'] = 'Client Email ID',
-          temp['value'] = element.clientEmail;
+          temp['value'] = element.getClientEmail;
           childData.push(temp);
           temp = {};
-          if (element.responsiblePersonName != null && element.responsiblePersonName != "") {
+          if (element.getResponsiblePersonName != null && element.getResponsiblePersonName != "") {
             temp['heading'] = 'Responsible Person Name',
-            temp['value'] = element.responsiblePersonName;
+            temp['value'] = element.getResponsiblePersonName;
             childData.push(temp);
             temp = {};
           }
-          if (element.responsiblePersonPAN != null && element.responsiblePersonPAN != "") {
+          if (element.getResponsiblePersonPAN != null && element.getResponsiblePersonPAN != "") {
             temp['heading'] = 'Responsible Person PAN Card No',
-            temp['value'] = element.responsiblePersonPAN;
+            temp['value'] = element.getResponsiblePersonPAN;
             childData.push(temp);
             temp = {};
           }
-          if (element.responsiblePersonDOB != null && element.responsiblePersonDOB != "") {
+          if (element.getResponsiblePersonDOB != null && element.getResponsiblePersonDOB != "") {
             temp['heading'] = 'Responsible Person DOB',
-            temp['value'] = element.responsiblePersonDOB;
+            temp['value'] = element.getResponsiblePersonDOB;
             childData.push(temp);
             temp = {};
           }
-          if (element.responsiblePersonAadhaar != null && element.responsiblePersonAadhaar != "") {
+          if (element.getResponsiblePersonAadhaar != null && element.getResponsiblePersonAadhaar != "") {
             temp['heading'] = 'Responsible Person Aadhaar No',
-            temp['value'] = element.responsiblePersonAadhaar;
+            temp['value'] = element.getResponsiblePersonAadhaar;
             childData.push(temp);
             temp = {};
           }
-          if (element.cin != null && element.cin != "") {
+          if (element.getCin != null && element.getCin != "") {
             temp['heading'] = 'CIN No',
-            temp['value'] = element.cin;
+            temp['value'] = element.getCin;
             childData.push(temp);
           }
-          this.childColumnsMap.set(element.clientCode, childData);
+          this.childColumnsMap.set(element.getClientCode, childData);
         });
         this.isLoading = false;
         this.dataSource.data = res;
