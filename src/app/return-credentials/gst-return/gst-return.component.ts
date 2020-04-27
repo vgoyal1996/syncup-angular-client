@@ -140,7 +140,6 @@ export class GstReturnComponent implements OnInit {
     let i = 0;
     for (const control of (<FormArray>this.gstReturnForm.get('returnForms')).controls) {
       const gstCredentials: ReturnCredentials = new ReturnCredentials();
-      gstCredentials.setId = +this.clientId;
       gstCredentials.setFlatNo = control.get('gstFlatNo').value;
       gstCredentials.setAssessmentYear = this.assessmentYear;
       gstCredentials.setArea = control.get('gstArea').value;
@@ -153,7 +152,7 @@ export class GstReturnComponent implements OnInit {
       gstCredentials.setReturnType = "gst";
       gstCredentials.setApplicableReturnForms = this.applicableReturnFormsService.getSelectedReturnForms('gst'+i);
       i++;
-      this.apiService.addReturnCredentials(gstCredentials).subscribe(
+      this.apiService.addReturnCredentials(this.clientId, gstCredentials).subscribe(
         res => {
           console.log(gstCredentials + " insertion successful");
           this.isSaved.emit(true);

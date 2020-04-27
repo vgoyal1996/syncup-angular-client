@@ -17,7 +17,7 @@ export class SyncupApiService {
   private ADD_CLIENT_URL = `${this.BASE_URL}/client/add`;
   private CHECK_LOGIN_CREDENTIALS_URL = `${this.BASE_URL}/login/validate/`;
   private CREATE_ACCOUNT_URL = `${this.BASE_URL}/login/signup`;
-  private ADD_RETURN_CREDENTIALS_URL = `${this.BASE_URL}/returnCredentials/add`;
+  private ADD_RETURN_CREDENTIALS_URL = `${this.BASE_URL}/returnCredentials/`;
   private ADD_RETURN_FORM_URL = `${this.BASE_URL}/returnform/add`;
   private GET_RETURN_FORMS_BY_RETURN_TYPE = `${this.BASE_URL}/returnform/get/`;
   private UPDATE_RETURN_FORM_BY_RETURN_TYPE_AND_RETURN_NAME = `${this.BASE_URL}/returnform/`;
@@ -43,8 +43,8 @@ export class SyncupApiService {
     return this.http.post(this.CREATE_ACCOUNT_URL, loginCredentials);
   }
 
-  addReturnCredentials(returnCredentials: ReturnCredentials): Observable<any> {
-    return this.http.post(this.ADD_RETURN_CREDENTIALS_URL, returnCredentials);
+  addReturnCredentials(clientId: string, returnCredentials: ReturnCredentials): Observable<any> {
+    return this.http.post(this.ADD_RETURN_CREDENTIALS_URL + clientId, returnCredentials);
   }
 
   addReturnForm(returnForm: ReturnForm): Observable<any> {

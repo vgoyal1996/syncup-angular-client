@@ -92,10 +92,9 @@ export class RocReturnComponent implements OnInit {
       rocReturnCredentials.setUserId = this.rocReturnForm.controls.rocUserName.value;
       rocReturnCredentials.setPassword = this.rocReturnForm.controls.rocPassword.value;
       rocReturnCredentials.setAssessmentYear = this.assessmentYear;
-      rocReturnCredentials.setId = +this.clientId;
       rocReturnCredentials.setReturnType = "roc";
       rocReturnCredentials.setApplicableReturnForms = this.applicableReturnFormsService.getSelectedReturnForms('roc');
-      this.apiService.addReturnCredentials(rocReturnCredentials).subscribe(
+      this.apiService.addReturnCredentials(this.clientId, rocReturnCredentials).subscribe(
         res => {
           console.log(rocReturnCredentials + " insertion successful");
           this.isSaved.emit(true);

@@ -124,10 +124,9 @@ export class TdsReturnComponent implements OnInit {
     tdsReturnCredentials.setTracesUserId = this.tdsReturnForm.controls.tracesTdsUserName.value;
     tdsReturnCredentials.setTracesPassword = this.tdsReturnForm.controls.tracesTdsPassword.value;
     tdsReturnCredentials.setTanNo = this.tdsReturnForm.controls.tdsTanNo.value;
-    tdsReturnCredentials.setId = +this.clientId;
     tdsReturnCredentials.setReturnType = "tds";
     tdsReturnCredentials.setApplicableReturnForms = this.applicableReturnFormsService.getSelectedReturnForms('tds');
-    this.apiService.addReturnCredentials(tdsReturnCredentials).subscribe(
+    this.apiService.addReturnCredentials(this.clientId, tdsReturnCredentials).subscribe(
       res => {
         console.log(tdsReturnCredentials + " insertion successful");
         this.isSaved.emit(true);

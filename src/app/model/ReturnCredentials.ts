@@ -3,7 +3,6 @@ import {NgForm} from '@angular/forms';
 export class ReturnCredentials {
 
   private returnId: number;
-  private id: number;
   private assessmentYear: string;
   private returnType: string;
   private gstNo: string;
@@ -25,7 +24,6 @@ export class ReturnCredentials {
 
   public mapResponseToReturnCredentials(response: any) {
     this.returnId = response.returnId;
-    this.id = response.id;
     this.assessmentYear = response.assessmentYear;
     this.returnType = response.returnType;
     this.gstNo = response.gstNo;
@@ -47,14 +45,6 @@ export class ReturnCredentials {
 
   set setReturnId(value: number) {
     this.returnId = value;
-  }
-
-  get getId(): number {
-    return this.id;
-  }
-
-  set setId(value: number) {
-    this.id = value;
   }
 
   get getAssessmentYear(): string {

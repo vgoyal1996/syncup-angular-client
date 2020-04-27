@@ -91,10 +91,9 @@ export class IncomeTaxReturnComponent implements OnInit {
     incomeTaxCredentials.setUserId = this.incomeTaxReturnForm.controls.incomeTaxUserName.value;
     incomeTaxCredentials.setAssessmentYear = this.assessmentYear;
     incomeTaxCredentials.setPassword = this.incomeTaxReturnForm.controls.incomeTaxPassword.value;
-    incomeTaxCredentials.setId = +this.clientId;
     incomeTaxCredentials.setReturnType = "incomeTax";
     incomeTaxCredentials.setApplicableReturnForms = this.applicableReturnFormsService.getSelectedReturnForms('incomeTax');
-    this.apiService.addReturnCredentials(incomeTaxCredentials).subscribe(
+    this.apiService.addReturnCredentials(this.clientId, incomeTaxCredentials).subscribe(
       res => {
         console.log(incomeTaxCredentials + " insertion successful");
         this.isSaved.emit(true);
