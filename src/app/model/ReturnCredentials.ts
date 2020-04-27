@@ -4,6 +4,7 @@ export class ReturnCredentials {
 
   private returnId: number;
   private id: number;
+  private assessmentYear: string;
   private returnType: string;
   private gstNo: string;
   private tanNo: string;
@@ -22,6 +23,24 @@ export class ReturnCredentials {
 
   }
 
+  public mapResponseToReturnCredentials(response: any) {
+    this.returnId = response.returnId;
+    this.id = response.id;
+    this.assessmentYear = response.assessmentYear;
+    this.returnType = response.returnType;
+    this.gstNo = response.gstNo;
+    this.tanNo = response.tanNo;
+    this.flatNo = response.flatNo;
+    this.area = response.area;
+    this.city = response.city;
+    this.state = response.state;
+    this.pin = response.pin;
+    this.userId = response.userId;
+    this.password = response.password;
+    this.tracesUserId = response.tracesUserId;
+    this.tracesPassword = response.tracesPassword;
+  }
+
   get getReturnId(): number {
     return this.returnId;
   }
@@ -36,6 +55,14 @@ export class ReturnCredentials {
 
   set setId(value: number) {
     this.id = value;
+  }
+
+  get getAssessmentYear(): string {
+    return this.assessmentYear;
+  }
+
+  set setAssessmentYear(value: string) {
+    this.assessmentYear = value;
   }
 
   get getReturnType(): string {

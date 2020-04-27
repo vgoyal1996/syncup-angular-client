@@ -11,6 +11,7 @@ import {Router, NavigationExtras} from '@angular/router';
 import { DeleteClientsDialogComponent } from './delete-clients-dialog/delete-clients-dialog.component';
 import { DataTransferService } from '../shared/data/data-transfer.service';
 import { Constants } from '../shared/global/constants';
+import { AssessmentYearDialogComponent } from './assessment-year-dialog/assessment-year-dialog.component';
 
 @Component({
   selector: 'app-client-master',
@@ -25,7 +26,7 @@ import { Constants } from '../shared/global/constants';
   styleUrls: ['./client-master.component.css']
 })
 export class ClientMasterComponent implements OnInit {
-  private displayedColumns: string[] = ['select', 'clientCode', 'clientName', 'fatherName', 'panNo', 'clientType', 'doiOrDob', 'mobile'];
+  private displayedColumns: string[] = ['select', 'clientCode', 'clientName', 'fatherName', 'panNo', 'clientType', 'doiOrDob', 'mobile', 'actions'];
   childDisplayedColumns: string[] = ['headings', 'values'];
   private childColumnsMap: Map<string, any> = new Map();
   childDataSource: any;
@@ -72,6 +73,7 @@ export class ClientMasterComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     this.apiService.getAllClients().subscribe(
       res => {
+        console.log(res);
         res.forEach(element => {
           let childData = [];
           let temp = {};
@@ -156,6 +158,17 @@ export class ClientMasterComponent implements OnInit {
       } else {
         console.log('Navigation to return Credentials failed');
       }
+    });
+  }
+
+  openAssessmentYearDialog(element: Client) {
+    const dialogRef = this.dialog.open(AssessmentYearDialogComponent, {
+      width: '550px',
+      height: '300px',
+      data: { selectedClient: element }
+    });
+    dialogRef.afterClosed().subscribe(result =>{
+      console.log("closed assessment year dialog" + result);
     });
   }
 

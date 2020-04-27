@@ -6,6 +6,8 @@ import { Login } from '../../model/Login';
 import { ReturnCredentials } from '../../model/ReturnCredentials';
 import { ReturnForm } from '../../model/ReturnForm';
 import { map } from 'rxjs/operators';
+import { ClientReturnForms } from 'src/app/model/ClientReturnForms';
+import { tag } from 'rxjs-spy/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +24,9 @@ export class SyncupApiService {
   private DELETE_RETURN_FORMS_BY_FORM_NAMES = `${this.BASE_URL}/returnform/`;
   private GET_ALL_RETURN_FORMS = `${this.BASE_URL}/returnform/all`;
   private GET_ALL_CLIENTS = `${this.BASE_URL}/client`;
-  private UPDATE_CLIENT = `${this.BASE_URL}/client/`
+  private UPDATE_CLIENT = `${this.BASE_URL}/client/`;
+  private GET_RETURN_CREDENTIALS_BY_CLIENT_ID = `${this.BASE_URL}/returnCredentials/`;
+  private GET_ASSIGNED_RETURNED_FORMS = `${this.BASE_URL}/client/assigned-return-forms/`;
 
   constructor(private http: HttpClient) {
   }
@@ -95,4 +99,32 @@ export class SyncupApiService {
       })
     );
   }
+
+  getReturnCredentialsByClientId(assessmentYear: string, clientId: number): Observable<ReturnCredentials[]> {
+    return this.http.get(this.GET_RETURN_CREDENTIALS_BY_CLIENT_ID + assessmentYear + "/" + clientId).pipe(
+      tag("getProductById"),
+      map(response => {
+        const res: any = response || [];
+        return res.map((item) => {
+          let returnCredentials = new ReturnCredentials();
+          returnCredentials.mapResponseToReturnCredentials(item);
+          return returnCredentials;
+        })
+      })
+    );
+  }
+
+  getAssignedReturnFormsForClientId(assessmentYear: string, clientId: number): Observable<ClientReturnForms[]> {
+    return this.http.get(this.GET_ASSIGNED_RETURNED_FORMS + assessmentYear + "/" + clientId).pipe(
+      map(response => {
+        const res: any = response || [];
+        return res.map((item) => {
+          let clientReturnForm = new ClientReturnForms();
+          clientReturnForm.mapResponseToClientReturnForm(item);
+          return clientReturnForm;
+        })
+      })
+    );
+  }
+
 }

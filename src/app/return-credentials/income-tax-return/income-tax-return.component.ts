@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { SyncupApiService } from 'src/app/shared/api/syncup-api.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ReturnCredentials } from '../../model/ReturnCredentials';
@@ -19,6 +19,8 @@ export class IncomeTaxReturnComponent implements OnInit {
   dataSource: any[] = [];
   private clientId: string;
   private incomeTaxReturnForm: FormGroup;
+  @Output() isSaved: EventEmitter<boolean> = new EventEmitter<boolean>(false);
+  private assessmentYear: string;
 
   constructor(private formBuilder: FormBuilder, private apiService: SyncupApiService, private dataTransferService: DataTransferService,
     private applicableReturnFormsService: ApplicableReturnFormsService) {
@@ -30,6 +32,7 @@ export class IncomeTaxReturnComponent implements OnInit {
 
   ngOnInit() {
     this.dataTransferService.currentMessage.subscribe(message => this.clientId = message);
+    this.dataTransferService.currentAssessmentYear.subscribe(assessmentYear => this.assessmentYear = assessmentYear);
     this.applicableReturnFormsService.currentDataSource.subscribe(
       (source) => {
         this.dataSource = this.applicableReturnFormsService.getDataSourceByReturnType('incomeTax');
@@ -86,13 +89,15 @@ export class IncomeTaxReturnComponent implements OnInit {
     }
     const incomeTaxCredentials: ReturnCredentials = new ReturnCredentials();
     incomeTaxCredentials.setUserId = this.incomeTaxReturnForm.controls.incomeTaxUserName.value;
+    incomeTaxCredentials.setAssessmentYear = this.assessmentYear;
     incomeTaxCredentials.setPassword = this.incomeTaxReturnForm.controls.incomeTaxPassword.value;
     incomeTaxCredentials.setId = +this.clientId;
     incomeTaxCredentials.setReturnType = "incomeTax";
     incomeTaxCredentials.setApplicableReturnForms = this.applicableReturnFormsService.getSelectedReturnForms('incomeTax');
     this.apiService.addReturnCredentials(incomeTaxCredentials).subscribe(
       res => {
-        console.log(incomeTaxCredentials + " insertion successful")
+        console.log(incomeTaxCredentials + " insertion successful");
+        this.isSaved.emit(true);
       },
       err => {
         alert('oops!!! Somthing went wrong');

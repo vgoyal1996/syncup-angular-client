@@ -1,0 +1,10 @@
+.align-bottom-style {
+    position: absolute;
+   bottom:0;
+   width:100%;
+}
+.align-top-style {
+    position: sticky;
+   top:0;
+   width:100%;
+}

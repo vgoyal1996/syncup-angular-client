@@ -7,6 +7,7 @@ import { HomeComponent } from './home/home.component';
 import { ReturnFormsComponent } from './return-forms/return-forms.component';
 import { ClientMasterComponent } from './client-master/client-master.component';
 import { EditClientComponent } from './edit-client/edit-client.component';
+import { SelectedClientMasterComponent } from './selected-client-master/selected-client-master.component';
 
 
 const routes: Routes = [
@@ -22,7 +23,8 @@ const routes: Routes = [
   {path: 'returnCredentials',loadChildren: () => import(`./return-credentials/return-credentials.module`).then(m=>m.ReturnCredentialsModule) },
   {path: 'returnForms/:type', component: ReturnFormsComponent},
   {path: 'client-master', component: ClientMasterComponent},
-  {path: 'edit-client', component: EditClientComponent}
+  {path: 'edit-client', component: EditClientComponent},
+  {path: 'selected-client-master', component: SelectedClientMasterComponent}
 ];
 
 @NgModule({

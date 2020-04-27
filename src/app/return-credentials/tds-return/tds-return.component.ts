@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import {SyncupApiService} from 'src/app/shared/api/syncup-api.service';
 import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {ReturnCredentials} from '../../model/ReturnCredentials';
@@ -19,6 +19,8 @@ export class TdsReturnComponent implements OnInit {
   dataSource: any[] = [];
   private clientId: string;
   private tdsReturnForm: FormGroup;
+  @Output() isSaved: EventEmitter<boolean> = new EventEmitter<boolean>(false);
+  assessmentYear: string;
 
   constructor(private formBuilder: FormBuilder, private apiService: SyncupApiService, private dataTransferService: DataTransferService, 
               private applicableReturnFormsService: ApplicableReturnFormsService) {
@@ -33,11 +35,26 @@ export class TdsReturnComponent implements OnInit {
 
   ngOnInit() {
     this.dataTransferService.currentMessage.subscribe(message => this.clientId = message);
+    this.dataTransferService.currentAssessmentYear.subscribe(assessmentYear => this.assessmentYear = assessmentYear);
     this.applicableReturnFormsService.currentDataSource.subscribe(
       (source) => {
         this.dataSource = this.applicableReturnFormsService.getDataSourceByReturnType('tds');
       }
     );
+    this.dataTransferService.currentEditReturnCredentialsFlag.subscribe(flag => {
+      if (flag == true) {
+        this.dataTransferService.currentReturnCredentialsArrayForEdit.subscribe(creds => {
+          let tdsCred = creds.filter(cred => cred.getReturnType == 'tds')[0];
+          this.tdsReturnForm.setValue({
+            tdsTanNo: tdsCred.getTanNo,
+            tdsUserName: tdsCred.getUserId,
+            tdsPassword: tdsCred.getPassword,
+            tracesTdsPassword: tdsCred.getTracesPassword,
+            tracesTdsUserName: tdsCred.getTracesUserId
+          });
+        });
+      }
+    });
   }
 
   /** Whether the number of selected elements matches the total number of rows. */
@@ -103,6 +120,7 @@ export class TdsReturnComponent implements OnInit {
     const tdsReturnCredentials: ReturnCredentials = new ReturnCredentials();
     tdsReturnCredentials.setUserId = this.tdsReturnForm.controls.tdsUserName.value;
     tdsReturnCredentials.setPassword = this.tdsReturnForm.controls.tdsPassword.value;
+    tdsReturnCredentials.setAssessmentYear = this.assessmentYear;
     tdsReturnCredentials.setTracesUserId = this.tdsReturnForm.controls.tracesTdsUserName.value;
     tdsReturnCredentials.setTracesPassword = this.tdsReturnForm.controls.tracesTdsPassword.value;
     tdsReturnCredentials.setTanNo = this.tdsReturnForm.controls.tdsTanNo.value;
@@ -111,7 +129,8 @@ export class TdsReturnComponent implements OnInit {
     tdsReturnCredentials.setApplicableReturnForms = this.applicableReturnFormsService.getSelectedReturnForms('tds');
     this.apiService.addReturnCredentials(tdsReturnCredentials).subscribe(
       res => {
-        console.log(tdsReturnCredentials + " insertion successful")
+        console.log(tdsReturnCredentials + " insertion successful");
+        this.isSaved.emit(true);
       },
       err => {
         alert('oops!!! Somthing went wrong');

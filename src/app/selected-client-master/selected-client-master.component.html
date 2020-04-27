@@ -1,0 +1,36 @@
+<div class="align-top-style">
+  <mat-grid-list cols="4" rowHeight="50px" gutterSize="5px">
+    <mat-grid-tile
+        *ngFor="let tile of headerTiles"
+        [colspan]="tile.cols"
+        [rowspan]="tile.rows"
+        [style.border]="tile.color">
+          {{tile.text}}
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>
+<br>
+<div style="display: flex; justify-content: flex-end;">
+  <button mat-raised-button color="primary" [disabled]="isReturnCredsArrayNotEmpty" (click)="addReturnCredentials()">Add Return Credentials</button>
+  <button mat-raised-button color="primary" [disabled]="!isReturnCredsArrayNotEmpty" (click)="editReturnCredentials()">Edit Return Credentials</button>
+</div>
+<br>
+<div class="container">
+  <mat-tab-group mat-stretch-tabs [selectedIndex]="selected.value"
+                  (selectedIndexChange)="selected.setValue($event)">
+    <mat-tab *ngFor="let cred of returnCredsArray; let i = index" [label]="cred.getReturnType">
+
+    </mat-tab>
+  </mat-tab-group>
+</div>
+<div class="align-bottom-style">
+  <mat-grid-list cols="4" rowHeight="50px" gutterSize="5px">
+    <mat-grid-tile
+        *ngFor="let tile of footerTiles"
+        [colspan]="tile.cols"
+        [rowspan]="tile.rows"
+        [style.border]="tile.color">
+          {{tile.text}}
+    </mat-grid-tile>
+  </mat-grid-list>    
+</div>

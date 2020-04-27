@@ -46,6 +46,7 @@ export class Client {
   }
 
   mapResponseToClientObject(response) {
+    this.id = response.id;
     this.name = response.name;
     this.clientCode = response.clientCode;
     this.fatherName = response.fatherName;

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import {SyncupApiService} from 'src/app/shared/api/syncup-api.service';
 import {FormGroup, FormBuilder} from '@angular/forms';
 import {ReturnCredentials} from '../../model/ReturnCredentials';
@@ -19,6 +19,8 @@ export class RocReturnComponent implements OnInit {
   dataSource: any[] = [];
   private clientId: string;
   private rocReturnForm: FormGroup;
+  @Output() isSaved: EventEmitter<boolean> = new EventEmitter<boolean>(false);
+  assessmentYear: string;
 
   constructor(private formBuilder: FormBuilder, private apiService: SyncupApiService, private dataTransferService: DataTransferService, 
               private applicableReturnFormsService: ApplicableReturnFormsService) {
@@ -30,6 +32,7 @@ export class RocReturnComponent implements OnInit {
 
   ngOnInit() {
     this.dataTransferService.currentMessage.subscribe(message => this.clientId = message);
+    this.dataTransferService.currentAssessmentYear.subscribe(assessmentYear => this.assessmentYear = assessmentYear);
     this.applicableReturnFormsService.currentDataSource.subscribe(
       (source) => {
         this.dataSource = this.applicableReturnFormsService.getDataSourceByReturnType('roc');
@@ -88,12 +91,14 @@ export class RocReturnComponent implements OnInit {
       const rocReturnCredentials: ReturnCredentials = new ReturnCredentials();
       rocReturnCredentials.setUserId = this.rocReturnForm.controls.rocUserName.value;
       rocReturnCredentials.setPassword = this.rocReturnForm.controls.rocPassword.value;
+      rocReturnCredentials.setAssessmentYear = this.assessmentYear;
       rocReturnCredentials.setId = +this.clientId;
       rocReturnCredentials.setReturnType = "roc";
       rocReturnCredentials.setApplicableReturnForms = this.applicableReturnFormsService.getSelectedReturnForms('roc');
       this.apiService.addReturnCredentials(rocReturnCredentials).subscribe(
         res => {
-          console.log(rocReturnCredentials + " insertion successful")
+          console.log(rocReturnCredentials + " insertion successful");
+          this.isSaved.emit(true);
         },
         err => {
           alert('oops!!! Somthing went wrong');

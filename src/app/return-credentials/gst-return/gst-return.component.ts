@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { SyncupApiService } from 'src/app/shared/api/syncup-api.service';
 import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { ReturnCredentials } from '../../model/ReturnCredentials';
@@ -20,6 +20,8 @@ export class GstReturnComponent implements OnInit {
   private gstReturnForm: FormGroup;
   private clientObject: Client;
   private dataSources: any;
+  @Output() isSaved: EventEmitter<boolean> = new EventEmitter<boolean>(false);
+  assessmentYear: string;
 
   constructor(private formBuilder: FormBuilder, private apiService: SyncupApiService, private dataTransferService: DataTransferService,
     private applicableReturnFormsService: ApplicableReturnFormsService) {
@@ -60,7 +62,14 @@ export class GstReturnComponent implements OnInit {
 
   ngOnInit() {
     this.dataTransferService.currentMessage.subscribe(message => this.clientId = message);
-    this.dataTransferService.currentClientObject.subscribe(client => this.clientObject = client);
+    this.dataTransferService.currentClientObject.subscribe(client => {
+      this.clientObject = client;
+      console.log(client);
+    });
+    this.dataTransferService.currentAssessmentYear.subscribe(assessmentYear => {
+      this.assessmentYear = assessmentYear;
+      console.log(assessmentYear);
+    });
     this.applicableReturnFormsService.currentDataSource.subscribe(
       (source) => {
         this.dataSources = new Array();
@@ -133,6 +142,7 @@ export class GstReturnComponent implements OnInit {
       const gstCredentials: ReturnCredentials = new ReturnCredentials();
       gstCredentials.setId = +this.clientId;
       gstCredentials.setFlatNo = control.get('gstFlatNo').value;
+      gstCredentials.setAssessmentYear = this.assessmentYear;
       gstCredentials.setArea = control.get('gstArea').value;
       gstCredentials.setCity = control.get('gstCity').value;
       gstCredentials.setState = control.get('gstState').value;
@@ -145,7 +155,8 @@ export class GstReturnComponent implements OnInit {
       i++;
       this.apiService.addReturnCredentials(gstCredentials).subscribe(
         res => {
-          console.log(gstCredentials + " insertion successful")
+          console.log(gstCredentials + " insertion successful");
+          this.isSaved.emit(true);
         },
         err => {
           alert('oops!!! Somthing went wrong');
