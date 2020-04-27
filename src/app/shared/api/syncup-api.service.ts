@@ -26,7 +26,6 @@ export class SyncupApiService {
   private GET_ALL_CLIENTS = `${this.BASE_URL}/client`;
   private UPDATE_CLIENT = `${this.BASE_URL}/client/`;
   private GET_RETURN_CREDENTIALS_BY_CLIENT_ID = `${this.BASE_URL}/returnCredentials/`;
-  private GET_ASSIGNED_RETURNED_FORMS = `${this.BASE_URL}/client/assigned-return-forms/`;
 
   constructor(private http: HttpClient) {
   }
@@ -52,7 +51,16 @@ export class SyncupApiService {
   }
 
   getReturnFormsByReturnType(returnType: string): Observable<ReturnForm[]> {
-    return <Observable<ReturnForm[]>>this.http.get(this.GET_RETURN_FORMS_BY_RETURN_TYPE + returnType);
+    return this.http.get(this.GET_RETURN_FORMS_BY_RETURN_TYPE + returnType).pipe(
+      map(response => {
+        const res: any =  response || [];
+        return res.map((item) => {
+          let returnForm = new ReturnForm();
+          returnForm.mapResponseToReturnForm(item);
+          return returnForm;
+        })
+      })
+    );
   }
 
   updateReturnFormByReturnTypeAndReturnName(returnType: string, returnName: string, newReturnForm: ReturnForm): Observable<any> {
@@ -113,18 +121,4 @@ export class SyncupApiService {
       })
     );
   }
-
-  getAssignedReturnFormsForClientId(assessmentYear: string, clientId: number): Observable<ClientReturnForms[]> {
-    return this.http.get(this.GET_ASSIGNED_RETURNED_FORMS + assessmentYear + "/" + clientId).pipe(
-      map(response => {
-        const res: any = response || [];
-        return res.map((item) => {
-          let clientReturnForm = new ClientReturnForms();
-          clientReturnForm.mapResponseToClientReturnForm(item);
-          return clientReturnForm;
-        })
-      })
-    );
-  }
-
 }

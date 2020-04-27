@@ -1,17 +1,20 @@
 export class ReturnForm {
-  formId: number;
-  formName: string;
-  returnType: string;
-  dueDateOfFiling: string;
-  periodicity: string;
-  revisedDueDateOfFiling: string;
+  private formId: number;
+  private formName: string;
+  private returnType: string;
+  private dueDateOfFiling: string;
+  private periodicity: string;
+  private revisedDueDateOfFiling: string;
 
-  constructor(formName: string, returnType: string, dueDateOfFiling: string, periodicity: string, revisedDueDateOfFiling: string) {
-    this.formName = formName;
-    this.returnType = returnType;
-    this.dueDateOfFiling = dueDateOfFiling;
-    this.periodicity = periodicity;
-    this.revisedDueDateOfFiling = revisedDueDateOfFiling;
+  constructor() {}
+
+  mapResponseToReturnForm(response) {
+    this.formId = response.formId;
+    this.formName = response.formName;
+    this.returnType = response.returnType;
+    this.dueDateOfFiling = response.dueDateOfFiling;
+    this.periodicity = response.periodicity;
+    this.revisedDueDateOfFiling = response.revisedDueDateOfFiling;
   }
 
   get getFormId(): number {

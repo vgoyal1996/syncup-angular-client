@@ -40,9 +40,9 @@ export class ClientReturnForms {
     }
 
     mapResponseToClientReturnForm(response) {
-        this.id = new ClientReturnFormsId(response.clientId, response.formName, response.assessmentYear);
-        this.returnForm = new ReturnForm(response.returnForm.formName, response.returnForm.returnType, response.returnForm.dueDateOfFiling,
-            response.returnForm.periodicity, response.returnForm.revisedDueDateOfFiling).setFormId = response.returnForm.formId;
+        this.id = new ClientReturnFormsId(response.id.clientId, response.id.formName, response.id.assessmentYear);
+        this.returnForm = new ReturnForm();
+        this.returnForm.mapResponseToReturnForm(response.returnForm);
         this.acknowledgementNo = response.acknowledgementNo;
         this.dateOfFiling = response.dateOfFiling;
         this.dateOfPhysicalDeposit = response.dateOfPhysicalDeposit;

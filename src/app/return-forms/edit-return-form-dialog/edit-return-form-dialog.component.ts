@@ -68,11 +68,13 @@ export class EditReturnFormDialogComponent implements OnInit {
       return;
     }
 
-    const returnFormModel: ReturnForm = new ReturnForm(this.returnForm.get('returnFormName').value,
-      this.returnForm.get('returnType').value,
-      new Date(this.returnForm.get('dueDateOfFiling').value).toISOString().slice(0, 19).replace('T', ' '),
-      this.returnForm.get('periodicity').value,
-      new Date(this.returnForm.get('revisedDueDateOfFiling').value).toISOString().slice(0, 19).replace('T', ' '));
+    const returnFormModel: ReturnForm = new ReturnForm();
+    returnFormModel.setFormName = this.returnForm.get('returnFormName').value;
+    returnFormModel.setReturnType = this.returnForm.get('returnType').value;
+    returnFormModel.setDueDateOfFiling = new Date(this.returnForm.get('dueDateOfFiling').value).toISOString().slice(0, 19).replace('T', ' ');
+    returnFormModel.setPeriodicity = this.returnForm.get('periodicity').value;
+    returnFormModel.setRevisedDueDateOfFiling = new Date(this.returnForm.get('revisedDueDateOfFiling').value).toISOString().slice(0, 19).replace('T', ' ');
+
 
     this.apiService.updateReturnFormByReturnTypeAndReturnName(this.oldReturnType, this.oldReturnName, returnFormModel).subscribe(
       res => {

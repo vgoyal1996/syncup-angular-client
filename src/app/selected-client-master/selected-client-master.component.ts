@@ -52,12 +52,10 @@ export class SelectedClientMasterComponent implements OnInit {
         this.selectedClient = results[1];
         this.navBar.changeToolBarTitle(this.selectedClient.getName);
         this.populateGridList();
-        this.requestDataFromMultipleSources().subscribe(
+        this.apiService.getReturnCredentialsByClientId(this.assessmentYear, this.selectedClient.getId).subscribe(
           results2 => {
-            console.log(results2[0]);
-            console.log(results2[1]);
-            this.returnCredsArray = results2[0];
-            this.clientReturnFormsArray = results2[1];
+            console.log(results2);
+            this.returnCredsArray = results2;
             if (this.returnCredsArray == undefined || this.returnCredsArray.length == 0) {
               this.isReturnCredsArrayNotEmpty = false;
             }
@@ -71,13 +69,7 @@ export class SelectedClientMasterComponent implements OnInit {
       }
     );
   }
-
-  public requestDataFromMultipleSources(): Observable<any[]> {
-    let returnCreds = this.apiService.getReturnCredentialsByClientId(this.assessmentYear, this.selectedClient.getId);
-    let assignedReturnForms = this.apiService.getAssignedReturnFormsForClientId(this.assessmentYear, this.selectedClient.getId);
-    return forkJoin([returnCreds, assignedReturnForms]);     
-  }
-
+  
   public navigateToReturnCredentials() {
     this.dataTransferService.changeMessage(this.selectedClient.getId.toString());
     this.dataTransferService.updateClient(this.selectedClient.getClientType);

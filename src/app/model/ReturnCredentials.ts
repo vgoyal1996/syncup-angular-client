@@ -1,4 +1,4 @@
-import {NgForm} from '@angular/forms';
+import { ClientReturnForms } from './ClientReturnForms';
 
 export class ReturnCredentials {
 
@@ -17,6 +17,7 @@ export class ReturnCredentials {
   private tracesUserId: string;
   private tracesPassword: string;
   private applicableReturnForms: string[];
+  private returnFormsList: ClientReturnForms[];
 
   constructor() {
 
@@ -37,6 +38,12 @@ export class ReturnCredentials {
     this.password = response.password;
     this.tracesUserId = response.tracesUserId;
     this.tracesPassword = response.tracesPassword;
+    this.returnFormsList = [];
+    response.returnFormsList.forEach(element => {
+      let clientReturnForm = new ClientReturnForms();
+      clientReturnForm.mapResponseToClientReturnForm(element);
+      this.returnFormsList.push(clientReturnForm);
+    });
   }
 
   get getReturnId(): number {
@@ -157,5 +164,13 @@ export class ReturnCredentials {
 
   set setApplicableReturnForms(applicableReturnForms: string[]) {
     this.applicableReturnForms = applicableReturnForms;
+  }
+
+  get getReturnFormsList(): ClientReturnForms[] {
+    return this.returnFormsList;
+  }
+
+  set setReturnFormList(value: ClientReturnForms[]) {
+    this.returnFormsList = value;
   }
 }
