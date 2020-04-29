@@ -1,7 +1,8 @@
 import { ReturnForm } from './ReturnForm';
 
 export class ClientReturnForms {
-    private id: ClientReturnFormsId;
+    private id: number;
+    private assessmentYear: string;
     private returnForm: ReturnForm;
     private acknowledgementNo: string;
     private dateOfFiling: string;
@@ -19,12 +20,16 @@ export class ClientReturnForms {
         return this.dateOfPhysicalDeposit;
     }
 
-    get getId(): ClientReturnFormsId {
+    get getId(): number {
         return this.id;
     }
 
     get getReturnForm(): ReturnForm {
         return this.returnForm;
+    }
+
+    get getAssessmentYear(): string {
+        return this.assessmentYear;
     }
 
     set setAcknowledgementNo(value: string) {
@@ -40,7 +45,7 @@ export class ClientReturnForms {
     }
 
     mapResponseToClientReturnForm(response) {
-        this.id = new ClientReturnFormsId(response.id.clientId, response.id.formName, response.id.assessmentYear);
+        this.id = response.id;
         this.returnForm = new ReturnForm();
         this.returnForm.mapResponseToReturnForm(response.returnForm);
         this.acknowledgementNo = response.acknowledgementNo;
@@ -48,28 +53,4 @@ export class ClientReturnForms {
         this.dateOfPhysicalDeposit = response.dateOfPhysicalDeposit;
     }
 
-}
-
-export class ClientReturnFormsId {
-    private clientId: number;
-    private formName: string;
-    private assessmentYear: string;
-
-    constructor(clientId: number, formName: string, assessmentYear: string) {
-        this.clientId = clientId;
-        this.formName = formName;
-        this.assessmentYear = assessmentYear;
-    }
-
-    get getClientId(): number {
-        return this.clientId;
-    }
-
-    get getFormName(): string {
-        return this.formName;
-    }
-
-    get getAssessmentYear(): string {
-        return this.assessmentYear;
-    }
 }

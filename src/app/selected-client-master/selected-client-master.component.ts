@@ -38,6 +38,24 @@ export class SelectedClientMasterComponent implements OnInit {
   footerTiles: Tile[] = [];
   private selected = new FormControl(0);
   private isReturnCredsArrayNotEmpty = true;
+  private headings = [
+    {
+      value: "incomeTax",
+      display: "Income Tax"
+    },
+    {
+      value: "tds",
+      display: "TDS"
+    },
+    {
+      value: "roc",
+      display: "ROC"
+    },
+    {
+      value: "gst",
+      display: "GST"
+    }
+  ]
 
   constructor(private navBar: NavBarService, private dataTransferService: DataTransferService, 
     private apiService: SyncupApiService, private router: Router) { }
@@ -59,11 +77,7 @@ export class SelectedClientMasterComponent implements OnInit {
             if (this.returnCredsArray == undefined || this.returnCredsArray.length == 0) {
               this.isReturnCredsArrayNotEmpty = false;
             }
-            // this.returnCredsArray.forEach(cred => {
-            //   if (this.tabs.indexOf(cred.getReturnType) == -1) {
-            //     this.tabs.push(cred.getReturnType);
-            //   }
-            // });
+            
           }
         );
       }
@@ -87,7 +101,6 @@ export class SelectedClientMasterComponent implements OnInit {
   public editReturnCredentials() {
     this.dataTransferService.updateEditReturnCredentialsFlag(true);
     this.dataTransferService.updateReturnCredentialsArrayForEdit(this.returnCredsArray);
-    this.dataTransferService
     this.navigateToReturnCredentials();
   }
 

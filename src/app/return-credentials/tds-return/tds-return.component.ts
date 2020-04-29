@@ -1,10 +1,14 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import {SyncupApiService} from 'src/app/shared/api/syncup-api.service';
-import {FormGroup, FormBuilder, Validators} from '@angular/forms';
-import {ReturnCredentials} from '../../model/ReturnCredentials';
-import {DataTransferService} from '../../shared/data/data-transfer.service';
+import { SyncupApiService } from 'src/app/shared/api/syncup-api.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { ReturnCredentials } from '../../model/ReturnCredentials';
+import { DataTransferService } from '../../shared/data/data-transfer.service';
 import { ApplicableReturnFormsService } from '../applicable-return-forms.service';
 import { SelectionModel } from '@angular/cdk/collections';
+import { ReturnForm } from 'src/app/model/ReturnForm';
+import { forkJoin } from 'rxjs';
+import { first } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-tds-return',
@@ -16,44 +20,50 @@ export class TdsReturnComponent implements OnInit {
   submitted = false;
   selection = new SelectionModel(true, []);
   displayedColumns: string[] = ['select', 'formName', 'periodicity', 'dueDateOfFiling'];
-  dataSource: any[] = [];
+  dataSource: ReturnForm[] = [];
   private clientId: string;
   private tdsReturnForm: FormGroup;
   @Output() isSaved: EventEmitter<boolean> = new EventEmitter<boolean>(false);
   assessmentYear: string;
+  private editFlag: boolean;
+  private tdsCred: ReturnCredentials;
 
-  constructor(private formBuilder: FormBuilder, private apiService: SyncupApiService, private dataTransferService: DataTransferService, 
-              private applicableReturnFormsService: ApplicableReturnFormsService) {
+  constructor(private formBuilder: FormBuilder, private apiService: SyncupApiService, private dataTransferService: DataTransferService,
+    private applicableReturnFormsService: ApplicableReturnFormsService, private snackBar: MatSnackBar) {
     this.tdsReturnForm = this.formBuilder.group({
-                    tdsTanNo: this.formBuilder.control('', Validators.required),
-                    tdsUserName: this.formBuilder.control('', Validators.required),
-                    tdsPassword: this.formBuilder.control('', Validators.required),
-                    tracesTdsUserName: this.formBuilder.control('', Validators.required),
-                    tracesTdsPassword: this.formBuilder.control('', Validators.required)
-                  });
-   }
+      tdsTanNo: this.formBuilder.control('', Validators.required),
+      tdsUserName: this.formBuilder.control('', Validators.required),
+      tdsPassword: this.formBuilder.control('', Validators.required),
+      tracesTdsUserName: this.formBuilder.control('', Validators.required),
+      tracesTdsPassword: this.formBuilder.control('', Validators.required)
+    });
+  }
 
   ngOnInit() {
-    this.dataTransferService.currentMessage.subscribe(message => this.clientId = message);
-    this.dataTransferService.currentAssessmentYear.subscribe(assessmentYear => this.assessmentYear = assessmentYear);
-    this.applicableReturnFormsService.currentDataSource.subscribe(
-      (source) => {
-        this.dataSource = this.applicableReturnFormsService.getDataSourceByReturnType('tds');
-      }
-    );
-    this.dataTransferService.currentEditReturnCredentialsFlag.subscribe(flag => {
-      if (flag == true) {
-        this.dataTransferService.currentReturnCredentialsArrayForEdit.subscribe(creds => {
-          let tdsCred = creds.filter(cred => cred.getReturnType == 'tds')[0];
-          this.tdsReturnForm.setValue({
-            tdsTanNo: tdsCred.getTanNo,
-            tdsUserName: tdsCred.getUserId,
-            tdsPassword: tdsCred.getPassword,
-            tracesTdsPassword: tdsCred.getTracesPassword,
-            tracesTdsUserName: tdsCred.getTracesUserId
+    forkJoin([this.dataTransferService.currentMessage.pipe(first()), this.dataTransferService.currentAssessmentYear.pipe(first()),
+    this.applicableReturnFormsService.currentDataSource.pipe(first())]).subscribe(results => {
+      this.clientId = results[0];
+      this.assessmentYear = results[1];
+      this.dataSource = this.applicableReturnFormsService.getDataSourceByReturnType('tds');
+      this.dataTransferService.currentEditReturnCredentialsFlag.subscribe(flag => {
+        this.editFlag = flag;
+        if (flag == true) {
+          this.dataTransferService.currentReturnCredentialsArrayForEdit.subscribe(creds => {
+            this.tdsCred = creds.filter(cred => cred.getReturnType == 'tds')[0];
+            this.tdsReturnForm.setValue({
+              tdsTanNo: this.tdsCred.getTanNo,
+              tdsUserName: this.tdsCred.getUserId,
+              tdsPassword: this.tdsCred.getPassword,
+              tracesTdsPassword: this.tdsCred.getTracesPassword,
+              tracesTdsUserName: this.tdsCred.getTracesUserId
+            });
+            this.tdsCred.getReturnFormsList.forEach(clientReturnForm => {
+              this.selection.select(this.dataSource.find(form => form.getFormName == clientReturnForm.getReturnForm.getFormName));
+              this.applicableReturnFormsService.addSelectedReturnForm('tds', clientReturnForm.getReturnForm.getFormName);
+            });
           });
-        });
-      }
+        }
+      });
     });
   }
 
@@ -72,9 +82,9 @@ export class TdsReturnComponent implements OnInit {
     } else {
       this.dataSource.forEach(row => {
         this.selection.select(row);
-        this.applicableReturnFormsService.addSelectedReturnForm('tds', row.formName);
+        this.applicableReturnFormsService.addSelectedReturnForm('tds', row.getFormName);
       });
-    } 
+    }
   }
 
   toggleSelection(row: any) {
@@ -111,10 +121,10 @@ export class TdsReturnComponent implements OnInit {
     if (this.tdsReturnForm.invalid) {
       return;
     }
-    if (this.applicableReturnFormsService.getSelectedReturnForms == undefined || 
+    if (this.applicableReturnFormsService.getSelectedReturnForms == undefined ||
       this.applicableReturnFormsService.getSelectedReturnForms('tds') == undefined ||
       this.applicableReturnFormsService.getSelectedReturnForms('tds') == []) {
-        return;
+      return;
     }
     console.log(this.tdsReturnForm.value);
     const tdsReturnCredentials: ReturnCredentials = new ReturnCredentials();
@@ -126,15 +136,43 @@ export class TdsReturnComponent implements OnInit {
     tdsReturnCredentials.setTanNo = this.tdsReturnForm.controls.tdsTanNo.value;
     tdsReturnCredentials.setReturnType = "tds";
     tdsReturnCredentials.setApplicableReturnForms = this.applicableReturnFormsService.getSelectedReturnForms('tds');
-    this.apiService.addReturnCredentials(this.clientId, tdsReturnCredentials).subscribe(
-      res => {
-        console.log(tdsReturnCredentials + " insertion successful");
-        this.isSaved.emit(true);
-      },
-      err => {
-        alert('oops!!! Somthing went wrong');
-      }
-    );
+    if (this.editFlag == false) {
+      this.apiService.addReturnCredentials(this.clientId, tdsReturnCredentials).subscribe(
+        res => {
+          console.log(tdsReturnCredentials + " insertion successful");
+          this.isSaved.emit(true);
+          this.snackBar.open("TDS Credentials Updated", null, {
+            duration: 3000,
+          });
+        },
+        err => {
+          this.snackBar.open("OOPS!!! An error Occurred", null, {
+            duration: 4000,
+          });
+          console.log(err);
+        }
+      );
+    } else {
+      this.apiService.updateReturnCredentialsByReturnId(this.assessmentYear, this.tdsCred.getReturnId, tdsReturnCredentials)
+        .subscribe(
+          res => {
+            if (res == true) {
+              this.snackBar.open("TDS Credentials Updated", null, {
+                duration: 3000,
+              });
+            } else {
+              this.snackBar.open("Error Updating TDS Credentials", null, {
+                duration: 3000,
+              });
+            }
+          },
+          err => {
+            this.snackBar.open("OOPS!!! An error Occurred", null, {
+              duration: 4000,
+            });
+            console.log(err);
+          }
+        );
+    }
   }
-
 }
