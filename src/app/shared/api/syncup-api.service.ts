@@ -26,6 +26,7 @@ export class SyncupApiService {
   private UPDATE_CLIENT = `${this.BASE_URL}/client/`;
   private GET_RETURN_CREDENTIALS_BY_CLIENT_ID = `${this.BASE_URL}/return-credentials/`;
   private UPDATE_RETURN_CREDENTIALS_BY_RETURN_ID = `${this.BASE_URL}/return-credentials/`;
+  private UPDATE_CLIENT_RETURN_FORM = `${this.BASE_URL}/return-credentials/client-return-form/`;
 
   constructor(private http: HttpClient) {
   }
@@ -134,5 +135,10 @@ export class SyncupApiService {
   updateReturnCredentialsByReturnId(assessmentYear: string, returnId: number, newCreds: ReturnCredentials): Observable<boolean> {
     return this.http.put(this.UPDATE_RETURN_CREDENTIALS_BY_RETURN_ID + assessmentYear + '/' + returnId, newCreds)
     .pipe(map(data => Boolean(data)));
+  }
+
+  updateClientReturnForm(assessmentYear: string, returnId: number, data: any): Observable<boolean> {
+    return this.http.put(this.UPDATE_CLIENT_RETURN_FORM + assessmentYear + "/" + returnId, data)
+    .pipe(map(res => Boolean(res)));
   }
 }

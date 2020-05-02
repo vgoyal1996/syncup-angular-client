@@ -15,14 +15,16 @@
   <button mat-raised-button color="primary" [disabled]="!isReturnCredsArrayNotEmpty" (click)="editReturnCredentials()">Edit Return Credentials</button>
 </div>
 <br>
-<div class="container">
-  <mat-tab-group mat-stretch-tabs [selectedIndex]="selected.value"
-                  (selectedIndexChange)="selected.setValue($event)">
-    <mat-tab *ngFor="let cred of returnCredsArray; let i = index" [label]="cred.getReturnType">
-
-    </mat-tab>
-  </mat-tab-group>
-</div>
+<!-- <div class="container"> -->
+  <nav mat-tab-nav-bar>
+    <a mat-tab-link [hidden]="!link.showLink" *ngFor="let link of navLinks; let i = index;" [routerLink]="link.link"
+      routerLinkActive #rla="routerLinkActive" [active]="activeLinkIndex == i"
+      (click)="activeLinkIndex = i" [routerLinkActiveOptions]="{exact: true}">
+      {{link.label}}
+    </a>
+  </nav>
+  <router-outlet></router-outlet>
+<!-- </div> -->
 <div class="align-bottom-style">
   <mat-grid-list cols="4" rowHeight="50px" gutterSize="5px">
     <mat-grid-tile

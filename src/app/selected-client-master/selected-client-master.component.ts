@@ -3,12 +3,12 @@ import { NavBarService } from '../nav-bar/nav-bar.service';
 import { DataTransferService } from '../shared/data/data-transfer.service';
 import { Client } from '../model/Client';
 import { SyncupApiService } from '../shared/api/syncup-api.service';
-import { Observable, forkJoin } from 'rxjs';
-import { publishLast, refCount, first } from 'rxjs/operators';
+import { forkJoin } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { ReturnCredentials } from '../model/ReturnCredentials';
-import { ClientReturnForms } from '../model/ClientReturnForms';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import { SelectedClientDataService } from './selected-client-data.service';
 
 export class Tile {
   text: string;
@@ -33,35 +33,46 @@ export class SelectedClientMasterComponent implements OnInit {
   private assessmentYear: string;
   private selectedClient: Client;
   private returnCredsArray: ReturnCredentials[];
-  private clientReturnFormsArray: ClientReturnForms[];
   headerTiles: Tile[] = [];
   footerTiles: Tile[] = [];
   private selected = new FormControl(0);
   private isReturnCredsArrayNotEmpty = true;
-  private headings = [
-    {
-      value: "incomeTax",
-      display: "Income Tax"
-    },
-    {
-      value: "tds",
-      display: "TDS"
-    },
-    {
-      value: "roc",
-      display: "ROC"
-    },
-    {
-      value: "gst",
-      display: "GST"
-    }
-  ]
+  private navLinks;
+  activeLinkIndex = -1;
 
   constructor(private navBar: NavBarService, private dataTransferService: DataTransferService, 
-    private apiService: SyncupApiService, private router: Router) { }
+    private apiService: SyncupApiService, private router: Router, private dataService: SelectedClientDataService) {
+      this.navLinks = [
+        {
+          label: 'Income Tax',
+          link: '/selected-client-master/incomeTax',
+          index: 0,
+          showLink: false
+        },
+        {
+          label: 'TDS',
+          link: '/selected-client-master/tds',
+          index: 1,
+          showLink: false
+        },
+        {
+          label: 'GST',
+          link: '/selected-client-master/gst',
+          index: 2,
+          showLink: false
+        },
+        {
+          label: 'ROC',
+          link: '/selected-client-master/roc',
+          index: 3,
+          showLink: false
+        }
+      ];
+    }
 
   ngOnInit() {
     this.navBar.show();
+    this.activeLinkIndex = this.navLinks.indexOf(this.navLinks.find(tab => tab.link === this.router.url));
     forkJoin([this.dataTransferService.currentAssessmentYear.pipe(first()), this.dataTransferService.currentSelectedClient.pipe(first())]).subscribe(
       results => {
         console.log(results[0]);
@@ -77,7 +88,10 @@ export class SelectedClientMasterComponent implements OnInit {
             if (this.returnCredsArray == undefined || this.returnCredsArray.length == 0) {
               this.isReturnCredsArrayNotEmpty = false;
             }
-            
+            this.dataService.updateReturnCredsArray(this.returnCredsArray);
+            this.returnCredsArray.forEach(cred => {
+              this.navLinks[this.navLinks.findIndex(link => link.link.endsWith(cred.getReturnType))].showLink = true;
+            });
           }
         );
       }

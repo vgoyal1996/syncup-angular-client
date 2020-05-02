@@ -22,7 +22,6 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import {MatGridListModule} from '@angular/material/grid-list';
 import { MatTabsModule } from '@angular/material/tabs'; 
 
 
@@ -48,7 +47,6 @@ import { ClientMasterComponent } from './client-master/client-master.component';
 import { DeleteClientsDialogComponent } from './client-master/delete-clients-dialog/delete-clients-dialog.component';
 import { EditClientComponent } from './edit-client/edit-client.component';
 import { AssessmentYearDialogComponent } from './client-master/assessment-year-dialog/assessment-year-dialog.component';
-import { SelectedClientMasterComponent } from './selected-client-master/selected-client-master.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +65,6 @@ import { SelectedClientMasterComponent } from './selected-client-master/selected
     ClientMasterComponent,
     EditClientComponent,
     AssessmentYearDialogComponent,
-    SelectedClientMasterComponent,
   ],
   imports: [
     BrowserModule,
@@ -98,7 +95,6 @@ import { SelectedClientMasterComponent } from './selected-client-master/selected
     MatSortModule,
     MatPaginatorModule,
     MatProgressSpinnerModule,
-    MatGridListModule,
     MatTabsModule,
   ],
   entryComponents: [
