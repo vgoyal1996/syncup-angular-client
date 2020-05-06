@@ -19,7 +19,7 @@ export class ApplicableReturnFormsService {
     this.apiService.getAllReturnForms().subscribe(
       res => {
         console.log(res);
-        res.forEach(returnForm => returnForm.dueDateOfFiling = this.datePipe.transform(returnForm.dueDateOfFiling, Constants.DUE_DATE_OF_FILING_DISPLAY_FORMAT))
+        res.forEach(returnForm => returnForm.setDueDateOfFiling = this.datePipe.transform(returnForm.getDueDateOfFiling, Constants.DUE_DATE_OF_FILING_DISPLAY_FORMAT))
         this.dataSource.next(res);
       },
       err => {
@@ -39,7 +39,7 @@ export class ApplicableReturnFormsService {
   public getDataSourceByReturnType(returnType: string): ReturnForm[] {
     let temp = this.dataSource.getValue();
     this.clearSelectedReturnForms(returnType);
-    return temp.filter( returnForm => returnForm.returnType == returnType);
+    return temp.filter( returnForm => returnForm.getReturnType == returnType);
   }
 
   public addSelectedReturnForm(returnType: string, returnFormName: string) {

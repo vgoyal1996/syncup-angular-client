@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { SyncupApiService } from 'src/app/shared/api/syncup-api.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ReturnCredentials } from '../../model/ReturnCredentials';
 import { DataTransferService } from '../../shared/data/data-transfer.service';
 import { ApplicableReturnFormsService } from '../applicable-return-forms.service';
 import { SelectionModel } from '@angular/cdk/collections';
+import { forkJoin } from 'rxjs';
+import { first } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-income-tax-return',
@@ -19,9 +22,13 @@ export class IncomeTaxReturnComponent implements OnInit {
   dataSource: any[] = [];
   private clientId: string;
   private incomeTaxReturnForm: FormGroup;
+  @Output() isSaved: EventEmitter<boolean> = new EventEmitter<boolean>(false);
+  private assessmentYear: string;
+  private editFlag: boolean;
+  private incomeTaxCred: ReturnCredentials;
 
   constructor(private formBuilder: FormBuilder, private apiService: SyncupApiService, private dataTransferService: DataTransferService,
-    private applicableReturnFormsService: ApplicableReturnFormsService) {
+    private applicableReturnFormsService: ApplicableReturnFormsService, private snackBar: MatSnackBar) {
     this.incomeTaxReturnForm = formBuilder.group({
       incomeTaxUserName: this.formBuilder.control('', Validators.required),
       incomeTaxPassword: this.formBuilder.control('', Validators.required)
@@ -29,12 +36,28 @@ export class IncomeTaxReturnComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.dataTransferService.currentMessage.subscribe(message => this.clientId = message);
-    this.applicableReturnFormsService.currentDataSource.subscribe(
-      (source) => {
-        this.dataSource = this.applicableReturnFormsService.getDataSourceByReturnType('incomeTax');
-      }
-    );
+    forkJoin([this.dataTransferService.currentMessage.pipe(first()), this.dataTransferService.currentAssessmentYear.pipe(first()),
+    this.applicableReturnFormsService.currentDataSource.pipe(first())]).subscribe(results => {
+      this.clientId = results[0];
+      this.assessmentYear = results[1];
+      this.dataSource = this.applicableReturnFormsService.getDataSourceByReturnType('incomeTax');
+      this.dataTransferService.currentEditReturnCredentialsFlag.subscribe(flag => {
+        this.editFlag = flag;
+        if (flag == true) {
+          this.dataTransferService.currentReturnCredentialsArrayForEdit.subscribe(creds => {
+            this.incomeTaxCred = creds.filter(cred => cred.getReturnType == 'incomeTax')[0];
+            this.incomeTaxReturnForm.setValue({
+              incomeTaxUserName: this.incomeTaxCred.getUserId,
+              incomeTaxPassword: this.incomeTaxCred.getPassword
+            });
+            this.incomeTaxCred.getReturnFormsList.forEach(clientReturnForm => {
+              this.selection.select(this.dataSource.find(form => form.getFormName == clientReturnForm.getReturnForm.getFormName));
+              this.applicableReturnFormsService.addSelectedReturnForm('incomeTax', clientReturnForm.getReturnForm.getFormName);
+            });
+          });
+        }
+      });
+    });
   }
 
   /** Whether the number of selected elements matches the total number of rows. */
@@ -86,18 +109,48 @@ export class IncomeTaxReturnComponent implements OnInit {
     }
     const incomeTaxCredentials: ReturnCredentials = new ReturnCredentials();
     incomeTaxCredentials.setUserId = this.incomeTaxReturnForm.controls.incomeTaxUserName.value;
+    incomeTaxCredentials.setAssessmentYear = this.assessmentYear;
     incomeTaxCredentials.setPassword = this.incomeTaxReturnForm.controls.incomeTaxPassword.value;
-    incomeTaxCredentials.setId = +this.clientId;
     incomeTaxCredentials.setReturnType = "incomeTax";
     incomeTaxCredentials.setApplicableReturnForms = this.applicableReturnFormsService.getSelectedReturnForms('incomeTax');
-    this.apiService.addReturnCredentials(incomeTaxCredentials).subscribe(
-      res => {
-        console.log(incomeTaxCredentials + " insertion successful")
-      },
-      err => {
-        alert('oops!!! Somthing went wrong');
-      }
-    );
+    if (this.editFlag == false) {
+      this.apiService.addReturnCredentials(this.clientId, incomeTaxCredentials).subscribe(
+        res => {
+          console.log(incomeTaxCredentials + " insertion successful");
+          this.isSaved.emit(true);
+          this.snackBar.open("Income Tax Credentials inserted", null, {
+            duration: 3000,
+          });
+        },
+        err => {
+          this.snackBar.open("OOPS!!! An error Occurred", null, {
+            duration: 4000,
+          });
+          console.log(err);
+        }
+      );
+    } else {
+      this.apiService.updateReturnCredentialsByReturnId(this.assessmentYear, this.incomeTaxCred.getReturnId, incomeTaxCredentials)
+        .subscribe(
+          res => {
+            if (res == true) {
+              this.snackBar.open("Income Tax Credentials Updated", null, {
+                duration: 3000,
+              });
+            } else {
+              this.snackBar.open("Error Updating Income Tax Credentials", null, {
+                duration: 3000,
+              });
+            }
+          },
+          err => {
+            this.snackBar.open("OOPS!!! An error Occurred", null, {
+              duration: 4000,
+            });
+            console.log(err);
+          }
+        );
+    }
   }
 
 }

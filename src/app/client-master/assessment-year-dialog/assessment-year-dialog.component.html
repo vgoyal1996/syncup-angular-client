@@ -1,0 +1,22 @@
+<h1 mat-dialog-title class="title-center">Select Assessment Year</h1>
+<br>
+<div mat-dialog-content>
+  <form [formGroup]="selectForm
+  " (ngSubmit)="navigateToSelectedClientMaster()">
+    <div class="form-group">
+      <mat-form-field>
+        <mat-label>Assessment Year</mat-label>
+        <mat-select name="assessmentYear" formControlName="selected">
+          <mat-option *ngFor="let year of assessmentYears" [value]="year.value">
+            {{year.viewValue}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="selected.hasError('required')">You must make a selection</mat-error>
+      </mat-form-field>
+    </div>
+    <div mat-dialog-actions align="center">
+      <button mat-raised-button type="button" (click)="onNoClick()">Cancel</button>
+      <button mat-raised-button cdkFocusInitial>Submit</button>
+    </div>
+  </form>
+</div>

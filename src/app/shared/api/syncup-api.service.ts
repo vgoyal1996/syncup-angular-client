@@ -6,6 +6,7 @@ import { Login } from '../../model/Login';
 import { ReturnCredentials } from '../../model/ReturnCredentials';
 import { ReturnForm } from '../../model/ReturnForm';
 import { map } from 'rxjs/operators';
+import { tag } from 'rxjs-spy/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -15,14 +16,17 @@ export class SyncupApiService {
   private ADD_CLIENT_URL = `${this.BASE_URL}/client/add`;
   private CHECK_LOGIN_CREDENTIALS_URL = `${this.BASE_URL}/login/validate/`;
   private CREATE_ACCOUNT_URL = `${this.BASE_URL}/login/signup`;
-  private ADD_RETURN_CREDENTIALS_URL = `${this.BASE_URL}/returnCredentials/add`;
+  private ADD_RETURN_CREDENTIALS_URL = `${this.BASE_URL}/return-credentials/`;
   private ADD_RETURN_FORM_URL = `${this.BASE_URL}/returnform/add`;
   private GET_RETURN_FORMS_BY_RETURN_TYPE = `${this.BASE_URL}/returnform/get/`;
   private UPDATE_RETURN_FORM_BY_RETURN_TYPE_AND_RETURN_NAME = `${this.BASE_URL}/returnform/`;
   private DELETE_RETURN_FORMS_BY_FORM_NAMES = `${this.BASE_URL}/returnform/`;
   private GET_ALL_RETURN_FORMS = `${this.BASE_URL}/returnform/all`;
   private GET_ALL_CLIENTS = `${this.BASE_URL}/client`;
-  private UPDATE_CLIENT = `${this.BASE_URL}/client/`
+  private UPDATE_CLIENT = `${this.BASE_URL}/client/`;
+  private GET_RETURN_CREDENTIALS_BY_CLIENT_ID = `${this.BASE_URL}/return-credentials/`;
+  private UPDATE_RETURN_CREDENTIALS_BY_RETURN_ID = `${this.BASE_URL}/return-credentials/`;
+  private UPDATE_CLIENT_RETURN_FORM = `${this.BASE_URL}/return-credentials/client-return-form/`;
 
   constructor(private http: HttpClient) {
   }
@@ -39,8 +43,8 @@ export class SyncupApiService {
     return this.http.post(this.CREATE_ACCOUNT_URL, loginCredentials);
   }
 
-  addReturnCredentials(returnCredentials: ReturnCredentials): Observable<any> {
-    return this.http.post(this.ADD_RETURN_CREDENTIALS_URL, returnCredentials);
+  addReturnCredentials(clientId: string, returnCredentials: ReturnCredentials): Observable<any> {
+    return this.http.post(this.ADD_RETURN_CREDENTIALS_URL + clientId, returnCredentials);
   }
 
   addReturnForm(returnForm: ReturnForm): Observable<any> {
@@ -48,7 +52,16 @@ export class SyncupApiService {
   }
 
   getReturnFormsByReturnType(returnType: string): Observable<ReturnForm[]> {
-    return <Observable<ReturnForm[]>>this.http.get(this.GET_RETURN_FORMS_BY_RETURN_TYPE + returnType);
+    return this.http.get(this.GET_RETURN_FORMS_BY_RETURN_TYPE + returnType).pipe(
+      map(response => {
+        const res: any =  response || [];
+        return res.map((item) => {
+          let returnForm = new ReturnForm();
+          returnForm.mapResponseToReturnForm(item);
+          return returnForm;
+        })
+      })
+    );
   }
 
   updateReturnFormByReturnTypeAndReturnName(returnType: string, returnName: string, newReturnForm: ReturnForm): Observable<any> {
@@ -80,7 +93,16 @@ export class SyncupApiService {
   }
 
   getAllReturnForms(): Observable<ReturnForm[]> {
-    return <Observable<ReturnForm[]>>this.http.get(this.GET_ALL_RETURN_FORMS);
+    return this.http.get(this.GET_ALL_RETURN_FORMS).pipe(
+      map(response => {
+        const res: any =  response || [];
+        return res.map((item) => {
+          let returnForm = new ReturnForm();
+          returnForm.mapResponseToReturnForm(item);
+          return returnForm;
+        })
+      })
+    );
   }
 
   getAllClients(): Observable<Client[]> {
@@ -94,5 +116,29 @@ export class SyncupApiService {
         })
       })
     );
+  }
+
+  getReturnCredentialsByClientId(assessmentYear: string, clientId: number): Observable<ReturnCredentials[]> {
+    return this.http.get(this.GET_RETURN_CREDENTIALS_BY_CLIENT_ID + assessmentYear + "/" + clientId).pipe(
+      tag("getProductById"),
+      map(response => {
+        const res: any = response || [];
+        return res.map((item) => {
+          let returnCredentials = new ReturnCredentials();
+          returnCredentials.mapResponseToReturnCredentials(item);
+          return returnCredentials;
+        })
+      })
+    );
+  }
+
+  updateReturnCredentialsByReturnId(assessmentYear: string, returnId: number, newCreds: ReturnCredentials): Observable<boolean> {
+    return this.http.put(this.UPDATE_RETURN_CREDENTIALS_BY_RETURN_ID + assessmentYear + '/' + returnId, newCreds)
+    .pipe(map(data => Boolean(data)));
+  }
+
+  updateClientReturnForm(assessmentYear: string, returnId: number, data: any): Observable<boolean> {
+    return this.http.put(this.UPDATE_CLIENT_RETURN_FORM + assessmentYear + "/" + returnId, data)
+    .pipe(map(res => Boolean(res)));
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { SyncupApiService } from 'src/app/shared/api/syncup-api.service';
 import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { ReturnCredentials } from '../../model/ReturnCredentials';
@@ -6,6 +6,9 @@ import { DataTransferService } from '../../shared/data/data-transfer.service';
 import { ApplicableReturnFormsService } from '../applicable-return-forms.service';
 import { Client } from 'src/app/model/Client';
 import { SelectionModel } from '@angular/cdk/collections';
+import { forkJoin } from 'rxjs';
+import { first } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-gst-return',
@@ -20,9 +23,13 @@ export class GstReturnComponent implements OnInit {
   private gstReturnForm: FormGroup;
   private clientObject: Client;
   private dataSources: any;
+  @Output() isSaved: EventEmitter<boolean> = new EventEmitter<boolean>(false);
+  assessmentYear: string;
+  private editFlag: boolean;
+  private gstCreds: ReturnCredentials[];
 
   constructor(private formBuilder: FormBuilder, private apiService: SyncupApiService, private dataTransferService: DataTransferService,
-    private applicableReturnFormsService: ApplicableReturnFormsService) {
+    private applicableReturnFormsService: ApplicableReturnFormsService, private snackBar: MatSnackBar) {
     this.gstReturnForm = this.formBuilder.group({
       returnForms: this.formBuilder.array([
       ])
@@ -39,9 +46,9 @@ export class GstReturnComponent implements OnInit {
     console.log(this.selections[index]);
     this.selections[index].toggle(row);
     if (this.selections[index].isSelected(row)) {
-      this.applicableReturnFormsService.addSelectedReturnForm('gst'+index, row.formName);
+      this.applicableReturnFormsService.addSelectedReturnForm('gst' + index, row.formName);
     } else {
-      this.applicableReturnFormsService.removeReturnForm('gst'+index, row.formName);
+      this.applicableReturnFormsService.removeReturnForm('gst' + index, row.formName);
     }
   }
 
@@ -49,26 +56,43 @@ export class GstReturnComponent implements OnInit {
     console.log(this.selections[index].selected);
     if (this.isAllSelected(index)) {
       this.selections[index].clear();
-      this.applicableReturnFormsService.clearSelectedReturnForms('gst'+index);
+      this.applicableReturnFormsService.clearSelectedReturnForms('gst' + index);
     } else {
       this.dataSources[index].forEach(row => {
         this.selections[index].select(row);
-        this.applicableReturnFormsService.addSelectedReturnForm('gst'+index, row.formName);
+        this.applicableReturnFormsService.addSelectedReturnForm('gst' + index, row.formName);
       });
     }
   }
 
   ngOnInit() {
-    this.dataTransferService.currentMessage.subscribe(message => this.clientId = message);
-    this.dataTransferService.currentClientObject.subscribe(client => this.clientObject = client);
-    this.applicableReturnFormsService.currentDataSource.subscribe(
-      (source) => {
-        this.dataSources = new Array();
-        this.dataSources.push(this.applicableReturnFormsService.getDataSourceByReturnType('gst'));
-        this.addReturnForm();
-        this.removeReturnForm(0);
-      }
-    );
+    forkJoin([this.dataTransferService.currentMessage.pipe(first()), this.dataTransferService.currentClientObject.pipe(first()),
+    this.dataTransferService.currentAssessmentYear.pipe(first()), this.applicableReturnFormsService.currentDataSource.pipe(first())]).subscribe(results => {
+      this.clientId = results[0];
+      this.clientObject = results[1];
+      this.assessmentYear = results[2];
+      this.dataSources = new Array();
+      this.dataSources.push(this.applicableReturnFormsService.getDataSourceByReturnType('gst'));
+      this.dataTransferService.currentEditReturnCredentialsFlag.subscribe(flag => {
+        this.editFlag = flag;
+        if (flag == true) {
+          this.dataTransferService.currentReturnCredentialsArrayForEdit.subscribe(creds => {
+            this.gstCreds = creds.filter(cred => cred.getReturnType == 'gst');
+            let i = 0;
+            this.gstCreds.forEach(gstCred => {
+              this.addReturnForm(gstCred, i);
+              if (i == 0) {
+                this.removeReturnForm(0);
+              }
+              i++;
+            });
+          });
+        } else {
+          this.addReturnForm();
+          this.removeReturnForm(0);
+        }
+      });
+    });
   }
 
   getReturnForm(): FormGroup {
@@ -84,19 +108,40 @@ export class GstReturnComponent implements OnInit {
     });
   }
 
-  addReturnForm(): void {
+  addReturnForm(gstCred?: ReturnCredentials, index?: number): void {
     this.dataSources.push(this.applicableReturnFormsService.getDataSourceByReturnType('gst'));
     const returnFormArray = this.gstReturnForm.controls['returnForms'] as FormArray;
-    returnFormArray.push(this.getReturnForm());
-    this.selections.push(new SelectionModel(true, []));
+    let gstForm = this.getReturnForm();
+    if (gstCred != undefined) {
+      gstForm.setValue({
+        gstFlatNo: gstCred.getFlatNo,
+        gstArea: gstCred.getArea,
+        gstCity: gstCred.getCity,
+        gstState: gstCred.getState,
+        gstPin: gstCred.getPin,
+        gstNo: gstCred.getGstNo,
+        gstUserName: gstCred.getUserId,
+        gstPassword: gstCred.getPassword
+      });
+      let selectionModel = new SelectionModel(true, []);
+      gstCred.getReturnFormsList.forEach(clientReturnForm => {
+        selectionModel.select(this.dataSources[this.dataSources.length - 1].find(form => form.getFormName == clientReturnForm.getReturnForm.getFormName));
+        this.applicableReturnFormsService.addSelectedReturnForm('gst' + index, clientReturnForm.getReturnForm.getFormName);
+      });
+      returnFormArray.push(gstForm);
+      this.selections.push(selectionModel);
+    } else {
+      returnFormArray.push(gstForm);
+      this.selections.push(new SelectionModel(true, []));
+    }
   }
 
   removeReturnForm(rowIndex: number): void {
     const returnFormArray = <FormArray>this.gstReturnForm.controls['returnForms'];
     if (returnFormArray.length > 1) {
       returnFormArray.removeAt(rowIndex);
-      this.dataSources.pop();
-      this.selections.pop();
+      this.dataSources.splice(rowIndex, 1);
+      this.selections.splice(rowIndex, 1);
     }
   }
 
@@ -115,24 +160,25 @@ export class GstReturnComponent implements OnInit {
     return this.gstReturnForm.get('returnForms') as FormArray;
   }
 
-  saveReturnInfo(): void {  
+  saveReturnInfo(): void {
     if (this.gstReturnForm.invalid) {
       alert("GST Return Form is invalid");
       return;
     }
-    for (let i=0; i<(<FormArray>this.gstReturnForm.get('returnForms')).controls.length; i++) {
+    for (let i = 0; i < (<FormArray>this.gstReturnForm.get('returnForms')).controls.length; i++) {
       if (this.applicableReturnFormsService.getSelectedReturnForms == undefined ||
-        this.applicableReturnFormsService.getSelectedReturnForms('gst'+i) == undefined ||
-        this.applicableReturnFormsService.getSelectedReturnForms('gst'+i) == []) {
-        alert("Applicable return forms not selected for Form No. "+ (i+1));
+        this.applicableReturnFormsService.getSelectedReturnForms('gst' + i) == undefined ||
+        this.applicableReturnFormsService.getSelectedReturnForms('gst' + i) == []) {
+        alert("Applicable return forms not selected for Form No. " + (i + 1));
         return;
       }
     }
     let i = 0;
+    let isAllInserted = true;
     for (const control of (<FormArray>this.gstReturnForm.get('returnForms')).controls) {
       const gstCredentials: ReturnCredentials = new ReturnCredentials();
-      gstCredentials.setId = +this.clientId;
       gstCredentials.setFlatNo = control.get('gstFlatNo').value;
+      gstCredentials.setAssessmentYear = this.assessmentYear;
       gstCredentials.setArea = control.get('gstArea').value;
       gstCredentials.setCity = control.get('gstCity').value;
       gstCredentials.setState = control.get('gstState').value;
@@ -141,16 +187,51 @@ export class GstReturnComponent implements OnInit {
       gstCredentials.setUserId = control.get('gstUserName').value;
       gstCredentials.setPassword = control.get('gstPassword').value;
       gstCredentials.setReturnType = "gst";
-      gstCredentials.setApplicableReturnForms = this.applicableReturnFormsService.getSelectedReturnForms('gst'+i);
+      gstCredentials.setApplicableReturnForms = this.applicableReturnFormsService.getSelectedReturnForms('gst' + i);
+      if (this.editFlag == false) {
+        this.apiService.addReturnCredentials(this.clientId, gstCredentials).subscribe(
+          res => {
+            console.log(gstCredentials + " insertion successful");
+            this.isSaved.emit(true);
+          },
+          err => {
+            alert('oops!!! Somthing went wrong');
+            isAllInserted = false;
+          }
+        );
+      } else {
+        this.apiService.updateReturnCredentialsByReturnId(this.assessmentYear, this.gstCreds[i].getReturnId, gstCredentials)
+          .subscribe(
+            res => {
+              if (res == true) {
+                console.log(gstCredentials + " updation successful");
+              } else {
+                console.log(gstCredentials + " updation failed")
+                isAllInserted = false;
+              }
+            },
+            err => {
+              console.log(err);
+              isAllInserted = false;
+            }
+          );
+      }
       i++;
-      this.apiService.addReturnCredentials(gstCredentials).subscribe(
-        res => {
-          console.log(gstCredentials + " insertion successful")
-        },
-        err => {
-          alert('oops!!! Somthing went wrong');
-        }
-      );
+    }
+    if (isAllInserted == true) {
+      if (this.editFlag == true) {
+        this.snackBar.open("GST Credentials Updated", null, {
+          duration: 3000,
+        });
+      } else {
+        this.snackBar.open("GST Credentials inserted", null, {
+          duration: 3000,
+        });
+      }
+    } else {
+      this.snackBar.open("OOPS!!! An error Occurred", null, {
+        duration: 4000,
+      });
     }
   }
 }

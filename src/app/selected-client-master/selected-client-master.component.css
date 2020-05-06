@@ -1,0 +1,41 @@
+.align-bottom-style {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.align-top-style {
+  position: sticky;
+  top: 0;
+  width: 100%;
+}
+
+[_nghost-c5] {
+  display: inline-block !important;
+  width: 100%;
+}
+
+.mat-tab-label-active.cdk-keyboard-focused:not(.mat-tab-disabled),
+.mat-tab-link-active.cdk-keyboard-focused:not(.mat-tab-disabled),
+.mat-tab-label-active:not(.mat-tab-disabled) {
+  background-color: #7b1fa2;
+  color: white;
+  border: 1px solid black;
+  font-weight: bold;
+  font-size: large;
+  text-align: center;
+  opacity: 1;
+}
+
+.mat-tab-links,
+.mat-tab-link {
+  display: table;
+  width: 100%;
+  display: table-cell;
+  color: white;
+}
+
+.tabContentContainer {
+  border: 1px solid black;
+  background: #ffffff 50% 50% repeat-x;
+}

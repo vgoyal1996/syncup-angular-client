@@ -167,18 +167,7 @@ export class ClientComponent implements OnInit {
     newClient.setFieldsFromForm(this.clientForm);
     this.apiService.addClient(newClient).subscribe(
       res => {
-        newClient.setId = res;
-        console.log(res);
-        this.dataTransferService.changeMessage(res.toString());
-        this.dataTransferService.updateClient(this.clientForm.get('clientType').value);
-        this.dataTransferService.updateClientObject(newClient);
-        this.router.navigateByUrl('/returnCredentials').then((e) => {
-          if (e) {
-            console.log('Navigation to return Credentials successful');
-          } else {
-            console.log('Navigation to return Credentials failed');
-          }
-        });
+        this.router.navigateByUrl('/client-master');
       },
       err => {
         alert('oops!!! Something went wrong');

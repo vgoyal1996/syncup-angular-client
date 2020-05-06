@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { create } from 'rxjs-spy';
 
 @Component({
   selector: 'app-root',
@@ -12,6 +13,7 @@ export class AppComponent implements OnInit {
 
   }
   ngOnInit(): void {
-    
+    const spy = create();
+    spy.show();
   }
 }

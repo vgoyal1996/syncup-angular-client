@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DataTransferService } from '../shared/data/data-transfer.service';
 import { NavBarService } from '../nav-bar/nav-bar.service';
-import { SelectionModel } from '@angular/cdk/collections';
 import { ApplicableReturnFormsService } from './applicable-return-forms.service';
+import { Client } from '../model/Client';
 
 @Component({
   selector: 'app-return-credentials',
@@ -16,6 +16,10 @@ export class ReturnCredentialsComponent implements OnInit {
   activeLinkIndex = -1;
   private clientType: string;
   private arr = ["incomeTax", "tds", "gst", "roc"];
+  private isDisabled = true;
+  selectedClient: Client;
+  assessmentYear: string;
+  private editFlag: boolean;
 
   ngOnInit() {
     this.navBar.hide();
@@ -26,6 +30,9 @@ export class ReturnCredentialsComponent implements OnInit {
   constructor(private router: Router, private dataTransferService: DataTransferService, private navBar: NavBarService,
               private applicableReturnFormsService: ApplicableReturnFormsService) {
     this.dataTransferService.currentClientType.subscribe(clientType => this.clientType = clientType);
+    this.dataTransferService.currentSelectedClient.subscribe(client => this.selectedClient = client);
+    this.dataTransferService.currentAssessmentYear.subscribe(assessmentYear => this.assessmentYear = assessmentYear);
+    this.dataTransferService.currentEditReturnCredentialsFlag.subscribe(flag => this.editFlag = flag);
     this.applicableReturnFormsService.initializeDataSource();
     this.navLinks = [
       {
@@ -56,13 +63,20 @@ export class ReturnCredentialsComponent implements OnInit {
     return false;
   }
 
-  navigateToClientMaster() {
-    this.router.navigateByUrl("/client-master").then((e) => {
-      if (e) {
-        console.log("successfully navigated to client master");
-      } else {
-        console.log("Navigation to client master failed");
+  toggleDisabled(component) {
+    component.isSaved.subscribe(value => {
+      if (this.isDisabled == true) {
+        this.isDisabled = !value;
       }
     });
+    if (this.editFlag == true) {
+      this.isDisabled = false;
+    }
+  }
+
+  navigateToClientMaster() {
+    this.dataTransferService.updateAssessmentYear(this.assessmentYear);
+    this.dataTransferService.updateSelectedClient(this.selectedClient);
+    this.router.navigateByUrl("/selected-client-master");
   }
 }

@@ -1,0 +1,57 @@
+<br>
+<div *ngFor="let credential of gstCredentials; let i = index;">
+  <h3 class="p-3">{{i+1}}. GST Return Credentials</h3>
+  <div class="container">
+    <div class="row">
+      <div class="col">Flat No: {{credential.getFlatNo}}</div>
+      <div class="col">Area: {{credential.getArea}}</div>
+    </div>
+    <div class="row">
+      <div class="col">City: {{credential.getCity}}</div>
+      <div class="col">State: {{credential.getState}}</div>
+    </div>
+    <div class="row">
+      <div class="col">PIN: {{credential.getPin}}</div>
+      <div class="col">GST No: {{credential.getGstNo}}</div>
+    </div>
+    <div class="row">
+      <div class="col">User Id: {{credential.getUserId}}</div>
+      <div class="col">Password: {{credential.getPassword}}</div>
+    </div>
+  </div>
+  <br>
+  <table mat-table class="mat-elevation-z8" [dataSource]="dataSources[i]">
+
+    <ng-container matColumnDef="formName">
+      <th mat-header-cell *matHeaderCellDef> Form Name </th>
+      <td mat-cell *matCellDef="let element"> {{element.getReturnForm.getFormName}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="acknowledgementNo">
+      <th mat-header-cell *matHeaderCellDef> Acknowledgement No. </th>
+      <td mat-cell *matCellDef="let element"> {{element.getAcknowledgementNo}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="dateOfFiling">
+      <th mat-header-cell *matHeaderCellDef> Date Of Filing </th>
+      <td mat-cell *matCellDef="let element"> {{element.getDateOfFiling}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="dateOfPhysicalDeposit">
+      <th mat-header-cell *matHeaderCellDef> Date Of Physical Deposit </th>
+      <td mat-cell *matCellDef="let element"> {{element.getDateOfPhysicalDeposit}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-raised-button color="primary" [disabled]="!(element.getAcknowledgementNo == undefined || element.getAcknowledgementNo == null)" style="margin: 5px;" (click)="$event.stopPropagation(); openAddDialog(element, i)">Feed Info</button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+  </table>
+  <br>
+</div>

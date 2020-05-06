@@ -21,7 +21,8 @@ import { DatePipe } from '@angular/common';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; 
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTabsModule } from '@angular/material/tabs'; 
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -45,6 +46,7 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { ClientMasterComponent } from './client-master/client-master.component';
 import { DeleteClientsDialogComponent } from './client-master/delete-clients-dialog/delete-clients-dialog.component';
 import { EditClientComponent } from './edit-client/edit-client.component';
+import { AssessmentYearDialogComponent } from './client-master/assessment-year-dialog/assessment-year-dialog.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +64,7 @@ import { EditClientComponent } from './edit-client/edit-client.component';
     NavBarComponent,
     ClientMasterComponent,
     EditClientComponent,
+    AssessmentYearDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -92,12 +95,14 @@ import { EditClientComponent } from './edit-client/edit-client.component';
     MatSortModule,
     MatPaginatorModule,
     MatProgressSpinnerModule,
+    MatTabsModule,
   ],
   entryComponents: [
     AddReturnFormDialogComponent,
     EditReturnFormDialogComponent,
     DeleteReturnFormsDialogComponent,
     DeleteClientsDialogComponent,
+    AssessmentYearDialogComponent,
   ],
   providers: [
     DatePipe,

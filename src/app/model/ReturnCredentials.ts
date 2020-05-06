@@ -1,9 +1,9 @@
-import {NgForm} from '@angular/forms';
+import { ClientReturnForms } from './ClientReturnForms';
 
 export class ReturnCredentials {
 
   private returnId: number;
-  private id: number;
+  private assessmentYear: string;
   private returnType: string;
   private gstNo: string;
   private tanNo: string;
@@ -17,9 +17,33 @@ export class ReturnCredentials {
   private tracesUserId: string;
   private tracesPassword: string;
   private applicableReturnForms: string[];
+  private returnFormsList: ClientReturnForms[];
 
   constructor() {
 
+  }
+
+  public mapResponseToReturnCredentials(response: any) {
+    this.returnId = response.returnId;
+    this.assessmentYear = response.assessmentYear;
+    this.returnType = response.returnType;
+    this.gstNo = response.gstNo;
+    this.tanNo = response.tanNo;
+    this.flatNo = response.flatNo;
+    this.area = response.area;
+    this.city = response.city;
+    this.state = response.state;
+    this.pin = response.pin;
+    this.userId = response.userId;
+    this.password = response.password;
+    this.tracesUserId = response.tracesUserId;
+    this.tracesPassword = response.tracesPassword;
+    this.returnFormsList = [];
+    response.returnFormsList.forEach(element => {
+      let clientReturnForm = new ClientReturnForms();
+      clientReturnForm.mapResponseToClientReturnForm(element);
+      this.returnFormsList.push(clientReturnForm);
+    });
   }
 
   get getReturnId(): number {
@@ -30,12 +54,12 @@ export class ReturnCredentials {
     this.returnId = value;
   }
 
-  get getId(): number {
-    return this.id;
+  get getAssessmentYear(): string {
+    return this.assessmentYear;
   }
 
-  set setId(value: number) {
-    this.id = value;
+  set setAssessmentYear(value: string) {
+    this.assessmentYear = value;
   }
 
   get getReturnType(): string {
@@ -140,5 +164,13 @@ export class ReturnCredentials {
 
   set setApplicableReturnForms(applicableReturnForms: string[]) {
     this.applicableReturnForms = applicableReturnForms;
+  }
+
+  get getReturnFormsList(): ClientReturnForms[] {
+    return this.returnFormsList;
+  }
+
+  set setReturnFormList(value: ClientReturnForms[]) {
+    this.returnFormsList = value;
   }
 }

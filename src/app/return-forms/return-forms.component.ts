@@ -142,10 +142,10 @@ export class ReturnFormsComponent implements OnInit {
 
   onNewReturnFormAdded(newReturnFormValue: ReturnForm): void {
     this.dataSource.push({
-      formName: newReturnFormValue.formName,
-      dueDateOfFiling: this.datepipe.transform(new Date(newReturnFormValue.dueDateOfFiling), Constants.DUE_DATE_OF_FILING_DISPLAY_FORMAT),
-      periodicity: newReturnFormValue.periodicity,
-      revisedDueDateOfFiling: this.datepipe.transform(new Date(newReturnFormValue.revisedDueDateOfFiling), Constants.REVISED_DUE_DATE_OF_FILING_DISPLAY_FORMAT)
+      formName: newReturnFormValue.getFormName,
+      dueDateOfFiling: this.datepipe.transform(new Date(newReturnFormValue.getDueDateOfFiling), Constants.DUE_DATE_OF_FILING_DISPLAY_FORMAT),
+      periodicity: newReturnFormValue.getPeriodicity,
+      revisedDueDateOfFiling: this.datepipe.transform(new Date(newReturnFormValue.getRevisedDueDateOfFiling), Constants.REVISED_DUE_DATE_OF_FILING_DISPLAY_FORMAT)
     });
     console.log(this.dataSource);
     this.table.renderRows();
@@ -161,13 +161,13 @@ export class ReturnFormsComponent implements OnInit {
           .pipe(map(
             res => {
               return res.map(item => {
-                const resDate: Date = new Date(item.dueDateOfFiling);
-                const revDateOfFiling = new Date(item.revisedDueDateOfFiling);
+                const resDate: Date = new Date(item.getDueDateOfFiling);
+                const revDateOfFiling = new Date(item.getRevisedDueDateOfFiling);
 
                 return {
-                  formName: item.formName,
+                  formName: item.getFormName,
                   dueDateOfFiling: this.datepipe.transform(resDate, Constants.DUE_DATE_OF_FILING_DISPLAY_FORMAT),
-                  periodicity: item.periodicity,
+                  periodicity: item.getPeriodicity,
                   revisedDueDateOfFiling: this.datepipe.transform(revDateOfFiling, Constants.REVISED_DUE_DATE_OF_FILING_DISPLAY_FORMAT)
                 };
               });

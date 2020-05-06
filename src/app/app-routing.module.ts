@@ -22,7 +22,8 @@ const routes: Routes = [
   {path: 'returnCredentials',loadChildren: () => import(`./return-credentials/return-credentials.module`).then(m=>m.ReturnCredentialsModule) },
   {path: 'returnForms/:type', component: ReturnFormsComponent},
   {path: 'client-master', component: ClientMasterComponent},
-  {path: 'edit-client', component: EditClientComponent}
+  {path: 'edit-client', component: EditClientComponent},
+  {path: 'selected-client-master', loadChildren: () => import(`./selected-client-master/selected-client-master.module`).then(m=>m.SelectedClientMasterModule)}
 ];
 
 @NgModule({
