@@ -47,6 +47,7 @@ import { ClientMasterComponent } from './client-master/client-master.component';
 import { DeleteClientsDialogComponent } from './client-master/delete-clients-dialog/delete-clients-dialog.component';
 import { EditClientComponent } from './edit-client/edit-client.component';
 import { AssessmentYearDialogComponent } from './client-master/assessment-year-dialog/assessment-year-dialog.component';
+import { AddRevisedDueDateDialogComponent } from './return-forms/add-revised-due-date-dialog/add-revised-due-date-dialog.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { AssessmentYearDialogComponent } from './client-master/assessment-year-d
     ClientMasterComponent,
     EditClientComponent,
     AssessmentYearDialogComponent,
+    AddRevisedDueDateDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -103,6 +105,7 @@ import { AssessmentYearDialogComponent } from './client-master/assessment-year-d
     DeleteReturnFormsDialogComponent,
     DeleteClientsDialogComponent,
     AssessmentYearDialogComponent,
+    AddRevisedDueDateDialogComponent,
   ],
   providers: [
     DatePipe,

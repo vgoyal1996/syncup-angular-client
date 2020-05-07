@@ -22,7 +22,7 @@ export class ReturnCredentialsComponent implements OnInit {
   private editFlag: boolean;
 
   ngOnInit() {
-    this.navBar.hide();
+    this.navBar.show();
     this.navBar.changeToolBarTitle("Return Credentials");
     this.activeLinkIndex = this.navLinks.indexOf(this.navLinks.find(tab => tab.link === this.router.url));
   }

@@ -12,6 +12,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { DeleteReturnFormsDialogComponent } from './delete-return-forms-dialog/delete-return-forms-dialog.component';
 import { NavBarService } from '../nav-bar/nav-bar.service';
 import { Constants } from '../shared/global/constants';
+import { AddRevisedDueDateDialogComponent } from './add-revised-due-date-dialog/add-revised-due-date-dialog.component';
 
 @Component({
   selector: 'app-return-forms',
@@ -21,7 +22,7 @@ import { Constants } from '../shared/global/constants';
 export class ReturnFormsComponent implements OnInit {
   returnType: string;
   displayedColumns: string[] = ['select', 'formName', 'periodicity', 'dueDateOfFiling', 'revisedDueDateOfFiling', 'actions'];
-  dataSource: any[] = [];
+  dataSource: ReturnForm[] = [];
   @ViewChild(MatTable) table: MatTable<any>;
   selection = new SelectionModel(true, []);
   isButtonDisabled: boolean = true;
@@ -65,6 +66,20 @@ export class ReturnFormsComponent implements OnInit {
     this.isAnyCheckBoxSelected();
   }
 
+  openRevisedDueDateDialog(element: ReturnForm): void {
+    const dialogRef = this.dialog.open(AddRevisedDueDateDialogComponent, {
+      width: '650px',
+      height: '600px',
+      data: { form: element }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+      if (result != undefined) {
+        this.updateTableAfterEdit(element, result);
+      }
+    });
+  }
+
   openAddDialog(): void {
     const dialogRef = this.dialog.open(AddReturnFormDialogComponent, {
       width: '600px',
@@ -81,7 +96,7 @@ export class ReturnFormsComponent implements OnInit {
     });
   }
 
-  openEditDialog(element: any): void {
+  openEditDialog(element: ReturnForm): void {
     const dialogRef = this.dialog.open(EditReturnFormDialogComponent, {
       width: '600px',
       height: '550px',
@@ -92,7 +107,7 @@ export class ReturnFormsComponent implements OnInit {
       this.selection.clear();
       console.log("Edit dialog is closed", result);
       if (result != undefined) {
-        this.updateTableAfterEdit(result);
+        this.updateTableAfterEdit(element, result);
       }
     });
   }
@@ -101,7 +116,7 @@ export class ReturnFormsComponent implements OnInit {
     let rowList = [];
     this.dataSource.forEach(row => {
       if (this.selection.isSelected(row)) {
-        rowList.push({ oldFormName: row.formName, dueDateOfFiling: row.dueDateOfFiling, periodicity: row.periodicity, revisedDueDateOfFiling: row.revisedDueDateOfFiling });
+        rowList.push({ oldFormName: row.getFormName, dueDateOfFiling: row.getDueDateOfFiling, periodicity: row.getPeriodicity });
       }
     });
     console.log(rowList);
@@ -128,25 +143,29 @@ export class ReturnFormsComponent implements OnInit {
       temp.push(item.oldFormName);
     })
     console.log(temp);
-    this.dataSource = this.dataSource.filter(({ formName }) => temp.indexOf(formName) == -1);
+    this.dataSource = this.dataSource.filter(({ getFormName }) => temp.indexOf(getFormName) == -1);
     console.log(this.dataSource);
     this.table.renderRows();
   }
 
-  updateTableAfterEdit(result: any): void {
-    this.dataSource = this.dataSource.filter(({ formName }) => formName != result.oldFormName);
-    if (result.oldReturnType == result.newReturnForm.returnType) {
-      this.onNewReturnFormAdded(result.newReturnForm);
+  updateTableAfterEdit(oldForm: ReturnForm, result: ReturnForm): void {
+    this.dataSource = this.dataSource.filter(({ getFormName }) => getFormName != oldForm.getFormName);
+    if (oldForm.getReturnType == result.getReturnType) {
+      this.onNewReturnFormAdded(result);
     }
   }
 
   onNewReturnFormAdded(newReturnFormValue: ReturnForm): void {
-    this.dataSource.push({
-      formName: newReturnFormValue.getFormName,
-      dueDateOfFiling: this.datepipe.transform(new Date(newReturnFormValue.getDueDateOfFiling), Constants.DUE_DATE_OF_FILING_DISPLAY_FORMAT),
-      periodicity: newReturnFormValue.getPeriodicity,
-      revisedDueDateOfFiling: this.datepipe.transform(new Date(newReturnFormValue.getRevisedDueDateOfFiling), Constants.REVISED_DUE_DATE_OF_FILING_DISPLAY_FORMAT)
-    });
+    let form = new ReturnForm();
+    form.setFormName = newReturnFormValue.getFormName;
+    form.setDueDateOfFiling = newReturnFormValue.getDueDateOfFiling;
+    form.setPeriodicity = newReturnFormValue.getPeriodicity;
+    form.setDueDateSchedulerSet = newReturnFormValue.getDueDateSchedulerSet;
+    form.getDueDateSchedulerSet[0].setDueDateOfFiling = this.datepipe.transform(new Date(newReturnFormValue.getDueDateSchedulerSet[0].getDueDateOfFiling), Constants.REVISED_DUE_DATE_OF_FILING_DISPLAY_FORMAT);
+    if (newReturnFormValue.getDueDateSchedulerSet[0].getRevisedDueDateOfFiling != undefined) {
+      newReturnFormValue.getDueDateSchedulerSet[0].setRevisedDueDateOfFiling = this.datepipe.transform(new Date(newReturnFormValue.getDueDateSchedulerSet[0].getRevisedDueDateOfFiling), Constants.REVISED_DUE_DATE_OF_FILING_DISPLAY_FORMAT);
+    }
+    this.dataSource.push(form);
     console.log(this.dataSource);
     this.table.renderRows();
   }
@@ -157,24 +176,19 @@ export class ReturnFormsComponent implements OnInit {
       (params: ParamMap) => {
         this.returnType = params.get('type');
         this.navBar.changeToolBarTitle("Return Forms: " + this.headings[this.returnType]);
-        this.apiService.getReturnFormsByReturnType(this.returnType)
-          .pipe(map(
-            res => {
-              return res.map(item => {
-                const resDate: Date = new Date(item.getDueDateOfFiling);
-                const revDateOfFiling = new Date(item.getRevisedDueDateOfFiling);
-
-                return {
-                  formName: item.getFormName,
-                  dueDateOfFiling: this.datepipe.transform(resDate, Constants.DUE_DATE_OF_FILING_DISPLAY_FORMAT),
-                  periodicity: item.getPeriodicity,
-                  revisedDueDateOfFiling: this.datepipe.transform(revDateOfFiling, Constants.REVISED_DUE_DATE_OF_FILING_DISPLAY_FORMAT)
-                };
-              });
-            }
-          )).subscribe(res => {
+        this.apiService.getReturnFormsByReturnType(this.returnType).subscribe(
+          res => {
             console.log(res);
-            this.dataSource = res;
+            let temp: ReturnForm[] = []
+            res.forEach(form => {
+              let returnForm = form;
+              returnForm.getDueDateSchedulerSet[0].setDueDateOfFiling = new Date(this.datepipe.transform(new Date(returnForm.getDueDateSchedulerSet[0].getDueDateOfFiling), Constants.REVISED_DUE_DATE_OF_FILING_DISPLAY_FORMAT)).toDateString();
+              if (returnForm.getDueDateSchedulerSet[0].getRevisedDueDateOfFiling != null) {
+                returnForm.getDueDateSchedulerSet[0].setRevisedDueDateOfFiling = new Date(this.datepipe.transform(new Date(returnForm.getDueDateSchedulerSet[0].getRevisedDueDateOfFiling), Constants.REVISED_DUE_DATE_OF_FILING_DISPLAY_FORMAT)).toDateString();
+              }
+              temp.push(returnForm);
+            });
+            this.dataSource = temp;
           }
         );
       }
