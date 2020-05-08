@@ -7,6 +7,7 @@ import { ReturnCredentials } from '../../model/ReturnCredentials';
 import { ReturnForm } from '../../model/ReturnForm';
 import { map } from 'rxjs/operators';
 import { tag } from 'rxjs-spy/operators';
+import { DueDateScheduler } from 'src/app/model/DueDateScheduler';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +28,7 @@ export class SyncupApiService {
   private GET_RETURN_CREDENTIALS_BY_CLIENT_ID = `${this.BASE_URL}/return-credentials/`;
   private UPDATE_RETURN_CREDENTIALS_BY_RETURN_ID = `${this.BASE_URL}/return-credentials/`;
   private UPDATE_CLIENT_RETURN_FORM = `${this.BASE_URL}/return-credentials/client-return-form/`;
+  private ADD_REVISED_DUE_DATE_OF_FILING = `${this.BASE_URL}/returnform/revised-due-date/`;
 
   constructor(private http: HttpClient) {
   }
@@ -47,8 +49,14 @@ export class SyncupApiService {
     return this.http.post(this.ADD_RETURN_CREDENTIALS_URL + clientId, returnCredentials);
   }
 
-  addReturnForm(returnForm: ReturnForm): Observable<any> {
-    return this.http.post(this.ADD_RETURN_FORM_URL, returnForm);
+  addReturnForm(returnForm: ReturnForm): Observable<ReturnForm> {
+    return this.http.post(this.ADD_RETURN_FORM_URL, returnForm).pipe(
+      map(response => {
+        let returnForm = new ReturnForm();
+        returnForm.mapResponseToReturnForm(response);
+        return returnForm;
+      })
+    );
   }
 
   getReturnFormsByReturnType(returnType: string): Observable<ReturnForm[]> {
@@ -64,8 +72,14 @@ export class SyncupApiService {
     );
   }
 
-  updateReturnFormByReturnTypeAndReturnName(returnType: string, returnName: string, newReturnForm: ReturnForm): Observable<any> {
-    return this.http.put(this.UPDATE_RETURN_FORM_BY_RETURN_TYPE_AND_RETURN_NAME + returnType + `/` + returnName, newReturnForm);
+  updateReturnFormByReturnTypeAndReturnName(returnType: string, returnName: string, newReturnForm: ReturnForm): Observable<ReturnForm> {
+    return this.http.put(this.UPDATE_RETURN_FORM_BY_RETURN_TYPE_AND_RETURN_NAME + returnType + `/` + returnName, newReturnForm).pipe(
+      map(response => {
+        let returnForm = new ReturnForm();
+        returnForm.mapResponseToReturnForm(response);
+        return returnForm;
+      })
+    );
   }
 
   updateClientByClientCode(clientCode: string, newClient: Client): Observable<boolean> {
@@ -140,5 +154,16 @@ export class SyncupApiService {
   updateClientReturnForm(assessmentYear: string, returnId: number, data: any): Observable<boolean> {
     return this.http.put(this.UPDATE_CLIENT_RETURN_FORM + assessmentYear + "/" + returnId, data)
     .pipe(map(res => Boolean(res)));
+  }
+
+  addRevisedDueDateOfFiling(formName: string, dueDateScheduler: DueDateScheduler): Observable<ReturnForm> {
+    return this.http.put(this.ADD_REVISED_DUE_DATE_OF_FILING + formName, dueDateScheduler)
+    .pipe(
+      map(res => {
+        let returnForm = new ReturnForm();
+        returnForm.mapResponseToReturnForm(res);
+        return returnForm;
+      })
+    );
   }
 }

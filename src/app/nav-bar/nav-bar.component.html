@@ -12,12 +12,11 @@
   <mat-sidenav #sidenav [hidden]="!navBar.getVisible">
     <mat-nav-list>
       <a (click)="toggleSidenav()" mat-list-item [routerLink]="'/home'">Home</a>
-      <a (click)="toggleSidenav()" mat-list-item [routerLink]="'/addclient'"> Add New Client </a>
       <mat-accordion>
         <mat-expansion-panel>
           <mat-expansion-panel-header>
             <mat-panel-title>
-              View Return Forms
+              Return Master
             </mat-panel-title>
           </mat-expansion-panel-header>
           <a (click)="toggleSidenav()" mat-list-item [routerLink]="['/returnForms', 'incomeTax']">Income Tax</a>

@@ -21,7 +21,6 @@ export class AddReturnFormDialogComponent implements OnInit {
       returnFormName: this.formBuilder.control('', Validators.required),
       periodicity: this.formBuilder.control('', Validators.required),
       dueDateOfFiling: this.formBuilder.control('', Validators.required),
-      revisedDueDateOfFiling: this.formBuilder.control('', Validators.required)
     });
     this.returnType = data.returnType;
   }
@@ -36,10 +35,6 @@ export class AddReturnFormDialogComponent implements OnInit {
 
   get dueDateOfFiling() {
     return this.returnForm.get('dueDateOfFiling');
-  }
-
-  get revisedDueDateOfFiling() {
-    return this.returnForm.get('revisedDueDateOfFiling');
   }
 
   onNoClick(): void {
@@ -64,7 +59,6 @@ export class AddReturnFormDialogComponent implements OnInit {
     returnFormModel.setReturnType = this.returnType;
     returnFormModel.setDueDateOfFiling = new Date(this.returnForm.get('dueDateOfFiling').value).toISOString().slice(0, 19).replace('T', ' ');
     returnFormModel.setPeriodicity = this.returnForm.get('periodicity').value;
-    returnFormModel.setRevisedDueDateOfFiling = new Date(this.returnForm.get('revisedDueDateOfFiling').value).toISOString().slice(0, 19).replace('T', ' ');
 
     this.apiService.addReturnForm(returnFormModel).subscribe(
       res => {
@@ -72,14 +66,15 @@ export class AddReturnFormDialogComponent implements OnInit {
         this.snackBar.open(returnFormModel.getFormName + " inserted", null, {
           duration: 3000,
         });
+        this.dialogRef.close(res);
       },
       err => {
         this.snackBar.open(err, null, {
           duration: 4000,
         });
+        this.dialogRef.close();
       }
     );
-    this.dialogRef.close(returnFormModel);
   }
 
 }

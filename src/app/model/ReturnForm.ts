@@ -1,10 +1,12 @@
+import { DueDateScheduler } from './DueDateScheduler';
+
 export class ReturnForm {
   private formId: number;
   private formName: string;
   private returnType: string;
   private dueDateOfFiling: string;
   private periodicity: string;
-  private revisedDueDateOfFiling: string;
+  private dueDateSchedulerSet: DueDateScheduler[];
 
   constructor() {}
 
@@ -14,7 +16,14 @@ export class ReturnForm {
     this.returnType = response.returnType;
     this.dueDateOfFiling = response.dueDateOfFiling;
     this.periodicity = response.periodicity;
-    this.revisedDueDateOfFiling = response.revisedDueDateOfFiling;
+    this.dueDateSchedulerSet = [];
+    response.dueDateSchedulerSet.forEach(scheduler => {
+      let dueDateScheduler = new DueDateScheduler();
+      if (scheduler.toBeDelete == 0) {
+        dueDateScheduler.mapResponseToDueDateScheduler(scheduler);
+        this.dueDateSchedulerSet.push(dueDateScheduler);
+      }
+    });
   }
 
   get getFormId(): number {
@@ -57,12 +66,12 @@ export class ReturnForm {
     this.periodicity = value;
   }
 
-  get getRevisedDueDateOfFiling(): string {
-    return this.revisedDueDateOfFiling;
+  get getDueDateSchedulerSet(): DueDateScheduler[] {
+    return this.dueDateSchedulerSet;
   }
 
-  set setRevisedDueDateOfFiling(value: string) {
-    this.revisedDueDateOfFiling = value;
+  set setDueDateSchedulerSet(value: DueDateScheduler[]) {
+    this.dueDateSchedulerSet = value;
   }
 
 }

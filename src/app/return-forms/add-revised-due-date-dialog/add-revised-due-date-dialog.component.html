@@ -1,0 +1,62 @@
+<h1 mat-dialog-title class="title-center">{{formHeading}}</h1>
+<form [formGroup]="revisedDueDateForm" (ngSubmit)="addRevisedDueDate()">
+  <div class="form-group">
+    <div mat-dialog-content style="margin: 10px;">
+      <mat-form-field appearance="fill">
+        <mat-label>Periodicity</mat-label>
+        <mat-select formControlName="periodicity">
+          <mat-option value="monthly">Monthly</mat-option>
+          <mat-option value="quarterly">Quarterly</mat-option>
+          <mat-option value="yearly">Yearly</mat-option>
+        </mat-select>
+        <mat-error *ngIf="periodicity.hasError('required')">
+          Form periodicity is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <br><br>
+      <mat-form-field appearance="fill">
+        <mat-label>Start Date</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="fromDate">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="fromDate.hasError('required')">
+          From Date is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <br><br>
+      <mat-form-field appearance="fill">
+        <mat-label>End Date</mat-label>
+        <input matInput [matDatepicker]="picker1" formControlName="toDate">
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+        <mat-error *ngIf="toDate.hasError('required')">
+          To Date is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <br><br>
+      <mat-form-field appearance="fill">
+        <mat-label>Due Date of Filing</mat-label>
+        <input matInput [matDatepicker]="picker2" formControlName="dueDateOfFiling">
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+        <mat-error *ngIf="dueDateOfFiling.hasError('required')">
+          Due Date of filing is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <br><br>
+      <mat-form-field appearance="fill">
+        <mat-label>Revised Due Date of Filing</mat-label>
+        <input matInput [matDatepicker]="picker3" formControlName="revisedDueDateOfFiling">
+        <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+        <mat-datepicker #picker3></mat-datepicker>
+        <mat-error *ngIf="revisedDueDateOfFiling.hasError('required')">
+          Revised Due Date of filing is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div mat-dialog-actions align="center" style="margin-top: 20px;">
+      <button mat-raised-button type="button" (click)="onNoClick()">Cancel</button>
+      <button mat-raised-button cdkFocusInitial>Add</button>
+    </div>
+  </div>
+</form>
