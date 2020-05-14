@@ -19,7 +19,7 @@ export class ApplicableReturnFormsService {
     this.apiService.getAllReturnForms().subscribe(
       res => {
         console.log(res);
-        res.forEach(returnForm => returnForm.setDueDateOfFiling = this.datePipe.transform(returnForm.getDueDateOfFiling, Constants.DUE_DATE_OF_FILING_DISPLAY_FORMAT))
+        res.forEach(returnForm => returnForm.getDueDateSchedulerSet[0].setDueDateOfFiling = this.datePipe.transform(returnForm.getDueDateSchedulerSet[0].getDueDateOfFiling, Constants.DUE_DATE_OF_FILING_DISPLAY_FORMAT))
         this.dataSource.next(res);
       },
       err => {

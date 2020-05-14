@@ -2,6 +2,8 @@ export class Constants {
     public static DUE_DATE_OF_FILING_DISPLAY_FORMAT = 'MMM d';
     public static REVISED_DUE_DATE_OF_FILING_DISPLAY_FORMAT = 'MMM d, yyyy';
     public static DATE_PICKER_FORMAT = 'M/d/yyyy';
+    public static MONTHS_LIST = Array.from(new Array(12), (x,i) => i+1)
+    public static DAY_LIST = Array.from(new Array(31), (x,i) => i+1);
     public static STATES_AND_UT_LIST = [
         {value:'andhraPradesh', display:'Andhra Pradesh'},
         {value:'arunachalPradesh', display:'Arunachal Pradesh'},

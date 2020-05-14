@@ -4,8 +4,18 @@ export class ReturnForm {
   private formId: number;
   private formName: string;
   private returnType: string;
-  private dueDateOfFiling: string;
   private periodicity: string;
+  private monthlyDayOccurrence: number;
+  private yearlyDayOccurrence: number;
+  private firstQuarterDayOccurrence: number;
+  private secondQuarterDayOccurrence: number;
+  private thirdQuarterDayOccurrence: number;
+  private fourthQuarterDayOccurrence: number;
+  private yearlyMonthOccurrence: number;
+  private firstQuarterMonthOccurrence: number;
+  private secondQuarterMonthOccurrence: number;
+  private thirdQuarterMonthOccurrence: number;
+  private fourthQuarterMonthOccurrence: number;
   private dueDateSchedulerSet: DueDateScheduler[];
 
   constructor() {}
@@ -14,7 +24,6 @@ export class ReturnForm {
     this.formId = response.formId;
     this.formName = response.formName;
     this.returnType = response.returnType;
-    this.dueDateOfFiling = response.dueDateOfFiling;
     this.periodicity = response.periodicity;
     this.dueDateSchedulerSet = [];
     response.dueDateSchedulerSet.forEach(scheduler => {
@@ -50,16 +59,56 @@ export class ReturnForm {
     this.returnType = value;
   }
 
-  get getDueDateOfFiling(): string {
-    return this.dueDateOfFiling;
-  }
-
-  set setDueDateOfFiling(value: string) {
-    this.dueDateOfFiling = value;
-  }
-
   get getPeriodicity(): string {
     return this.periodicity;
+  }
+
+  set setMonthlyDayOccurrence(value: number) {
+    this.monthlyDayOccurrence = value;
+  }
+
+  get getMonthlyDayOccurrence(): number {
+    return this.monthlyDayOccurrence;
+  }
+
+  set setYearlyDayOccurrence(value: number) {
+    this.yearlyDayOccurrence = value;
+  }
+
+  get getYearlyDayOccurrence(): number {
+    return this.yearlyDayOccurrence;
+  }
+
+  set setFirstQuarterDayOccurrence(value: number) {
+    this.firstQuarterDayOccurrence = value;
+  }
+
+  get getFirstQuarterDayOccurrence(): number {
+    return this.firstQuarterDayOccurrence;
+  }
+
+  set setSecondQuarterDayOccurrence(value: number) {
+    this.secondQuarterDayOccurrence = value;
+  }
+
+  get getSecondQuarterDayOccurrence(): number {
+    return this.secondQuarterDayOccurrence;
+  }
+
+  set setThirdQuarterDayOccurrence(value: number) {
+    this.thirdQuarterDayOccurrence = value;
+  }
+
+  get getThirdQuarterDayOccurrence(): number {
+    return this.thirdQuarterDayOccurrence;
+  }
+
+  set setFourthQuarterDayOccurrence(value: number) {
+    this.fourthQuarterDayOccurrence = value;
+  }
+
+  get getFourthQuarterDayOccurrence(): number {
+    return this.fourthQuarterDayOccurrence;
   }
 
   set setPeriodicity(value: string) {
@@ -72,6 +121,46 @@ export class ReturnForm {
 
   set setDueDateSchedulerSet(value: DueDateScheduler[]) {
     this.dueDateSchedulerSet = value;
+  }
+
+  set setYearlyMonthOccurrence(value: number) {
+    this.yearlyMonthOccurrence = value;
+  }
+
+  get getYearlyMonthOccurrence(): number {
+    return this.yearlyMonthOccurrence;
+  }
+
+  set setFirstQuarterMonthOccurrence(value: number) {
+    this.firstQuarterMonthOccurrence = value;
+  }
+
+  get getFirstQuarterMonthOccurrence(): number {
+    return this.firstQuarterMonthOccurrence;
+  }
+
+  set setSecondQuarterMonthOccurrence(value: number) {
+    this.secondQuarterMonthOccurrence = value;
+  }
+
+  get getSecondQuarterMonthOccurrence(): number {
+    return this.secondQuarterMonthOccurrence;
+  }
+
+  set setThirdQuarterMonthOccurrence(value: number) {
+    this.thirdQuarterMonthOccurrence = value;
+  }
+
+  get getThirdQuarterMonthOccurrence(): number {
+    return this.thirdQuarterMonthOccurrence;
+  }
+
+  set setFourthQuarterMonthOccurrence(value: number) {
+    this.fourthQuarterMonthOccurrence = value;
+  }
+
+  get getFourthQuarterMonthOccurrence(): number {
+    return this.fourthQuarterMonthOccurrence;
   }
 
 }
