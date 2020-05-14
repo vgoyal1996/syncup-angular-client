@@ -12,7 +12,7 @@
       <br><br>
       <mat-form-field appearance="fill">
         <mat-label>Select</mat-label>
-        <mat-select formControlName="periodicity">
+        <mat-select formControlName="periodicity" (selectionChange)="getFormPeriodicityAndSetOptionalValidators()">
           <mat-option value="monthly">Monthly</mat-option>
           <mat-option value="quarterly">Quarterly</mat-option>
           <mat-option value="yearly">Yearly</mat-option>
@@ -22,15 +22,162 @@
         </mat-error>
       </mat-form-field>
       <br><br>
-      <mat-form-field appearance="fill">
-        <mat-label>Due Date of Filing</mat-label>
-        <input matInput [matDatepicker]="picker" formControlName="dueDateOfFiling">
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-        <mat-error *ngIf="dueDateOfFiling.hasError('required')">
-          Due Date of filing is <strong>required</strong>
-        </mat-error>
-      </mat-form-field>
+      <h5>Occurrence</h5>
+      <div class="row align-items-center" [hidden]="isNotMonthly">
+        <div class="col-4">
+          <mat-form-field appearance="fill">
+            <mat-select formControlName="monthlyDayOccurrence">
+              <mat-option *ngFor="let day of dayList" value="{{day}}">{{day}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="monthlyDayOccurrence.hasError('required')">
+              Occurrence is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-8">
+          <p style="font-size: medium;">days from the end of the month</p>
+        </div>
+      </div>
+      <div class="row align-items-center justify-content-md-center" [hidden]="isNotYearly">
+        <div class="col col-lg-2">
+          <mat-form-field appearance="fill">
+            <mat-select formControlName="yearlyMonthOccurrence">
+              <mat-option *ngFor="let month of monthList" value="{{month}}">{{month}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="yearlyMonthOccurrence.hasError('required')">
+              Occurrence is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-auto">
+          <p style="font-size: medium;">months and</p>
+        </div>
+        <div class="col col-lg-2">
+          <mat-form-field appearance="fill">
+            <mat-select formControlName="yearlyDayOccurrence">
+              <mat-option *ngFor="let day of dayList" value="{{day}}">{{day}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="yearlyDayOccurrence.hasError('required')">
+              Occurrence is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-auto">
+          <p style="font-size: medium;">days from the end of the year</p>
+        </div>
+      </div>
+      <div class="row align-items-center justify-content-md-center" [hidden]="isNotQuarterly">
+        <div class="col col-lg-2">
+          <mat-form-field appearance="fill">
+            <mat-select formControlName="firstQuarterMonthOccurrence">
+              <mat-option *ngFor="let month of monthList" value="{{month}}">{{month}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="firstQuarterMonthOccurrence.hasError('required')">
+              Occurrence is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-auto">
+          <p style="font-size: medium;">months and</p>
+        </div>
+        <div class="col col-lg-2">
+          <mat-form-field appearance="fill">
+            <mat-select formControlName="firstQuarterDayOccurrence">
+              <mat-option *ngFor="let day of dayList" value="{{day}}">{{day}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="firstQuarterDayOccurrence.hasError('required')">
+              Occurrence is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-auto">
+          <p style="font-size: medium;">days from the end of 1st Quarter</p>
+        </div>
+      </div>
+      <div class="row align-items-center justify-content-md-center" [hidden]="isNotQuarterly">
+        <div class="col col-lg-2">
+          <mat-form-field appearance="fill">
+            <mat-select formControlName="secondQuarterMonthOccurrence">
+              <mat-option *ngFor="let month of monthList" value="{{month}}">{{month}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="secondQuarterMonthOccurrence.hasError('required')">
+              Occurrence is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-auto">
+          <p style="font-size: medium;">months and</p>
+        </div>
+        <div class="col col-lg-2">
+          <mat-form-field appearance="fill">
+            <mat-select formControlName="secondQuarterDayOccurrence">
+              <mat-option *ngFor="let day of dayList" value="{{day}}">{{day}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="secondQuarterDayOccurrence.hasError('required')">
+              Occurrence is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-auto">
+          <p style="font-size: medium;">days from the end of 2nd Quarter</p>
+        </div>
+      </div>
+      <div class="row align-items-center justify-content-md-center" [hidden]="isNotQuarterly">
+        <div class="col col-lg-2">
+          <mat-form-field appearance="fill">
+            <mat-select formControlName="thirdQuarterMonthOccurrence">
+              <mat-option *ngFor="let month of monthList" value="{{month}}">{{month}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="thirdQuarterMonthOccurrence.hasError('required')">
+              Occurrence is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-auto">
+          <p style="font-size: medium;">months and</p>
+        </div>
+        <div class="col col-lg-2">
+          <mat-form-field appearance="fill">
+            <mat-select formControlName="thirdQuarterDayOccurrence">
+              <mat-option *ngFor="let day of dayList" value="{{day}}">{{day}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="thirdQuarterDayOccurrence.hasError('required')">
+              Occurrence is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-auto">
+          <p style="font-size: medium;">days from the end of 3rd Quarter</p>
+        </div>
+      </div>
+      <div class="row align-items-center justify-content-md-center" [hidden]="isNotQuarterly">
+        <div class="col col-lg-2">
+          <mat-form-field appearance="fill">
+            <mat-select formControlName="fourthQuarterMonthOccurrence">
+              <mat-option *ngFor="let month of monthList" value="{{month}}">{{month}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="fourthQuarterMonthOccurrence.hasError('required')">
+              Occurrence is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-auto">
+          <p style="font-size: medium;">months and</p>
+        </div>
+        <div class="col col-lg-2">
+          <mat-form-field appearance="fill">
+            <mat-select formControlName="fourthQuarterDayOccurrence">
+              <mat-option *ngFor="let day of dayList" value="{{day}}">{{day}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="fourthQuarterDayOccurrence.hasError('required')">
+              Occurrence is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-auto">
+          <p style="font-size: medium;">days from the end of 4th Quarter</p>
+        </div>
+      </div>
     </div>
     <div mat-dialog-actions align="center">
       <button mat-raised-button type="button" (click)="onNoClick()">Cancel</button>

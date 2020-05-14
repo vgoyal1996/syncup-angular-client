@@ -3,7 +3,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddReturnFormDialogComponent } from './add-return-form-dialog/add-return-form-dialog.component';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { SyncupApiService } from '../shared/api/syncup-api.service';
-import { map } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
 import { ReturnForm } from '../model/ReturnForm';
 import { MatTable } from '@angular/material/table';
@@ -82,8 +81,8 @@ export class ReturnFormsComponent implements OnInit {
 
   openAddDialog(): void {
     const dialogRef = this.dialog.open(AddReturnFormDialogComponent, {
-      width: '600px',
-      height: '500px',
+      width: '650px',
+      height: '650px',
       data: { returnType: this.returnType }
     });
 
@@ -116,7 +115,7 @@ export class ReturnFormsComponent implements OnInit {
     let rowList = [];
     this.dataSource.forEach(row => {
       if (this.selection.isSelected(row)) {
-        rowList.push({ oldFormName: row.getFormName, dueDateOfFiling: row.getDueDateOfFiling, periodicity: row.getPeriodicity });
+        rowList.push({ oldFormName: row.getFormName, dueDateOfFiling: row.getDueDateSchedulerSet[0].getDueDateOfFiling, periodicity: row.getPeriodicity });
       }
     });
     console.log(rowList);
@@ -158,7 +157,6 @@ export class ReturnFormsComponent implements OnInit {
   onNewReturnFormAdded(newReturnFormValue: ReturnForm): void {
     let form = new ReturnForm();
     form.setFormName = newReturnFormValue.getFormName;
-    form.setDueDateOfFiling = newReturnFormValue.getDueDateOfFiling;
     form.setPeriodicity = newReturnFormValue.getPeriodicity;
     form.setDueDateSchedulerSet = newReturnFormValue.getDueDateSchedulerSet;
     form.getDueDateSchedulerSet[0].setDueDateOfFiling = this.datepipe.transform(new Date(newReturnFormValue.getDueDateSchedulerSet[0].getDueDateOfFiling), Constants.REVISED_DUE_DATE_OF_FILING_DISPLAY_FORMAT);
