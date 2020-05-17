@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NavBarService } from '../nav-bar/nav-bar.service';
 import { DataTransferService } from '../shared/data/data-transfer.service';
 import { Client } from '../model/Client';
@@ -7,8 +7,10 @@ import { forkJoin } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { ReturnCredentials } from '../model/ReturnCredentials';
 import { FormControl } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { SelectedClientDataService } from './selected-client-data.service';
+import { PrintService } from '../shared/print/print.service';
+import { ShortcutInput, ShortcutEventOutput, KeyboardShortcutsComponent } from "ng-keyboard-shortcuts";
 
 export class Tile {
   text: string;
@@ -40,35 +42,37 @@ export class SelectedClientMasterComponent implements OnInit {
   private navLinks;
   activeLinkIndex = -1;
 
-  constructor(private navBar: NavBarService, private dataTransferService: DataTransferService, 
-    private apiService: SyncupApiService, private router: Router, private dataService: SelectedClientDataService) {
-      this.navLinks = [
-        {
-          label: 'Income Tax',
-          link: '/selected-client-master/incomeTax',
-          index: 0,
-          showLink: false
-        },
-        {
-          label: 'TDS',
-          link: '/selected-client-master/tds',
-          index: 1,
-          showLink: false
-        },
-        {
-          label: 'GST',
-          link: '/selected-client-master/gst',
-          index: 2,
-          showLink: false
-        },
-        {
-          label: 'ROC',
-          link: '/selected-client-master/roc',
-          index: 3,
-          showLink: false
-        }
-      ];
-    }
+
+  constructor(private navBar: NavBarService, private dataTransferService: DataTransferService,
+    private apiService: SyncupApiService, private router: Router, private dataService: SelectedClientDataService,
+    private activatedRoute: ActivatedRoute, private printService: PrintService) {
+    this.navLinks = [
+      {
+        label: 'Income Tax',
+        link: '/selected-client-master/incomeTax',
+        index: 0,
+        showLink: false
+      },
+      {
+        label: 'TDS',
+        link: '/selected-client-master/tds',
+        index: 1,
+        showLink: false
+      },
+      {
+        label: 'GST',
+        link: '/selected-client-master/gst',
+        index: 2,
+        showLink: false
+      },
+      {
+        label: 'ROC',
+        link: '/selected-client-master/roc',
+        index: 3,
+        showLink: false
+      }
+    ];
+  }
 
   ngOnInit() {
     this.navBar.show();
@@ -97,7 +101,12 @@ export class SelectedClientMasterComponent implements OnInit {
       }
     );
   }
-  
+
+
+  navigateToClientReport() {
+    this.printService.printDocument('client-report', this.selectedClient.getId.toString());
+  }
+
   public navigateToReturnCredentials() {
     this.dataTransferService.changeMessage(this.selectedClient.getId.toString());
     this.dataTransferService.updateClient(this.selectedClient.getClientType);
@@ -127,8 +136,8 @@ export class SelectedClientMasterComponent implements OnInit {
     this.headerTiles.push(new Tile("Assessment Year: " + this.assessmentYear));
     this.headerTiles.push(new Tile("Client Code: " + this.selectedClient.getClientCode));
     this.headerTiles.push(new Tile("PAN No: " + this.selectedClient.getPan));
-    this.headerTiles.push(new Tile("Client Type: "+ this.selectedClient.getClientType));
-    
+    this.headerTiles.push(new Tile("Client Type: " + this.selectedClient.getClientType));
+
     this.footerTiles.push(new Tile("Father's Name: " + this.selectedClient.getFatherName));
     this.footerTiles.push(new Tile("DOB/DOI: " + this.selectedClient.getDoiOrDob));
     this.footerTiles.push(new Tile("Mobile No: " + this.selectedClient.getMobile));

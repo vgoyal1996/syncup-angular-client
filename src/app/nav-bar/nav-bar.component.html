@@ -29,9 +29,11 @@
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
-    <div style="height: 88vh;">
-
-      <router-outlet></router-outlet>
+    <div>
+      <div [class.isPrinting]="printService.isPrinting">
+        <router-outlet></router-outlet>
+        <router-outlet name="printOutlet"></router-outlet>
+      </div>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

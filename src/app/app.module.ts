@@ -24,7 +24,6 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTabsModule } from '@angular/material/tabs'; 
 
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ClientComponent } from './client/client.component';
@@ -48,6 +47,9 @@ import { DeleteClientsDialogComponent } from './client-master/delete-clients-dia
 import { EditClientComponent } from './edit-client/edit-client.component';
 import { AssessmentYearDialogComponent } from './client-master/assessment-year-dialog/assessment-year-dialog.component';
 import { AddRevisedDueDateDialogComponent } from './return-forms/add-revised-due-date-dialog/add-revised-due-date-dialog.component';
+import { PrintLayoutComponent } from './print-layout/print-layout.component';
+import { ClientReportComponent } from './client-report/client-report.component';
+import { PrintService } from './shared/print/print.service';
 
 @NgModule({
   declarations: [
@@ -67,6 +69,8 @@ import { AddRevisedDueDateDialogComponent } from './return-forms/add-revised-due
     EditClientComponent,
     AssessmentYearDialogComponent,
     AddRevisedDueDateDialogComponent,
+    PrintLayoutComponent,
+    ClientReportComponent
   ],
   imports: [
     BrowserModule,
@@ -111,6 +115,7 @@ import { AddRevisedDueDateDialogComponent } from './return-forms/add-revised-due
     DatePipe,
     DataTransferService,
     NavBarService,
+    PrintService
   ],
   bootstrap: [AppComponent]
 })

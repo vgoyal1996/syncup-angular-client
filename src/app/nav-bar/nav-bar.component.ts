@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { MatSidenav } from '@angular/material';
 import { NavBarService } from './nav-bar.service';
+import { PrintService } from '../shared/print/print.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -10,7 +11,7 @@ import { NavBarService } from './nav-bar.service';
 export class NavBarComponent implements OnInit {
   @ViewChild('sidenav') public sidenav: MatSidenav;
 
-  constructor(private navBar: NavBarService) { }
+  constructor(private navBar: NavBarService, private printService: PrintService) { }
 
   ngOnInit() {
     this.navBar.setSidenav(this.sidenav);
