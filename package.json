@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "postbuild": "ng build --aot -prod",
+    "postbuild": "ng build --prod",
     "start": "node server.js",
     "build": "ng build",
     "test": "ng test",
