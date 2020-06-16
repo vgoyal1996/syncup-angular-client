@@ -24,6 +24,8 @@
     "@angular/router": "~7.1.0",
     "@ng-bootstrap/ng-bootstrap": "^4.0.1",
     "bootstrap": "^4.2.1",
+    "express":"*",
+    "body-parser":"*",
     "core-js": "^2.5.4",
     "font-awesome": "^4.7.0",
     "hammerjs": "^2.0.8",
