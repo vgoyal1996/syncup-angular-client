@@ -36,7 +36,7 @@
   "engines": {
     "node": "10.17.0",
     "npm": "6.11.3"
-  }
+  },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.11.0",
     "@angular/cli": "~9.1.0",
