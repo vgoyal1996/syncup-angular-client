@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PrintService } from '../shared/print/print.service';
+import { SyncupApiService } from '../shared/api/syncup-api.service';
+import { Client } from '../model/Client';
 
 @Component({
   selector: 'app-client-report',
@@ -9,8 +11,9 @@ import { PrintService } from '../shared/print/print.service';
 })
 export class ClientReportComponent implements OnInit {
   private clientId: string;
+  private client: Client;
 
-  constructor(private activatedRoute: ActivatedRoute, private printService: PrintService) {
+  constructor(private activatedRoute: ActivatedRoute, private printService: PrintService, private apiService: SyncupApiService) {
   }
 
   ngOnInit() {
@@ -18,7 +21,14 @@ export class ClientReportComponent implements OnInit {
       params => {
         this.clientId = params['clientId'];
         console.log(this.clientId);
-        this.printService.onDataReady();
+        this.apiService.getClientByClientId(Number(this.clientId)).subscribe(
+          res => {
+            console.log(res);
+            this.client = res;
+            this.client
+            this.printService.onDataReady();
+          }
+        )
       }
     );
   }

@@ -8,6 +8,7 @@ import { ReturnForm } from '../../model/ReturnForm';
 import { map } from 'rxjs/operators';
 import { tag } from 'rxjs-spy/operators';
 import { DueDateScheduler } from 'src/app/model/DueDateScheduler';
+import { ClientReturnForms } from 'src/app/model/ClientReturnForms';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +30,7 @@ export class SyncupApiService {
   private UPDATE_RETURN_CREDENTIALS_BY_RETURN_ID = `${this.BASE_URL}/return-credentials/`;
   private UPDATE_CLIENT_RETURN_FORM = `${this.BASE_URL}/return-credentials/client-return-form/`;
   private ADD_REVISED_DUE_DATE_OF_FILING = `${this.BASE_URL}/returnform/revised-due-date/`;
+  private GET_CLIENT_BY_CLIENT_ID = `${this.BASE_URL}/client/`;
 
   constructor(private http: HttpClient) {
   }
@@ -130,6 +132,16 @@ export class SyncupApiService {
         })
       })
     );
+  }
+
+  getClientByClientId(clientId: number): Observable<Client> {
+    return this.http.get(this.GET_CLIENT_BY_CLIENT_ID + clientId).pipe(
+      map(response => {
+        let client = new Client();
+        client.mapResponseToClientObject(response);
+        return client;
+      })
+    )
   }
 
   getReturnCredentialsByClientId(assessmentYear: string, clientId: number): Observable<ReturnCredentials[]> {

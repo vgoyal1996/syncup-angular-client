@@ -22,7 +22,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatTabsModule } from '@angular/material/tabs'; 
+import { MatTabsModule } from '@angular/material/tabs';
+import { PdfmakeService } from 'ng-pdf-make/pdfmake/pdfmake.service';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -115,7 +116,8 @@ import { PrintService } from './shared/print/print.service';
     DatePipe,
     DataTransferService,
     NavBarService,
-    PrintService
+    PrintService,
+    PdfmakeService
   ],
   bootstrap: [AppComponent]
 })

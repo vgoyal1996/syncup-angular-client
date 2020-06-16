@@ -8,6 +8,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { forkJoin } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material';
+import { ReturnForm } from 'src/app/model/ReturnForm';
 
 @Component({
   selector: 'app-roc-return',
@@ -19,7 +20,7 @@ export class RocReturnComponent implements OnInit {
   submitted = false;
   selection = new SelectionModel(true, []);
   displayedColumns: string[] = ['select', 'formName', 'periodicity', 'dueDateOfFiling'];
-  dataSource: any[] = [];
+  dataSource: ReturnForm[] = [];
   private clientId: string;
   private rocReturnForm: FormGroup;
   @Output() isSaved: EventEmitter<boolean> = new EventEmitter<boolean>(false);
@@ -75,7 +76,7 @@ export class RocReturnComponent implements OnInit {
     } else {
       this.dataSource.forEach(row => {
         this.selection.select(row);
-        this.applicableReturnFormsService.addSelectedReturnForm('roc', row.formName);
+        this.applicableReturnFormsService.addSelectedReturnForm('roc', row.getFormName);
       });
     }
   }

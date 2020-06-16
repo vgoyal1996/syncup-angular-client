@@ -1,4 +1,5 @@
-import {NgForm, FormGroup} from '@angular/forms';
+import {FormGroup} from '@angular/forms';
+import { ReturnCredentials } from './ReturnCredentials';
 
 export class Client {
 
@@ -21,6 +22,7 @@ export class Client {
   private responsiblePersonDOB: string;
   private responsiblePersonAadhaar: string;
   private cin: string;
+  private returnCredentialsList: ReturnCredentials[];
 
   constructor() {}
 
@@ -65,6 +67,12 @@ export class Client {
     this.responsiblePersonDOB = response.responsiblePersonDOB;
     this.responsiblePersonAadhaar = response.responsiblePersonAadhaar;
     this.cin = response.cin;
+    this.returnCredentialsList = [];
+    response.returnCredentialsList.forEach(element => {
+      let returnCredentials = new ReturnCredentials();
+      returnCredentials.mapResponseToReturnCredentials(element);
+      this.returnCredentialsList.push(returnCredentials);
+    });
   }
 
   get getName(): string {
