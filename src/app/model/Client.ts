@@ -33,7 +33,7 @@ export class Client {
     this.flatNo = clientForm.controls.flatNo.value;
     this.area = clientForm.controls.area.value;
     this.city = clientForm.controls.city.value;
-    this.state = clientForm.controls.state.value.value;
+    this.state = clientForm.controls.state.value;
     this.pin = clientForm.controls.pin.value;
     this.clientType = clientForm.controls.clientType.value;
     this.mobile = clientForm.controls.mobile.value;
