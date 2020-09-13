@@ -9,6 +9,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { forkJoin } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material';
+import { ReturnForm } from 'src/app/model/ReturnForm';
 
 @Component({
   selector: 'app-gst-return',
@@ -22,7 +23,7 @@ export class GstReturnComponent implements OnInit {
   displayedColumns: string[] = ['select', 'formName', 'periodicity', 'dueDateOfFiling'];
   private gstReturnForm: FormGroup;
   private clientObject: Client;
-  private dataSources: any;
+  private dataSources: ReturnForm[][];
   @Output() isSaved: EventEmitter<boolean> = new EventEmitter<boolean>(false);
   assessmentYear: string;
   private editFlag: boolean;
@@ -60,7 +61,7 @@ export class GstReturnComponent implements OnInit {
     } else {
       this.dataSources[index].forEach(row => {
         this.selections[index].select(row);
-        this.applicableReturnFormsService.addSelectedReturnForm('gst' + index, row.formName);
+        this.applicableReturnFormsService.addSelectedReturnForm('gst' + index, row.getFormName);
       });
     }
   }

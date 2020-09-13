@@ -54,7 +54,6 @@ export class EditClientComponent implements OnInit {
           fatherName: this.oldClient.fatherName,
           flatNo: this.oldClient.flatNo,
           area: this.oldClient.area,
-          state: this.stateList[this.stateList.findIndex(obj => obj.value == this.oldClient.state)].display,
           city: this.oldClient.city,
           pin: this.oldClient.pin,
           clientType: this.oldClient.clientType,
@@ -68,6 +67,7 @@ export class EditClientComponent implements OnInit {
           responsiblePersonAadhaar: this.oldClient.responsiblePersonAadhaar,
           cin: this.oldClient.cin
         });
+        this.editClientForm.controls['state'].setValue(this.stateList[this.stateList.findIndex(obj => obj.value == this.oldClient.state)], {onlySelf: true});
         this.oldClientCode = this.oldClient.clientCode;
       }
     );

@@ -28,6 +28,9 @@ export class IncomeTaxReturnComponent implements OnInit {
   ngOnInit() {
     this.dataService.currentReturnCredsArray.subscribe(result => {
       this.incomeTaxCredentials = result.filter(cred => cred.getReturnType == "incomeTax")[0];
+      if (this.incomeTaxCredentials == null) {
+        return;
+      }
       this.incomeTaxUserId = this.incomeTaxCredentials.getUserId;
       this.incomeTaxPassword = this.incomeTaxCredentials.getPassword;
       this.incomeTaxCredentials.getReturnFormsList.forEach(form => {

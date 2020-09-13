@@ -11,6 +11,8 @@
 </div>
 <br>
 <div style="display: flex; justify-content: flex-end;">
+  <button mat-raised-button color="primary" [disabled]="!isReturnCredsArrayNotEmpty" (click)="printReport()">Print</button>
+  <button mat-raised-button color="primary" [disabled]="!isReturnCredsArrayNotEmpty" (click)="getPdf()">Get PDF</button>
   <button mat-raised-button color="primary" [disabled]="isReturnCredsArrayNotEmpty" (click)="addReturnCredentials()">Add Return Credentials</button>
   <button mat-raised-button color="primary" [disabled]="!isReturnCredsArrayNotEmpty" (click)="editReturnCredentials()">Edit Return Credentials</button>
 </div>

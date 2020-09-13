@@ -24,17 +24,17 @@
 
           <ng-container matColumnDef="formName">
             <mat-header-cell *matHeaderCellDef> Return Name </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.formName}} </mat-cell>
+            <mat-cell *matCellDef="let element"> {{element.getFormName}} </mat-cell>
           </ng-container>
 
           <ng-container matColumnDef="periodicity">
             <mat-header-cell *matHeaderCellDef> Periodicity </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.periodicity}} </mat-cell>
+            <mat-cell *matCellDef="let element"> {{element.getPeriodicity}} </mat-cell>
           </ng-container>
 
           <ng-container matColumnDef="dueDateOfFiling">
             <mat-header-cell *matHeaderCellDef> Due Date of Filing </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.dueDateOfFiling}} </mat-cell>
+            <mat-cell *matCellDef="let element"> {{element.getDueDateSchedulerSet[0].getDueDateOfFiling}} </mat-cell>
           </ng-container>
 
           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

@@ -7,6 +7,8 @@ import { HomeComponent } from './home/home.component';
 import { ReturnFormsComponent } from './return-forms/return-forms.component';
 import { ClientMasterComponent } from './client-master/client-master.component';
 import { EditClientComponent } from './edit-client/edit-client.component';
+import { PrintLayoutComponent } from './print-layout/print-layout.component';
+import { ClientReportComponent } from './client-report/client-report.component';
 
 
 const routes: Routes = [
@@ -23,7 +25,12 @@ const routes: Routes = [
   {path: 'returnForms/:type', component: ReturnFormsComponent},
   {path: 'client-master', component: ClientMasterComponent},
   {path: 'edit-client', component: EditClientComponent},
-  {path: 'selected-client-master', loadChildren: () => import(`./selected-client-master/selected-client-master.module`).then(m=>m.SelectedClientMasterModule)}
+  {path: 'selected-client-master', loadChildren: () => import(`./selected-client-master/selected-client-master.module`).then(m=>m.SelectedClientMasterModule)},
+  {
+    path: 'print', component: PrintLayoutComponent, outlet: 'printOutlet', children: [
+      { path: 'client-report/:clientId', component: ClientReportComponent }
+    ]
+  }
 ];
 
 @NgModule({

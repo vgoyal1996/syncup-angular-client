@@ -10,11 +10,11 @@ import { RocReturnComponent } from './roc-return/roc-return.component';
 const routes: Routes = [
   {
     path: '', component: SelectedClientMasterComponent, children: [
-      {path:'', redirectTo: 'incomeTax', pathMatch:'full'},
-      {path:'incomeTax', component:IncomeTaxReturnComponent},
-      {path:'tds', component:TdsReturnComponent},
-      {path:'roc', component:RocReturnComponent},
-      {path:'gst', component:GstReturnComponent}
+      { path: '', redirectTo: 'incomeTax', pathMatch: 'full' },
+      { path: 'incomeTax', component: IncomeTaxReturnComponent },
+      { path: 'tds', component: TdsReturnComponent },
+      { path: 'roc', component: RocReturnComponent },
+      { path: 'gst', component: GstReturnComponent }
     ]
   }
 ];

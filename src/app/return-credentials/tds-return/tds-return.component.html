@@ -27,7 +27,7 @@
 
     <ng-container matColumnDef="dueDateOfFiling">
       <mat-header-cell *matHeaderCellDef> Due Date of Filing </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.dueDateOfFiling}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.getDueDateSchedulerSet[0].getDueDateOfFiling}} </mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

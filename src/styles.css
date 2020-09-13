@@ -34,5 +34,13 @@
   margin: 0 auto;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+@media print {
+  .isPrinting > * { display: none; }
+  .isPrinting app-print-layout { display: block; }
+}
+
+html, body { 
+  min-height: 100%;
+  overflow: auto;
+}
+body {margin: auto; font-family: Roboto, "Helvetica Neue", sans-serif; }
