@@ -14,7 +14,8 @@ import { ClientReturnForms } from 'src/app/model/ClientReturnForms';
   providedIn: 'root'
 })
 export class SyncupApiService {
-  private BASE_URL = 'http://localhost:8080/api/v1';
+  //private BASE_URL = 'http://localhost:8080/api/v1';
+  private BASE_URL = 'https://master.d22ely06w0gi33.amplifyapp.com/api/v1';
   private ADD_CLIENT_URL = `${this.BASE_URL}/client/add`;
   private CHECK_LOGIN_CREDENTIALS_URL = `${this.BASE_URL}/login/validate/`;
   private CREATE_ACCOUNT_URL = `${this.BASE_URL}/login/signup`;
