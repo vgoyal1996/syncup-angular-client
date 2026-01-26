@@ -7,13 +7,14 @@ import { ApplicableReturnFormsService } from '../applicable-return-forms.service
 import { SelectionModel } from '@angular/cdk/collections';
 import { forkJoin } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ReturnForm } from 'src/app/model/ReturnForm';
 
 @Component({
   selector: 'app-roc-return',
   templateUrl: './roc-return.component.html',
-  styleUrls: ['./roc-return.component.css']
+  styleUrls: ['./roc-return.component.css'],
+  standalone: false
 })
 export class RocReturnComponent implements OnInit {
 
@@ -21,12 +22,12 @@ export class RocReturnComponent implements OnInit {
   selection = new SelectionModel(true, []);
   displayedColumns: string[] = ['select', 'formName', 'periodicity', 'dueDateOfFiling'];
   dataSource: ReturnForm[] = [];
-  private clientId: string;
-  private rocReturnForm: FormGroup;
+  clientId: string;
+  rocReturnForm: FormGroup;
   @Output() isSaved: EventEmitter<boolean> = new EventEmitter<boolean>(false);
   assessmentYear: string;
-  private editFlag: boolean;
-  private rocCred: ReturnCredentials;
+  editFlag: boolean;
+  rocCred: ReturnCredentials;
 
   constructor(private formBuilder: FormBuilder, private apiService: SyncupApiService, private dataTransferService: DataTransferService,
     private applicableReturnFormsService: ApplicableReturnFormsService, private snackBar: MatSnackBar) {
@@ -105,7 +106,7 @@ export class RocReturnComponent implements OnInit {
     }
     if (this.applicableReturnFormsService.getSelectedReturnForms == undefined ||
       this.applicableReturnFormsService.getSelectedReturnForms('roc') == undefined ||
-      this.applicableReturnFormsService.getSelectedReturnForms('roc') == []) {
+      this.applicableReturnFormsService.getSelectedReturnForms('roc').length === 0) {
       return;
     }
     console.log(this.rocReturnForm);

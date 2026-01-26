@@ -1,45 +1,46 @@
-import {Component, OnInit} from '@angular/core';
-import {Client} from '../model/Client';
-import {Router} from '@angular/router';
-import {DataTransferService} from '../shared/data/data-transfer.service';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {SyncupApiService} from '../shared/api/syncup-api.service';
+import { Component, OnInit } from '@angular/core';
+import { Client } from '../model/Client';
+import { Router } from '@angular/router';
+import { DataTransferService } from '../shared/data/data-transfer.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { SyncupApiService } from '../shared/api/syncup-api.service';
 import { NavBarService } from '../nav-bar/nav-bar.service';
 import { Constants } from '../shared/global/constants';
 
 @Component({
   selector: 'app-client',
   templateUrl: './client.component.html',
-  styleUrls: ['./client.component.css']
+  styleUrls: ['./client.component.css'],
+  standalone: false
 })
 export class ClientComponent implements OnInit {
 
-  private clientForm: FormGroup;
-  private submitted = false;
-  private stateList = Constants.STATES_AND_UT_LIST;
+  clientForm: FormGroup;
+  submitted = false;
+  stateList = Constants.STATES_AND_UT_LIST;
 
-  constructor(private apiService: SyncupApiService, private router: Router, 
+  constructor(private apiService: SyncupApiService, private router: Router,
     private dataTransferService: DataTransferService, private navBar: NavBarService, private formBuilder: FormBuilder) {
-      this.clientForm = this.formBuilder.group({
-        clientName: this.formBuilder.control('', Validators.required),
-        clientCode: this.formBuilder.control('', Validators.required),
-        fatherName: this.formBuilder.control('', Validators.required),
-        flatNo: this.formBuilder.control('', Validators.required),
-        area: this.formBuilder.control('', Validators.required),
-        state: this.formBuilder.control('', Validators.required),
-        city: this.formBuilder.control('', Validators.required),
-        pin: this.formBuilder.control('', Validators.required),
-        clientType: this.formBuilder.control('', Validators.required),
-        mobile: this.formBuilder.control('', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]),
-        emailId: this.formBuilder.control('', [Validators.required, Validators.email]),
-        pan: this.formBuilder.control('', [Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.pattern('[A-Z]{5}[0-9]{4}[A-Z]')]),
-        dobOrDoi: this.formBuilder.control('', Validators.required),
-        responsiblePersonName: this.formBuilder.control(''),
-        responsiblePersonPan: this.formBuilder.control(''),
-        responsiblePersonDob: this.formBuilder.control(''),
-        responsiblePersonAadhaar: this.formBuilder.control(''),
-        cin: this.formBuilder.control('')
-      });
+    this.clientForm = this.formBuilder.group({
+      clientName: this.formBuilder.control('', Validators.required),
+      clientCode: this.formBuilder.control('', Validators.required),
+      fatherName: this.formBuilder.control('', Validators.required),
+      flatNo: this.formBuilder.control('', Validators.required),
+      area: this.formBuilder.control('', Validators.required),
+      state: this.formBuilder.control('', Validators.required),
+      city: this.formBuilder.control('', Validators.required),
+      pin: this.formBuilder.control('', Validators.required),
+      clientType: this.formBuilder.control('', Validators.required),
+      mobile: this.formBuilder.control('', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]),
+      emailId: this.formBuilder.control('', [Validators.required, Validators.email]),
+      pan: this.formBuilder.control('', [Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.pattern('[A-Z]{5}[0-9]{4}[A-Z]')]),
+      dobOrDoi: this.formBuilder.control('', Validators.required),
+      responsiblePersonName: this.formBuilder.control(''),
+      responsiblePersonPan: this.formBuilder.control(''),
+      responsiblePersonDob: this.formBuilder.control(''),
+      responsiblePersonAadhaar: this.formBuilder.control(''),
+      cin: this.formBuilder.control('')
+    });
   }
 
   get clientName() {

@@ -9,17 +9,18 @@ import { Constants } from 'src/app/shared/global/constants';
 @Component({
   selector: 'app-add-return-form-dialog',
   templateUrl: './add-return-form-dialog.component.html',
-  styleUrls: ['./add-return-form-dialog.component.css']
+  styleUrls: ['./add-return-form-dialog.component.css'],
+  standalone: false
 })
 export class AddReturnFormDialogComponent implements OnInit {
 
-  private returnType: string;
-  private returnForm: FormGroup;
-  private monthList = Constants.MONTHS_LIST;
-  private dayList = Constants.DAY_LIST;
-  private isNotMonthly = true;
-  private isNotYearly = true;
-  private isNotQuarterly = true;
+  returnType: string;
+  returnForm: FormGroup;
+  monthList = Constants.MONTHS_LIST;
+  dayList = Constants.DAY_LIST;
+  isNotMonthly = true;
+  isNotYearly = true;
+  isNotQuarterly = true;
 
   constructor(private dialogRef: MatDialogRef<AddReturnFormDialogComponent>, private formBuilder: FormBuilder,
     private apiService: SyncupApiService, @Inject(MAT_DIALOG_DATA) private data: any, private snackBar: MatSnackBar) {

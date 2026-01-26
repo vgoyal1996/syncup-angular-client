@@ -1,7 +1,6 @@
 <div class="container">
   <div [formGroup]="gstReturnForm">
-    <div formArrayName="returnForms"
-      *ngFor="let returnForm of gstReturnForm.get('returnForms').controls; let i = index">
+    <div formArrayName="returnForms" *ngFor="let returnForm of returnForms.controls; let i = index">
       <h3 class="p-3">{{i+1}}. GST Return Credentials</h3>
       <button mat-raised-button *ngIf="i == 0" color="primary" (click)="setFormFieldsAsMaster()">Set As Master</button>
       <div [formGroupName]="i">
@@ -46,20 +45,20 @@
             <label [attr.for]="'gstFlatNo'+i" class="col-sm-2 col-form-label">Flat No.</label>
             <div class="col-sm-4">
               <input type="text" [id]="'gstFlatNo'+i" class="form-control" name="gstFlatNo" placeholder="Flat No."
-                formControlName="gstFlatNo" [ngClass]="{ 'is-invalid': (returnForm.controls.gstFlatNo.touched || returnForm.controls.gstFlatNo.dirty) &&
-                         returnForm.controls.gstFlatNo.invalid}" />
-              <div *ngIf="(returnForm.controls.gstFlatNo.touched || returnForm.controls.gstFlatNo.dirty) &&
-                  returnForm.controls.gstFlatNo.errors?.required" class="invalid-input">
+                formControlName="gstFlatNo" [ngClass]="{ 'is-invalid': (returnForm.get('gstFlatNo').touched || returnForm.get('gstFlatNo').dirty) &&
+                         returnForm.get('gstFlatNo').invalid}" />
+              <div *ngIf="(returnForm.get('gstFlatNo').touched || returnForm.get('gstFlatNo').dirty) &&
+                  returnForm.get('gstFlatNo').errors?.required" class="invalid-input">
                 Flat No. is required
               </div>
             </div>
             <label [attr.for]="'gstArea'+i" class="col-sm-2 col-form-label">Area</label>
             <div class="col-sm-4">
               <input type="text" [id]="'gstArea'+i" class="form-control" name="gstArea" placeholder="Area"
-                formControlName="gstArea" [ngClass]="{ 'is-invalid': (returnForm.controls.gstArea.touched || returnForm.controls.gstArea.dirty) &&
-                         returnForm.controls.gstArea.invalid }" />
-              <div *ngIf="(returnForm.controls.gstArea.touched || returnForm.controls.gstArea.dirty) &&
-                  returnForm.controls.gstArea.errors?.required" class="invalid-input">
+                formControlName="gstArea" [ngClass]="{ 'is-invalid': (returnForm.get('gstArea').touched || returnForm.get('gstArea').dirty) &&
+                         returnForm.get('gstArea').invalid }" />
+              <div *ngIf="(returnForm.get('gstArea').touched || returnForm.get('gstArea').dirty) &&
+                  returnForm.get('gstArea').errors?.required" class="invalid-input">
                 Area is required
               </div>
             </div>
@@ -70,20 +69,20 @@
             <label [attr.for]="'gstCity'+i" class="col-sm-2 col-form-label">City</label>
             <div class="col-sm-4">
               <input type="text" [id]="'gstCity'+i" class="form-control" name="gstCity" placeholder="City"
-                formControlName="gstCity" [ngClass]="{ 'is-invalid': (returnForm.controls.gstCity.touched || returnForm.controls.gstCity.dirty) &&
-                         returnForm.controls.gstCity.invalid }" />
-              <div *ngIf="(returnForm.controls.gstCity.touched || returnForm.controls.gstCity.dirty) &&
-                  returnForm.controls.gstCity.errors?.required" class="invalid-input">
+                formControlName="gstCity" [ngClass]="{ 'is-invalid': (returnForm.get('gstCity').touched || returnForm.get('gstCity').dirty) &&
+                         returnForm.get('gstCity').invalid }" />
+              <div *ngIf="(returnForm.get('gstCity').touched || returnForm.get('gstCity').dirty) &&
+                  returnForm.get('gstCity').errors?.required" class="invalid-input">
                 City Name is required
               </div>
             </div>
             <label [attr.for]="'gstState'+i" class="col-sm-2 col-form-label">State</label>
             <div class="col-sm-4">
               <input type="text" [id]="'gstState'+i" class="form-control" name="gstState" placeholder="State"
-                formControlName="gstState" [ngClass]="{ 'is-invalid': (returnForm.controls.gstState.touched || returnForm.controls.gstState.dirty) &&
-                         returnForm.controls.gstState.invalid }" />
-              <div *ngIf="(returnForm.controls.gstState.touched || returnForm.controls.gstState.dirty) &&
-                  returnForm.controls.gstState.errors?.required" class="invalid-input">
+                formControlName="gstState" [ngClass]="{ 'is-invalid': (returnForm.get('gstState').touched || returnForm.get('gstState').dirty) &&
+                         returnForm.get('gstState').invalid }" />
+              <div *ngIf="(returnForm.get('gstState').touched || returnForm.get('gstState').dirty) &&
+                  returnForm.get('gstState').errors?.required" class="invalid-input">
                 State Name is required
               </div>
             </div>
@@ -94,20 +93,20 @@
             <label [attr.for]="'gstPin'+i" class="col-sm-2 col-form-label">PIN</label>
             <div class="col-sm-4">
               <input type="text" [id]="'gstPin'+i" class="form-control" name="gstPin" placeholder="PIN"
-                formControlName="gstPin" [ngClass]="{ 'is-invalid': (returnForm.controls.gstPin.touched || returnForm.controls.gstPin.dirty) &&
-                         returnForm.controls.gstPin.invalid }" />
-              <div *ngIf="(returnForm.controls.gstPin.touched || returnForm.controls.gstPin.dirty) &&
-                  returnForm.controls.gstPin.errors?.required" class="invalid-input">
+                formControlName="gstPin" [ngClass]="{ 'is-invalid': (returnForm.get('gstPin').touched || returnForm.get('gstPin').dirty) &&
+                         returnForm.get('gstPin').invalid }" />
+              <div *ngIf="(returnForm.get('gstPin').touched || returnForm.get('gstPin').dirty) &&
+                  returnForm.get('gstPin').errors?.required" class="invalid-input">
                 PIN Number is required
               </div>
             </div>
             <label [attr.for]="'gstNo'+i" class="col-sm-2 col-form-label">GST No</label>
             <div class="col-sm-4">
               <input type="text" [id]="'gstNo'+i" class="form-control" name="gstNo" placeholder="GST No"
-                formControlName="gstNo" [ngClass]="{ 'is-invalid': (returnForm.controls.gstNo.touched || returnForm.controls.gstNo.dirty) &&
-                         returnForm.controls.gstNo.invalid }" />
-              <div *ngIf="(returnForm.controls.gstNo.touched || returnForm.controls.gstNo.dirty) &&
-                  returnForm.controls.gstNo.errors?.required" class="invalid-input">
+                formControlName="gstNo" [ngClass]="{ 'is-invalid': (returnForm.get('gstNo').touched || returnForm.get('gstNo').dirty) &&
+                         returnForm.get('gstNo').invalid }" />
+              <div *ngIf="(returnForm.get('gstNo').touched || returnForm.get('gstNo').dirty) &&
+                  returnForm.get('gstNo').errors?.required" class="invalid-input">
                 GST Number is required
               </div>
             </div>
@@ -118,20 +117,20 @@
             <label [attr.for]="'gstUserName'+i" class="col-sm-2 col-form-label">User Name</label>
             <div class="col-sm-4">
               <input type="text" [id]="'gstUserName'+i" class="form-control" name="gstUserName" placeholder="User Name"
-                formControlName="gstUserName" [ngClass]="{ 'is-invalid': (returnForm.controls.gstUserName.touched || returnForm.controls.gstUserName.dirty) &&
-                         returnForm.controls.gstUserName.invalid }" />
-              <div *ngIf="(returnForm.controls.gstUserName.touched || returnForm.controls.gstUserName.dirty) &&
-                  returnForm.controls.gstUserName.errors?.required" class="invalid-input">
+                formControlName="gstUserName" [ngClass]="{ 'is-invalid': (returnForm.get('gstUserName').touched || returnForm.get('gstUserName').dirty) &&
+                         returnForm.get('gstUserName').invalid }" />
+              <div *ngIf="(returnForm.get('gstUserName').touched || returnForm.get('gstUserName').dirty) &&
+                  returnForm.get('gstUserName').errors?.required" class="invalid-input">
                 GST User name is required
               </div>
             </div>
             <label [attr.for]="'gstPassword'+i" class="col-sm-2 col-form-label">Password</label>
             <div class="col-sm-4">
               <input type="password" [id]="'gstPassword'+i" class="form-control" name="gstPassword"
-                placeholder="Password" formControlName="gstPassword" [ngClass]="{ 'is-invalid': (returnForm.controls.gstPassword.touched || returnForm.controls.gstPassword.dirty) &&
-                         returnForm.controls.gstPassword.invalid }" />
-              <div *ngIf="(returnForm.controls.gstPassword.touched || returnForm.controls.gstPassword.dirty) &&
-                  returnForm.controls.gstPassword.errors?.required" class="invalid-input">
+                placeholder="Password" formControlName="gstPassword" [ngClass]="{ 'is-invalid': (returnForm.get('gstPassword').touched || returnForm.get('gstPassword').dirty) &&
+                         returnForm.get('gstPassword').invalid }" />
+              <div *ngIf="(returnForm.get('gstPassword').touched || returnForm.get('gstPassword').dirty) &&
+                  returnForm.get('gstPassword').errors?.required" class="invalid-input">
                 GST Password is required
               </div>
             </div>
@@ -149,7 +148,8 @@
           </button>
         </div>
         <div class="col-4 text-center">
-          <button type="button" class="btn btn-secondary" (click)="removeReturnForm(i)">Remove GST
+          <button type="button" class="btn btn-secondary"
+            (click)="removeReturnForm(returnForms.controls.length - 1)">Remove GST
             Credentials
           </button>
         </div>

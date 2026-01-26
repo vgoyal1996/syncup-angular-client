@@ -8,12 +8,13 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { ReturnForm } from 'src/app/model/ReturnForm';
 import { forkJoin } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-tds-return',
   templateUrl: './tds-return.component.html',
-  styleUrls: ['./tds-return.component.css']
+  styleUrls: ['./tds-return.component.css'],
+  standalone: false
 })
 export class TdsReturnComponent implements OnInit {
 
@@ -21,12 +22,12 @@ export class TdsReturnComponent implements OnInit {
   selection = new SelectionModel(true, []);
   displayedColumns: string[] = ['select', 'formName', 'periodicity', 'dueDateOfFiling'];
   dataSource: ReturnForm[] = [];
-  private clientId: string;
-  private tdsReturnForm: FormGroup;
+  clientId: string;
+  tdsReturnForm: FormGroup;
   @Output() isSaved: EventEmitter<boolean> = new EventEmitter<boolean>(false);
   assessmentYear: string;
-  private editFlag: boolean;
-  private tdsCred: ReturnCredentials;
+  editFlag: boolean;
+  tdsCred: ReturnCredentials;
 
   constructor(private formBuilder: FormBuilder, private apiService: SyncupApiService, private dataTransferService: DataTransferService,
     private applicableReturnFormsService: ApplicableReturnFormsService, private snackBar: MatSnackBar) {
@@ -123,7 +124,7 @@ export class TdsReturnComponent implements OnInit {
     }
     if (this.applicableReturnFormsService.getSelectedReturnForms == undefined ||
       this.applicableReturnFormsService.getSelectedReturnForms('tds') == undefined ||
-      this.applicableReturnFormsService.getSelectedReturnForms('tds') == []) {
+      this.applicableReturnFormsService.getSelectedReturnForms('tds').length === 0) {
       return;
     }
     console.log(this.tdsReturnForm.value);

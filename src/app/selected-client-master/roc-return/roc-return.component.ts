@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ReturnCredentials } from 'src/app/model/ReturnCredentials';
-import { MatTable, MatDialog } from '@angular/material';
+import { MatTable } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
 import { SelectedClientDataService } from '../selected-client-data.service';
 import { FormBuilder } from '@angular/forms';
 import { DatePipe } from '@angular/common';
@@ -10,15 +11,16 @@ import { AddReturnInfoDialogComponent } from '../add-return-info-dialog/add-retu
 @Component({
   selector: 'app-roc-return',
   templateUrl: './roc-return.component.html',
-  styleUrls: ['./roc-return.component.css']
+  styleUrls: ['./roc-return.component.css'],
+  standalone: false
 })
 export class RocReturnComponent implements OnInit {
   displayedColumns: string[] = ['formName', 'acknowledgementNo', 'dateOfFiling', 'dateOfPhysicalDeposit', 'actions'];
   dataSource: any[] = [];
-  private rocCredentials: ReturnCredentials;
-  private rocUserId: string;
+  rocCredentials: ReturnCredentials;
+  rocUserId: string;
   @ViewChild(MatTable) table: MatTable<any>;
-  private rocPassword: string;
+  rocPassword: string;
   isNotDataPresent: boolean = false;
 
   constructor(private dataService: SelectedClientDataService, private formBuilder: FormBuilder, private dialog: MatDialog,

@@ -12,7 +12,9 @@ import { IncomeTaxReturnComponent } from './income-tax-return/income-tax-return.
 import { GstReturnComponent } from './gst-return/gst-return.component';
 import { TdsReturnComponent } from './tds-return/tds-return.component';
 import { RocReturnComponent } from './roc-return/roc-return.component';
-import { MatCheckboxModule, MatDatepickerModule, MatInputModule } from '@angular/material';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SelectedClientDataService } from './selected-client-data.service';
 import { AddReturnInfoDialogComponent } from './add-return-info-dialog/add-return-info-dialog.component';
@@ -37,14 +39,11 @@ import { AddReturnInfoDialogComponent } from './add-return-info-dialog/add-retur
     MatDatepickerModule,
     MatInputModule,
     MatCheckboxModule,
-    ReactiveFormsModule, 
+    ReactiveFormsModule,
     SelectedClientMasterRoutingModule
   ],
   providers: [
     SelectedClientDataService
-  ],
-  entryComponents: [
-    AddReturnInfoDialogComponent
   ]
 })
 export class SelectedClientMasterModule { }

@@ -2,7 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { SelectedClientDataService } from '../selected-client-data.service';
 import { ReturnCredentials } from 'src/app/model/ReturnCredentials';
 import { FormBuilder } from '@angular/forms';
-import { MatDialog, MatTable } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTable } from '@angular/material/table';
 import { AddReturnInfoDialogComponent } from '../add-return-info-dialog/add-return-info-dialog.component';
 import { DatePipe } from '@angular/common';
 import { Constants } from 'src/app/shared/global/constants';
@@ -10,15 +11,16 @@ import { Constants } from 'src/app/shared/global/constants';
 @Component({
   selector: 'app-income-tax-return',
   templateUrl: './income-tax-return.component.html',
-  styleUrls: ['./income-tax-return.component.css']
+  styleUrls: ['./income-tax-return.component.css'],
+  standalone: false
 })
 export class IncomeTaxReturnComponent implements OnInit {
   displayedColumns: string[] = ['formName', 'acknowledgementNo', 'dateOfFiling', 'dateOfPhysicalDeposit', 'actions'];
   dataSource: any[] = [];
-  private incomeTaxCredentials: ReturnCredentials;
-  private incomeTaxUserId: string;
+  incomeTaxCredentials: ReturnCredentials;
+  incomeTaxUserId: string;
   @ViewChild(MatTable) table: MatTable<any>;
-  private incomeTaxPassword: string;
+  incomeTaxPassword: string;
   isNotDataPresent: boolean = false;
 
   constructor(private dataService: SelectedClientDataService, private formBuilder: FormBuilder, private dialog: MatDialog,

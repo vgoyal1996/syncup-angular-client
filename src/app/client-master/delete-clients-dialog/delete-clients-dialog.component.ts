@@ -1,18 +1,20 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { SyncupApiService } from 'src/app/shared/api/syncup-api.service';
 
 @Component({
   selector: 'app-delete-clients-dialog',
   templateUrl: './delete-clients-dialog.component.html',
-  styleUrls: ['./delete-clients-dialog.component.css']
+  styleUrls: ['./delete-clients-dialog.component.css'],
+  standalone: false
 })
 export class DeleteClientsDialogComponent implements OnInit {
 
-  private clientList: any;
+  clientList: any;
 
   constructor(private dialogRef: MatDialogRef<DeleteClientsDialogComponent>, @Inject(MAT_DIALOG_DATA) private data: any,
-  private apiService: SyncupApiService, private snackBar: MatSnackBar) {
+    private apiService: SyncupApiService, private snackBar: MatSnackBar) {
     this.clientList = data.clientList;
   }
 

@@ -7,13 +7,14 @@ import { ApplicableReturnFormsService } from '../applicable-return-forms.service
 import { SelectionModel } from '@angular/cdk/collections';
 import { forkJoin } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ReturnForm } from 'src/app/model/ReturnForm';
 
 @Component({
   selector: 'app-income-tax-return',
   templateUrl: './income-tax-return.component.html',
-  styleUrls: ['./income-tax-return.component.css']
+  styleUrls: ['./income-tax-return.component.css'],
+  standalone: false
 })
 export class IncomeTaxReturnComponent implements OnInit {
 
@@ -21,12 +22,12 @@ export class IncomeTaxReturnComponent implements OnInit {
   selection = new SelectionModel(true, []);
   displayedColumns: string[] = ['select', 'formName', 'periodicity', 'dueDateOfFiling'];
   dataSource: ReturnForm[] = [];
-  private clientId: string;
-  private incomeTaxReturnForm: FormGroup;
+  clientId: string;
+  incomeTaxReturnForm: FormGroup;
   @Output() isSaved: EventEmitter<boolean> = new EventEmitter<boolean>(false);
-  private assessmentYear: string;
-  private editFlag: boolean;
-  private incomeTaxCred: ReturnCredentials;
+  assessmentYear: string;
+  editFlag: boolean;
+  incomeTaxCred: ReturnCredentials;
 
   constructor(private formBuilder: FormBuilder, private apiService: SyncupApiService, private dataTransferService: DataTransferService,
     private applicableReturnFormsService: ApplicableReturnFormsService, private snackBar: MatSnackBar) {
@@ -105,7 +106,7 @@ export class IncomeTaxReturnComponent implements OnInit {
     }
     if (this.applicableReturnFormsService.getSelectedReturnForms == undefined ||
       this.applicableReturnFormsService.getSelectedReturnForms('incomeTax') == undefined ||
-      this.applicableReturnFormsService.getSelectedReturnForms('incomeTax') == []) {
+      this.applicableReturnFormsService.getSelectedReturnForms('incomeTax').length === 0) {
       return;
     }
     const incomeTaxCredentials: ReturnCredentials = new ReturnCredentials();

@@ -7,11 +7,12 @@ import { Client } from '../model/Client';
 @Component({
   selector: 'app-client-report',
   templateUrl: './client-report.component.html',
-  styleUrls: ['./client-report.component.css']
+  styleUrls: ['./client-report.component.css'],
+  standalone: false
 })
 export class ClientReportComponent implements OnInit {
   private clientId: string;
-  private client: Client;
+  client: Client;
 
   constructor(private activatedRoute: ActivatedRoute, private printService: PrintService, private apiService: SyncupApiService) {
   }

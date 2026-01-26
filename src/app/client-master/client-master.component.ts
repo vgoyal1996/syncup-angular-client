@@ -1,13 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NavBarService } from '../nav-bar/nav-bar.service';
-import {animate, state, style, transition, trigger} from '@angular/animations';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { SyncupApiService } from '../shared/api/syncup-api.service';
 import { Client } from '../model/Client';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource, MatTable } from '@angular/material/table';
-import { MatPaginator, MatDialog } from '@angular/material';
-import {Router, NavigationExtras} from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { Router, NavigationExtras } from '@angular/router';
 import { DeleteClientsDialogComponent } from './delete-clients-dialog/delete-clients-dialog.component';
 import { DataTransferService } from '../shared/data/data-transfer.service';
 import { Constants } from '../shared/global/constants';
@@ -18,32 +19,33 @@ import { AssessmentYearDialogComponent } from './assessment-year-dialog/assessme
   templateUrl: './client-master.component.html',
   animations: [
     trigger('detailExpand', [
-      state('collapsed', style({height: '0px', minHeight: '0'})),
-      state('expanded', style({height: '*'})),
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),
   ],
-  styleUrls: ['./client-master.component.css']
+  styleUrls: ['./client-master.component.css'],
+  standalone: false
 })
 export class ClientMasterComponent implements OnInit {
-  private displayedColumns: string[] = ['select', 'clientCode', 'clientName', 'fatherName', 'panNo', 'clientType', 'doiOrDob', 'mobile', 'actions'];
+  displayedColumns: string[] = ['select', 'clientCode', 'clientName', 'fatherName', 'panNo', 'clientType', 'doiOrDob', 'mobile', 'actions'];
   childDisplayedColumns: string[] = ['headings', 'values'];
   private childColumnsMap: Map<string, any> = new Map();
   childDataSource: any;
-  private dataSource = new MatTableDataSource([]);
+  dataSource = new MatTableDataSource([]);
   expandedElement: Client | null;
-  private selection = new SelectionModel(true, []);
+  selection = new SelectionModel(true, []);
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  private isLoading = true;
+  isLoading = true;
   isButtonDisabled: boolean = true;
   @ViewChild(MatTable) table: MatTable<any>;
   private stateList = Constants.STATES_AND_UT_LIST;
 
 
   constructor(private navBar: NavBarService, private apiService: SyncupApiService, private router: Router,
-              private dialog: MatDialog, private dataTransferService: DataTransferService) {
-   }
+    private dialog: MatDialog, private dataTransferService: DataTransferService) {
+  }
 
   changeChildDataSource(element: any) {
     this.childDataSource = this.childColumnsMap.get(element.clientCode);
@@ -78,56 +80,56 @@ export class ClientMasterComponent implements OnInit {
           let childData = [];
           let temp = {};
           temp['heading'] = 'Flat No',
-          temp['value'] = element.getFlatNo;
+            temp['value'] = element.getFlatNo;
           childData.push(temp);
           temp = {};
           temp['heading'] = 'Area',
-          temp['value'] = element.getArea;
+            temp['value'] = element.getArea;
           childData.push(temp);
           temp = {};
           temp['heading'] = 'City',
-          temp['value'] = element.getCity;
+            temp['value'] = element.getCity;
           childData.push(temp);
           temp = {};
           temp['heading'] = 'State',
-          temp['value'] = this.stateList[this.stateList.findIndex(obj => obj.value == element.getState)].display;
+            temp['value'] = this.stateList[this.stateList.findIndex(obj => obj.value == element.getState)].display;
           childData.push(temp);
           temp = {};
           temp['heading'] = 'PIN Code',
-          temp['value'] = element.getPin;
+            temp['value'] = element.getPin;
           childData.push(temp);
           temp = {};
           temp['heading'] = 'Client Email ID',
-          temp['value'] = element.getClientEmail;
+            temp['value'] = element.getClientEmail;
           childData.push(temp);
           temp = {};
           if (element.getResponsiblePersonName != null && element.getResponsiblePersonName != "") {
             temp['heading'] = 'Responsible Person Name',
-            temp['value'] = element.getResponsiblePersonName;
+              temp['value'] = element.getResponsiblePersonName;
             childData.push(temp);
             temp = {};
           }
           if (element.getResponsiblePersonPAN != null && element.getResponsiblePersonPAN != "") {
             temp['heading'] = 'Responsible Person PAN Card No',
-            temp['value'] = element.getResponsiblePersonPAN;
+              temp['value'] = element.getResponsiblePersonPAN;
             childData.push(temp);
             temp = {};
           }
           if (element.getResponsiblePersonDOB != null && element.getResponsiblePersonDOB != "") {
             temp['heading'] = 'Responsible Person DOB',
-            temp['value'] = element.getResponsiblePersonDOB;
+              temp['value'] = element.getResponsiblePersonDOB;
             childData.push(temp);
             temp = {};
           }
           if (element.getResponsiblePersonAadhaar != null && element.getResponsiblePersonAadhaar != "") {
             temp['heading'] = 'Responsible Person Aadhaar No',
-            temp['value'] = element.getResponsiblePersonAadhaar;
+              temp['value'] = element.getResponsiblePersonAadhaar;
             childData.push(temp);
             temp = {};
           }
           if (element.getCin != null && element.getCin != "") {
             temp['heading'] = 'CIN No',
-            temp['value'] = element.getCin;
+              temp['value'] = element.getCin;
             childData.push(temp);
           }
           this.childColumnsMap.set(element.getClientCode, childData);
@@ -167,7 +169,7 @@ export class ClientMasterComponent implements OnInit {
       height: '300px',
       data: { selectedClient: element }
     });
-    dialogRef.afterClosed().subscribe(result =>{
+    dialogRef.afterClosed().subscribe(result => {
       console.log("closed assessment year dialog" + result);
     });
   }

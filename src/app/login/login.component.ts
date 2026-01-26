@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import {Login} from '../model/Login';
-import {SyncupApiService} from '../shared/api/syncup-api.service';
-import {Router} from '@angular/router';
-import {NgForm} from '@angular/forms';
+import { Login } from '../model/Login';
+import { SyncupApiService } from '../shared/api/syncup-api.service';
+import { Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
 import { NavBarService } from '../nav-bar/nav-bar.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
+  standalone: false
 })
 export class LoginComponent implements OnInit {
 
@@ -45,7 +46,7 @@ export class LoginComponent implements OnInit {
     this.apiService.checkLoginCredentials(this.loginModel.userId).subscribe(
       res => {
         if (res === null) {
-          form.controls['password'].setErrors({validationFailed: true});
+          form.controls['password'].setErrors({ validationFailed: true });
         } else {
           this.dbLoginModel = res;
           if ((this.loginModel.userId === this.dbLoginModel.userId) && (this.loginModel.password === this.dbLoginModel.password)) {
@@ -69,7 +70,7 @@ export class LoginComponent implements OnInit {
     this.apiService.checkLoginCredentials(this.adminLoginModel.userId).subscribe(
       res => {
         if (res === null) {
-          form.controls['adminPassword'].setErrors({validationFailed: true});
+          form.controls['adminPassword'].setErrors({ validationFailed: true });
         } else {
           this.dbLoginModel = res;
           if ((this.adminLoginModel.userId === this.dbLoginModel.userId) && (this.adminLoginModel.password === this.dbLoginModel.password)) {

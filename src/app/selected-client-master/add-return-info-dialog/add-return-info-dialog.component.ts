@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { SyncupApiService } from 'src/app/shared/api/syncup-api.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ClientReturnForms } from 'src/app/model/ClientReturnForms';
@@ -7,27 +8,28 @@ import { ClientReturnForms } from 'src/app/model/ClientReturnForms';
 @Component({
   selector: 'app-add-return-info-dialog',
   templateUrl: './add-return-info-dialog.component.html',
-  styleUrls: ['./add-return-info-dialog.component.css']
+  styleUrls: ['./add-return-info-dialog.component.css'],
+  standalone: false
 })
 export class AddReturnInfoDialogComponent implements OnInit {
-  private formInfo: ClientReturnForms;
-  private addInfoForm: FormGroup;
-  private formNameHeading: string;
-  private assessmentYear: string;
-  private returnId: number;
+  formInfo: ClientReturnForms;
+  addInfoForm: FormGroup;
+  formNameHeading: string;
+  assessmentYear: string;
+  returnId: number;
 
   constructor(private dialogRef: MatDialogRef<AddReturnInfoDialogComponent>, private formBuilder: FormBuilder,
     private apiService: SyncupApiService, @Inject(MAT_DIALOG_DATA) private data: any, private snackBar: MatSnackBar) {
-      this.formInfo = data.clientReturnForm;
-      this.formNameHeading = this.formInfo.getReturnForm.getFormName;
-      this.assessmentYear = data.assessmentYear;
-      this.returnId = data.returnId;
-      this.addInfoForm = this.formBuilder.group({
-        acknowledgementNo: this.formBuilder.control('', Validators.required),
-        dateOfFiling: this.formBuilder.control('', Validators.required),
-        whetherEFile: this.formBuilder.control('', Validators.required),
-        dateOfPhysicalDeposit: this.formBuilder.control('')
-      });
+    this.formInfo = data.clientReturnForm;
+    this.formNameHeading = this.formInfo.getReturnForm.getFormName;
+    this.assessmentYear = data.assessmentYear;
+    this.returnId = data.returnId;
+    this.addInfoForm = this.formBuilder.group({
+      acknowledgementNo: this.formBuilder.control('', Validators.required),
+      dateOfFiling: this.formBuilder.control('', Validators.required),
+      whetherEFile: this.formBuilder.control('', Validators.required),
+      dateOfPhysicalDeposit: this.formBuilder.control('')
+    });
   }
 
   setOptionalValidators(value) {
@@ -80,12 +82,12 @@ export class AddReturnInfoDialogComponent implements OnInit {
         if (res == true) {
           console.log(clientFormInfo.formName + " inserted");
           this.snackBar.open(clientFormInfo.formName + " inserted", null, {
-          duration: 3000,
-        });
+            duration: 3000,
+          });
         } else {
           this.snackBar.open("OOPS!!! An error occurred", null, {
-          duration: 3000,
-        });
+            duration: 3000,
+          });
         }
       },
       err => {
@@ -96,5 +98,5 @@ export class AddReturnInfoDialogComponent implements OnInit {
     );
     this.dialogRef.close(clientFormInfo);
   }
-  
+
 }

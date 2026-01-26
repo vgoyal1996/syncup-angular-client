@@ -32,17 +32,18 @@ export class Tile {
 @Component({
   selector: 'app-selected-client-master',
   templateUrl: './selected-client-master.component.html',
-  styleUrls: ['./selected-client-master.component.css']
+  styleUrls: ['./selected-client-master.component.css'],
+  standalone: false
 })
 export class SelectedClientMasterComponent implements OnInit {
-  private assessmentYear: string;
-  private selectedClient: Client;
-  private returnCredsArray: ReturnCredentials[];
+  assessmentYear: string;
+  selectedClient: Client;
+  returnCredsArray: ReturnCredentials[];
   headerTiles: Tile[] = [];
   footerTiles: Tile[] = [];
-  private selected = new FormControl(0);
-  private isReturnCredsArrayNotEmpty = true;
-  private navLinks;
+  selected = new FormControl(0);
+  isReturnCredsArrayNotEmpty = true;
+  navLinks;
   activeLinkIndex = -1;
 
 
@@ -105,6 +106,10 @@ export class SelectedClientMasterComponent implements OnInit {
     );
   }
 
+
+  getPdf() {
+    this.printReport();
+  }
 
   printReport() {
     this.pdfmake.create();

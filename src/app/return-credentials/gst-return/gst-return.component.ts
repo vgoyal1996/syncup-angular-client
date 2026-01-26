@@ -8,26 +8,27 @@ import { Client } from 'src/app/model/Client';
 import { SelectionModel } from '@angular/cdk/collections';
 import { forkJoin } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ReturnForm } from 'src/app/model/ReturnForm';
 
 @Component({
   selector: 'app-gst-return',
   templateUrl: './gst-return.component.html',
-  styleUrls: ['./gst-return.component.css']
+  styleUrls: ['./gst-return.component.css'],
+  standalone: false
 })
 export class GstReturnComponent implements OnInit {
 
-  private clientId: string;
+  clientId: string;
   selections = [];
   displayedColumns: string[] = ['select', 'formName', 'periodicity', 'dueDateOfFiling'];
-  private gstReturnForm: FormGroup;
-  private clientObject: Client;
-  private dataSources: ReturnForm[][];
+  gstReturnForm: FormGroup;
+  clientObject: Client;
+  dataSources: ReturnForm[][];
   @Output() isSaved: EventEmitter<boolean> = new EventEmitter<boolean>(false);
   assessmentYear: string;
-  private editFlag: boolean;
-  private gstCreds: ReturnCredentials[];
+  editFlag: boolean;
+  gstCreds: ReturnCredentials[];
 
   constructor(private formBuilder: FormBuilder, private apiService: SyncupApiService, private dataTransferService: DataTransferService,
     private applicableReturnFormsService: ApplicableReturnFormsService, private snackBar: MatSnackBar) {
@@ -169,7 +170,7 @@ export class GstReturnComponent implements OnInit {
     for (let i = 0; i < (<FormArray>this.gstReturnForm.get('returnForms')).controls.length; i++) {
       if (this.applicableReturnFormsService.getSelectedReturnForms == undefined ||
         this.applicableReturnFormsService.getSelectedReturnForms('gst' + i) == undefined ||
-        this.applicableReturnFormsService.getSelectedReturnForms('gst' + i) == []) {
+        this.applicableReturnFormsService.getSelectedReturnForms('gst' + i).length === 0) {
         alert("Applicable return forms not selected for Form No. " + (i + 1));
         return;
       }

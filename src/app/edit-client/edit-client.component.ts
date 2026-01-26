@@ -4,22 +4,23 @@ import { SyncupApiService } from '../shared/api/syncup-api.service';
 import { NavBarService } from '../nav-bar/nav-bar.service';
 import { Client } from '../model/Client';
 import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { DataTransferService } from '../shared/data/data-transfer.service';
 import { Constants } from '../shared/global/constants';
 
 @Component({
   selector: 'app-edit-client',
   templateUrl: './edit-client.component.html',
-  styleUrls: ['./edit-client.component.css']
+  styleUrls: ['./edit-client.component.css'],
+  standalone: false
 })
 export class EditClientComponent implements OnInit {
 
-  private editClientForm: FormGroup;
-  private oldClient: any;
+  editClientForm: FormGroup;
+  oldClient: any;
   submitted = false;
-  private oldClientCode: string;
-  private stateList = Constants.STATES_AND_UT_LIST;
+  oldClientCode: string;
+  stateList = Constants.STATES_AND_UT_LIST;
 
   constructor(private formBuilder: FormBuilder, private apiService: SyncupApiService,
     private navBar: NavBarService, private snackBar: MatSnackBar,
@@ -67,7 +68,7 @@ export class EditClientComponent implements OnInit {
           responsiblePersonAadhaar: this.oldClient.responsiblePersonAadhaar,
           cin: this.oldClient.cin
         });
-        this.editClientForm.controls['state'].setValue(this.stateList[this.stateList.findIndex(obj => obj.value == this.oldClient.state)], {onlySelf: true});
+        this.editClientForm.controls['state'].setValue(this.stateList[this.stateList.findIndex(obj => obj.value == this.oldClient.state)], { onlySelf: true });
         this.oldClientCode = this.oldClient.clientCode;
       }
     );

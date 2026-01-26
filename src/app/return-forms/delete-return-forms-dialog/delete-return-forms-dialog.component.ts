@@ -8,12 +8,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-delete-return-forms-dialog',
   templateUrl: './delete-return-forms-dialog.component.html',
-  styleUrls: ['./delete-return-forms-dialog.component.css']
+  styleUrls: ['./delete-return-forms-dialog.component.css'],
+  standalone: false
 })
 export class DeleteReturnFormsDialogComponent implements OnInit {
 
-  private rowList: any;
-  private returnType: string;
+  rowList: any;
+  returnType: string;
 
   constructor(private dialogRef: MatDialogRef<DeleteReturnFormsDialogComponent>, @Inject(MAT_DIALOG_DATA) private data: any,
   private apiService: SyncupApiService, private snackBar: MatSnackBar) { 

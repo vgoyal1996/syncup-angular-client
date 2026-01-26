@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { SyncupApiService } from 'src/app/shared/api/syncup-api.service';
 import { ReturnForm } from 'src/app/model/ReturnForm';
@@ -8,13 +9,14 @@ import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-edit-return-form-dialog',
   templateUrl: './edit-return-form-dialog.component.html',
-  styleUrls: ['./edit-return-form-dialog.component.css']
+  styleUrls: ['./edit-return-form-dialog.component.css'],
+  standalone: false
 })
 export class EditReturnFormDialogComponent implements OnInit {
 
-  private oldReturnType: string;
-  private returnForm: FormGroup;
-  private oldReturnName: string;
+  oldReturnType: string;
+  returnForm: FormGroup;
+  oldReturnName: string;
 
   constructor(private dialogRef: MatDialogRef<EditReturnFormDialogComponent>, private formBuilder: FormBuilder,
     private apiService: SyncupApiService, @Inject(MAT_DIALOG_DATA) private data: any, private snackBar: MatSnackBar,

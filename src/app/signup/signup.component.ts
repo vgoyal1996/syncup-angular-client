@@ -6,7 +6,8 @@ import { NavBarService } from '../nav-bar/nav-bar.service';
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.css']
+  styleUrls: ['./signup.component.css'],
+  standalone: false
 })
 export class SignupComponent implements OnInit {
 

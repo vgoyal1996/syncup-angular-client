@@ -8,18 +8,19 @@ import { Client } from '../model/Client';
 @Component({
   selector: 'app-return-credentials',
   templateUrl: './return-credentials.component.html',
-  styleUrls: ['./return-credentials.component.css']
+  styleUrls: ['./return-credentials.component.css'],
+  standalone: false
 })
 export class ReturnCredentialsComponent implements OnInit {
 
   navLinks: any[];
   activeLinkIndex = -1;
-  private clientType: string;
-  private arr = ["incomeTax", "tds", "gst", "roc"];
-  private isDisabled = true;
+  clientType: string;
+  arr = ["incomeTax", "tds", "gst", "roc"];
+  isDisabled = true;
   selectedClient: Client;
   assessmentYear: string;
-  private editFlag: boolean;
+  editFlag: boolean;
 
   ngOnInit() {
     this.navBar.show();

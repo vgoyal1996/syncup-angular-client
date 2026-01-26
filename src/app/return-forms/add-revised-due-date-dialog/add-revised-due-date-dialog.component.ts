@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatSnackBar, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SyncupApiService } from 'src/app/shared/api/syncup-api.service';
 import { ReturnForm } from 'src/app/model/ReturnForm';
@@ -10,12 +11,13 @@ import { DueDateScheduler } from 'src/app/model/DueDateScheduler';
 @Component({
   selector: 'app-add-revised-due-date-dialog',
   templateUrl: './add-revised-due-date-dialog.component.html',
-  styleUrls: ['./add-revised-due-date-dialog.component.css']
+  styleUrls: ['./add-revised-due-date-dialog.component.css'],
+  standalone: false
 })
 export class AddRevisedDueDateDialogComponent implements OnInit {
-  private revisedDueDateForm: FormGroup;
-  private formHeading: string;
-  private form: ReturnForm;
+  revisedDueDateForm: FormGroup;
+  formHeading: string;
+  form: ReturnForm;
 
   constructor(private dialogRef: MatDialogRef<AddRevisedDueDateDialogComponent>, private formBuilder: FormBuilder,
     private apiService: SyncupApiService, @Inject(MAT_DIALOG_DATA) private data: any, private snackBar: MatSnackBar,
@@ -23,10 +25,10 @@ export class AddRevisedDueDateDialogComponent implements OnInit {
     this.form = data.form;
     this.formHeading = this.form.getFormName;
     this.revisedDueDateForm = this.formBuilder.group({
-      periodicity: this.formBuilder.control({value: this.form.getPeriodicity, disabled: true}, Validators.required),
-      fromDate: this.formBuilder.control({value: new Date(this.datepipe.transform(new Date(this.form.getDueDateSchedulerSet[0].getStartDate), Constants.DATE_PICKER_FORMAT)), disabled: true}, Validators.required),
-      toDate: this.formBuilder.control({value: new Date(this.datepipe.transform(new Date(this.form.getDueDateSchedulerSet[0].getEndDate), Constants.DATE_PICKER_FORMAT)), disabled: true}, Validators.required),
-      dueDateOfFiling: this.formBuilder.control({value: new Date(this.datepipe.transform(new Date(this.form.getDueDateSchedulerSet[0].getDueDateOfFiling), Constants.DATE_PICKER_FORMAT)), disabled: true}, Validators.required),
+      periodicity: this.formBuilder.control({ value: this.form.getPeriodicity, disabled: true }, Validators.required),
+      fromDate: this.formBuilder.control({ value: new Date(this.datepipe.transform(new Date(this.form.getDueDateSchedulerSet[0].getStartDate), Constants.DATE_PICKER_FORMAT)), disabled: true }, Validators.required),
+      toDate: this.formBuilder.control({ value: new Date(this.datepipe.transform(new Date(this.form.getDueDateSchedulerSet[0].getEndDate), Constants.DATE_PICKER_FORMAT)), disabled: true }, Validators.required),
+      dueDateOfFiling: this.formBuilder.control({ value: new Date(this.datepipe.transform(new Date(this.form.getDueDateSchedulerSet[0].getDueDateOfFiling), Constants.DATE_PICKER_FORMAT)), disabled: true }, Validators.required),
       revisedDueDateOfFiling: this.formBuilder.control('', Validators.required)
     });
   }

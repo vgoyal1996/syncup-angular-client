@@ -16,7 +16,8 @@ import { AddRevisedDueDateDialogComponent } from './add-revised-due-date-dialog/
 @Component({
   selector: 'app-return-forms',
   templateUrl: './return-forms.component.html',
-  styleUrls: ['./return-forms.component.css']
+  styleUrls: ['./return-forms.component.css'],
+  standalone: false
 })
 export class ReturnFormsComponent implements OnInit {
   returnType: string;

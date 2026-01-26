@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ReturnCredentials } from 'src/app/model/ReturnCredentials';
-import { MatTable, MatDialog } from '@angular/material';
+import { MatTable } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { SelectedClientDataService } from '../selected-client-data.service';
 import { FormBuilder } from '@angular/forms';
@@ -10,12 +11,13 @@ import { AddReturnInfoDialogComponent } from '../add-return-info-dialog/add-retu
 @Component({
   selector: 'app-gst-return',
   templateUrl: './gst-return.component.html',
-  styleUrls: ['./gst-return.component.css']
+  styleUrls: ['./gst-return.component.css'],
+  standalone: false
 })
 export class GstReturnComponent implements OnInit {
   displayedColumns: string[] = ['formName', 'acknowledgementNo', 'dateOfFiling', 'dateOfPhysicalDeposit', 'actions'];
   dataSources: any[] = [];
-  private gstCredentials: ReturnCredentials[];
+  gstCredentials: ReturnCredentials[];
   @ViewChild(MatTable) table: MatTable<any>;
   isNotDataPresent: boolean = false;
 
