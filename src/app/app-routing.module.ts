@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
+import { AuthGuard } from './shared/auth/auth.guard';
 import { SignupComponent } from './signup/signup.component';
 import { ClientComponent } from './client/client.component';
 import { HomeComponent } from './home/home.component';
@@ -14,27 +15,33 @@ import { ClientReportComponent } from './client-report/client-report.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/home',
+    redirectTo: '/login',
     pathMatch: 'full'
   },
-  {path: 'login', component : LoginComponent},
-  {path: 'home', component : HomeComponent},
-  {path: 'signup',component : SignupComponent},
-  {path: 'addclient',component : ClientComponent},
-  {path: 'returnCredentials',loadChildren: () => import(`./return-credentials/return-credentials.module`).then(m=>m.ReturnCredentialsModule) },
-  {path: 'returnForms/:type', component: ReturnFormsComponent},
-  {path: 'client-master', component: ClientMasterComponent},
-  {path: 'edit-client', component: EditClientComponent},
-  {path: 'selected-client-master', loadChildren: () => import(`./selected-client-master/selected-client-master.module`).then(m=>m.SelectedClientMasterModule)},
+  { path: 'login', component: LoginComponent },
+  { path: 'signup', component: SignupComponent },
   {
-    path: 'print', component: PrintLayoutComponent, outlet: 'printOutlet', children: [
-      { path: 'client-report/:clientId', component: ClientReportComponent }
+    path: '',
+    canActivate: [AuthGuard],
+    children: [
+      { path: 'home', component: HomeComponent },
+      { path: 'addclient', component: ClientComponent },
+      { path: 'returnCredentials', loadChildren: () => import(`./return-credentials/return-credentials.module`).then(m => m.ReturnCredentialsModule) },
+      { path: 'returnForms/:type', component: ReturnFormsComponent },
+      { path: 'client-master', component: ClientMasterComponent },
+      { path: 'edit-client', component: EditClientComponent },
+      { path: 'selected-client-master', loadChildren: () => import(`./selected-client-master/selected-client-master.module`).then(m => m.SelectedClientMasterModule) },
+      {
+        path: 'print', component: PrintLayoutComponent, outlet: 'printOutlet', children: [
+          { path: 'client-report/:clientId', component: ClientReportComponent }
+        ]
+      }
     ]
   }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {enableTracing : true})],
+  imports: [RouterModule.forRoot(routes, { enableTracing: true })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

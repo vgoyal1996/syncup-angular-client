@@ -1,0 +1,139 @@
+<div class="page-container">
+    <!-- Header Section -->
+    <div class="dashboard-header mb-4">
+        <div class="welcome-text">
+            <h1>Dashboard</h1>
+            <p class="text-secondary">Welcome back, Admin</p>
+        </div>
+        <div class="search-bar">
+            <mat-form-field appearance="outline" class="search-field">
+                <mat-icon matPrefix>search</mat-icon>
+                <input matInput placeholder="Search for clients, documents, or deadlines...">
+            </mat-form-field>
+        </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="stats-grid mb-4">
+        <mat-card class="stat-card">
+            <mat-card-content>
+                <div class="stat-icon bg-primary-light">
+                    <mat-icon>people</mat-icon>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-label">Total Clients</span>
+                    <h2 class="stat-value">1,250</h2>
+                    <span class="stat-change text-success">
+                        <mat-icon inline>arrow_upward</mat-icon> 12% vs last month
+                    </span>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card class="stat-card">
+            <mat-card-content>
+                <div class="stat-icon bg-accent-light">
+                    <mat-icon>description</mat-icon>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-label">Returns Filed</span>
+                    <h2 class="stat-value">850</h2>
+                    <span class="stat-change text-success">
+                        <mat-icon inline>check_circle</mat-icon> On track
+                    </span>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card class="stat-card">
+            <mat-card-content>
+                <div class="stat-icon bg-warn-light">
+                    <mat-icon>warning</mat-icon>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-label">Pending Issues</span>
+                    <h2 class="stat-value">45</h2>
+                    <span class="stat-change text-danger">
+                        <mat-icon inline>priority_high</mat-icon> High priority
+                    </span>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+    <!-- Main Content Areas -->
+    <div class="dashboard-content-grid">
+        <!-- Upcoming Deadlines -->
+        <mat-card class="dashboard-card deadlines-card">
+            <mat-card-header>
+                <mat-card-title>
+                    <mat-icon class="mr-2 text-primary">event</mat-icon>
+                    Upcoming Deadlines
+                </mat-card-title>
+                <span class="spacer"></span>
+                <button mat-button color="primary">View All</button>
+            </mat-card-header>
+            <mat-card-content>
+                <mat-list>
+                    <mat-list-item>
+                        <mat-icon matListItemIcon class="text-primary">business</mat-icon>
+                        <div matListItemTitle>Corporate Tax Return (Client A)</div>
+                        <div matListItemLine class="text-secondary">Due: Oct 15 • 80% Complete</div>
+                    </mat-list-item>
+                    <mat-divider></mat-divider>
+                    <mat-list-item>
+                        <mat-icon matListItemIcon class="text-accent">receipt</mat-icon>
+                        <div matListItemTitle>Sales Tax Filing (Client B)</div>
+                        <div matListItemLine class="text-secondary">Due: Oct 20 • Pending Review</div>
+                    </mat-list-item>
+                    <mat-divider></mat-divider>
+                    <mat-list-item>
+                        <mat-icon matListItemIcon class="text-warn">payment</mat-icon>
+                        <div matListItemTitle>Payroll Tax Deposit (Client C)</div>
+                        <div matListItemLine class="text-secondary">Due: Oct 25 • Not Started</div>
+                    </mat-list-item>
+                </mat-list>
+            </mat-card-content>
+        </mat-card>
+
+        <!-- Recent Activity -->
+        <mat-card class="dashboard-card activity-card">
+            <mat-card-header>
+                <mat-card-title>
+                    <mat-icon class="mr-2 text-primary">history</mat-icon>
+                    Recent Activity
+                </mat-card-title>
+                <span class="spacer"></span>
+                <button mat-icon-button><mat-icon>refresh</mat-icon></button>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="activity-feed">
+                    <div class="activity-item">
+                        <span class="activity-time">10:30 AM</span>
+                        <div class="activity-details">
+                            <strong>Client A</strong> uploaded document 'Q3 Financials.pdf'.
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <span class="activity-time">9:45 AM</span>
+                        <div class="activity-details">
+                            <strong>John Doe</strong> approved 'Sales Tax Filing' for Client B.
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <span class="activity-time">Yesterday</span>
+                        <div class="activity-details">
+                            System update completed successfully.
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <span class="activity-time">Yesterday</span>
+                        <div class="activity-details">
+                            New user <strong>Sarah Smith</strong> added to the team.
+                        </div>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

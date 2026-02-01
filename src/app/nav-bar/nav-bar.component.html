@@ -1,39 +1,65 @@
-<mat-toolbar color="primary">
-  <mat-toolbar-row>
-    <button mat-icon-button [hidden]="!navBar.getVisible">
-      <mat-icon (click)="toggleSidenav()">menu</mat-icon>
+<mat-toolbar class="main-toolbar" *ngIf="isLoggedIn$ | async">
+  <button mat-icon-button (click)="toggleSidenav()" class="menu-button">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span class="spacer"></span>
+  <div class="user-profile">
+    <button mat-button [matMenuTriggerFor]="userMenu">
+      <mat-icon class="mr-2">account_circle</mat-icon>
+      Admin User
+      <mat-icon>arrow_drop_down</mat-icon>
     </button>
-    <h1>Syncup</h1>
-    <span class="title-center">{{navBar.getToolBarTitle}}</span>
-  </mat-toolbar-row>
+    <mat-menu #userMenu="matMenu">
+      <button mat-menu-item>
+        <mat-icon>settings</mat-icon> Settings
+      </button>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>exit_to_app</mat-icon> Logout
+      </button>
+    </mat-menu>
+  </div>
 </mat-toolbar>
 
-<mat-sidenav-container>
-  <mat-sidenav #sidenav [hidden]="!navBar.getVisible">
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #sidenav mode="side" [opened]="isLoggedIn$ | async" class="app-sidenav" *ngIf="isLoggedIn$ | async">
+    <div class="sidenav-header">
+      <div class="logo">
+        <mat-icon>security</mat-icon>
+      </div>
+      <h2>ApexTax</h2>
+    </div>
+
     <mat-nav-list>
-      <a (click)="toggleSidenav()" mat-list-item [routerLink]="'/home'">Home</a>
-      <mat-accordion>
-        <mat-expansion-panel>
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              Return Master
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-          <a (click)="toggleSidenav()" mat-list-item [routerLink]="['/returnForms', 'incomeTax']">Income Tax</a>
-          <a (click)="toggleSidenav()" mat-list-item [routerLink]="['/returnForms', 'tds']">TDS</a>
-          <a (click)="toggleSidenav()" mat-list-item [routerLink]="['/returnForms', 'gst']">GST</a>
-          <a (click)="toggleSidenav()" mat-list-item [routerLink]="['/returnForms', 'roc']">ROC</a>
-        </mat-expansion-panel>
-      </mat-accordion>
-      <a (click)="toggleSidenav()" mat-list-item [routerLink]="'/client-master'">Client Master</a>
+      <a mat-list-item routerLink="/home" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>dashboard</mat-icon>
+        <span matListItemTitle>Dashboard</span>
+      </a>
+
+      <a mat-list-item routerLink="/client-master" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>people</mat-icon>
+        <span matListItemTitle>Clients</span>
+      </a>
+
+      <mat-expansion-panel class="sidenav-expansion">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <mat-icon class="mr-2">description</mat-icon> Returns
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-nav-list class="nested-list">
+          <a mat-list-item [routerLink]="['/returnForms', 'incomeTax']" routerLinkActive="active-link">Income Tax</a>
+          <a mat-list-item [routerLink]="['/returnForms', 'tds']" routerLinkActive="active-link">TDS</a>
+          <a mat-list-item [routerLink]="['/returnForms', 'gst']" routerLinkActive="active-link">GST</a>
+          <a mat-list-item [routerLink]="['/returnForms', 'roc']" routerLinkActive="active-link">ROC</a>
+        </mat-nav-list>
+      </mat-expansion-panel>
+
     </mat-nav-list>
   </mat-sidenav>
-  <mat-sidenav-content>
-    <div>
-      <div [class.isPrinting]="printService.isPrinting">
-        <router-outlet></router-outlet>
-        <router-outlet name="printOutlet"></router-outlet>
-      </div>
+
+  <mat-sidenav-content [style.margin-left.px]="(isLoggedIn$ | async) ? null : 0">
+    <div class="content-wrapper">
+      <router-outlet></router-outlet>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

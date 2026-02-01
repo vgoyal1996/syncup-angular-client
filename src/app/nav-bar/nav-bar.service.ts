@@ -34,7 +34,7 @@ export class NavBarService {
   }
 
   public open() {
-    return this.sidenav.open();
+    return this.sidenav && this.sidenav.open();
   }
 
   changeToolBarTitle(title: string) {
@@ -43,10 +43,12 @@ export class NavBarService {
 
 
   public close() {
-    return this.sidenav.close();
+    return this.sidenav && this.sidenav.close();
   }
 
   public toggle(): void {
-    this.sidenav.toggle();
+    if (this.sidenav) {
+      this.sidenav.toggle();
+    }
   }
 }

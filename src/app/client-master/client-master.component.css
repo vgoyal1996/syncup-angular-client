@@ -1,61 +1,121 @@
+.header-actions {
+  display: flex;
+  align-items: center;
+}
+
+.table-toolbar {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0;
+  gap: 1rem;
+}
+
+.filter-field {
+  width: 300px;
+  font-size: 0.9rem;
+}
+
+.table-container {
+  position: relative;
+  overflow: auto;
+  max-height: calc(100vh - 280px);
+}
+
+.full-width-table {
+  width: 100%;
+}
+
+/* Table Styling */
 table {
   width: 100%;
 }
 
+th.mat-header-cell {
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 0.85rem;
+  background-color: #fafafa;
+}
+
+td.mat-cell {
+  font-size: 0.9rem;
+  color: var(--text-color);
+  padding: 12px 16px;
+}
+
+/* Badge for Client Code */
+.badge-code {
+  background-color: #e3f2fd;
+  color: var(--primary-color);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+
+.text-caption {
+  font-size: 0.8rem;
+}
+
+/* Row Hover & Click */
+tr.example-element-row:not(.example-expanded-row):hover {
+  background: #f5f5f5;
+  cursor: pointer;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+  background: #efefef;
+}
+
+/* Expanded Detail Row */
 tr.example-detail-row {
   height: 0;
 }
 
-tr.example-element-row:not(.example-expanded-row):hover {
-  background: #7b1fa2;
-}
-
-tr.example-element-row:not(.example-expanded-row):active {
-  background: #7b1fa2;
-}
-
-.example-element-row td {
-  border-bottom-width: 0;
-}
-
 .example-element-detail {
   overflow: hidden;
-  /* display: flex; */
-  flex-direction: column;
-  justify-content: flex-start;
-  width: auto;
+  display: flex;
 }
 
-.expanded-row-mat-cell {
-  border-bottom-style: none;
-  padding: 8px 8px 8px 0;
-}
-
-.row {
-  display: flex; /* equal height of the children */
-}
-
-.col {
-  flex: 1; /* additionally, equal width */
-  
-  padding: 1em;
-  border: solid;
-}
-
-hr {
-  display: block;
-  height: 1px;
-  border: 0;
-  border-top: 1px solid #ccc;
-  margin: 1em 0;
-  padding: 0;
-}
-
-.mat-form-field {
-  font-size: 14px;
-  width: 100%;
-}
-
-.detailed-element {
+.expanded-detail-panel {
   padding: 16px;
+  background-color: #f9f9f9;
+  width: 100%;
+  border-bottom: 1px solid #eee;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+}
+
+.detail-value {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.loading-shade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.7);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

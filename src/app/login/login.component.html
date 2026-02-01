@@ -1,112 +1,39 @@
-<div class="container">
-  <h2 align="center">Login</h2>
-  <br>
-  <br>
-  <form (ngSubmit)="f.form.valid && checkCredentialsAndLogin(f)" #f="ngForm" role="form">
-    <!--User Id-->
-    <div class="form-group row">
-      <label for="userId" class="col-sm-2 col-form-label">User Id</label>
-      <div class="col-sm-10">
-        <input type="text"
-               id="userId"
-               class="form-control"
-               name="userId"
-               placeholder="User Id"
-               [(ngModel)]="loginModel.userId"
-               #userId="ngModel"
-               [ngClass]="{ 'is-invalid': f.submitted && userId.invalid }"
-               required/>
-        <!-- input validation group -->
-        <div *ngIf="f.submitted && userId.invalid" class="invalid-input">
-          <!-- individual validation errors -->
-          <div *ngIf="userId.errors?.required">User Id is required</div>
+<div class="login-container">
+  <mat-card class="login-card">
+    <mat-card-header class="login-header">
+      <div class="logo-container">
+        <mat-icon class="logo-icon" color="primary">security</mat-icon>
+      </div>
+      <mat-card-title class="text-center w-100">ApexTax Compliance</mat-card-title>
+      <mat-card-subtitle class="text-center w-100">Secure Client Access</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form class="login-form">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>User ID</mat-label>
+          <input matInput placeholder="Enter your User ID" [(ngModel)]="userId" name="userid" required>
+          <mat-icon matSuffix>person</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Password</mat-label>
+          <input matInput [type]="hide ? 'password' : 'text'" placeholder="Enter your password" [(ngModel)]="password" name="password" required>
+          <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </mat-form-field>
+
+        <div class="actions">
+          <button mat-raised-button color="primary" class="login-button" (click)="checkLogin()">
+            LOGIN
+          </button>
         </div>
-      </div>
-    </div>
-    <!--Password-->
-    <div class="form-group row">
-      <label for="password" class="col-sm-2 col-form-label">Password</label>
-      <div class="col-sm-10">
-        <input type="password"
-               id="password"
-               class="form-control"
-               name="password"
-               placeholder="Password"
-               [(ngModel)]="loginModel.password"
-               #password="ngModel"
-               [ngClass]="{ 'is-invalid': f.submitted && password.invalid }"
-               required/>
-        <!-- input validation group -->
-        <div *ngIf="f.submitted && password.invalid" class="invalid-input">
-          <!-- individual validation errors -->
-          <div *ngIf="password.errors?.required">Password is required</div>
-          <div [hidden]="!password.errors.validationFailed">Invalid UserId or Password</div>
+
+        <div class="footer-links">
+          <a routerLink="/signup">Don't have an account? Sign Up</a>
         </div>
-      </div>
-    </div>
-    <!--Submit button-->
-    <div class="form-row text-center">
-      <div class="col-12">
-        <button type="submit" class="btn btn-primary" name="loginSubmit" id="loginSubmit">Submit</button>
-      </div>
-    </div>
-  </form>
-  <br>
-  <br>
-  <!--Sign Up button-->
-  <button type="button" class="btn btn-primary btn-block" (click)="onClickOpenForm()">Sign Up</button>
-  <br>
-  <br>
-  <form (ngSubmit)="signUpForm.form.valid && validateAdminAndOpenSignUp(signUpForm)" #signUpForm="ngForm" role="form" [hidden]="!openForm">
-    <h2 align="center">Admin Credentials</h2>
-    <br>
-    <br>
-    <!--Admin User Id-->
-    <div class="form-group row">
-      <label for="adminUserId" class="col-sm-2 col-form-label">Admin User Id</label>
-      <div class="col-sm-10">
-        <input type="text"
-               id="adminUserId"
-               class="form-control"
-               name="adminUserId"
-               placeholder="Admin User Id"
-               [(ngModel)]="adminLoginModel.userId"
-               #adminUserId="ngModel"
-               [ngClass]="{ 'is-invalid': signUpForm.submitted && adminUserId.invalid }"
-               required/>
-        <!-- input validation group -->
-        <div *ngIf="signUpForm.submitted && adminUserId.invalid" class="invalid-input">
-          <!-- individual validation errors -->
-          <div *ngIf="adminUserId.errors?.required">Admin User Id is required</div>
-        </div>
-      </div>
-    </div>
-    <!--Admin Password-->
-    <div class="form-group row">
-      <label for="adminPassword" class="col-sm-2 col-form-label">Admin Password</label>
-      <div class="col-sm-10">
-        <input type="password"
-               id="adminPassword"
-               class="form-control"
-               name="adminPassword"
-               placeholder="Admin Password"
-               [(ngModel)]="adminLoginModel.password"
-               #adminPassword="ngModel"
-               [ngClass]="{ 'is-invalid': signUpForm.submitted && adminPassword.invalid }"
-               required/>
-        <!-- input validation group -->
-        <div *ngIf="signUpForm.submitted && adminPassword.invalid" class="invalid-input">
-          <!-- individual validation errors -->
-          <div *ngIf="adminPassword.errors?.required">Admin Password is required</div>
-          <div [hidden]="!adminPassword.errors.validationFailed">Invalid UserId or Password</div>
-        </div>
-      </div>
-    </div>
-    <!--Submit button-->
-    <div class="form-row text-center">
-      <div class="col-12">
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </div>
-    </div>
-  </form>
+      </form>
+    </mat-card-content>
+  </mat-card>
 </div>

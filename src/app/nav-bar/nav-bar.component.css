@@ -1,14 +1,108 @@
-.title-center {
-    flex: 1 1 auto;
-    text-align: center;
-  }
+.sidenav-container {
+  height: 100vh;
+}
 
-  /* mat-sidenav-container{
-    height: 100%;
-    width: 100%;
-  } */
+/* Sidenav Styling */
+.app-sidenav {
+  width: var(--sidebar-width);
+  background-color: var(--primary-color);
+  color: white;
+  border-right: none;
+}
 
-  mat-sidenav-content {
-    min-height: fit-content;
-    height: 100vh;
+.sidenav-header {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  background-color: var(--primary-dark);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidenav-header .logo {
+  margin-right: 12px;
+  color: var(--accent-color);
+}
+
+.sidenav-header h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: white;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* Navigation List */
+.mat-mdc-nav-list .mat-mdc-list-item {
+  color: rgba(255, 255, 255, 0.7);
+  transition: all 0.2s;
+}
+
+.mat-mdc-nav-list .mat-mdc-list-item:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: white;
+}
+
+.mat-mdc-nav-list .mat-mdc-list-item.active-link {
+  background: linear-gradient(90deg, rgba(0, 150, 136, 0.1) 0%, rgba(0, 150, 136, 0) 100%);
+  border-left: 4px solid var(--accent-color);
+  color: white;
+}
+
+.mat-icon {
+  margin-right: 8px;
+}
+
+/* Expansion Panel in Sidenav */
+.sidenav-expansion {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.sidenav-expansion .mat-expansion-panel-header {
+  padding-left: 16px;
+}
+
+.sidenav-expansion .mat-expansion-panel-header-title {
+  color: rgba(255, 255, 255, 0.7);
+  align-items: center;
+}
+
+.nested-list .mat-mdc-list-item {
+  padding-left: 32px !important;
+  font-size: 0.9rem;
+}
+
+/* Toolbar Styling */
+.main-toolbar {
+  background-color: white;
+  color: var(--text-color);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  z-index: 2;
+  position: relative;
+  height: 64px;
+}
+
+.menu-button {
+  color: var(--text-secondary);
+}
+
+.user-profile button {
+  font-weight: 500;
+  color: var(--primary-color);
+}
+
+/* Content Area */
+.content-wrapper {
+  padding: 24px;
+  background-color: var(--background-color);
+  min-height: calc(100vh - 64px);
+  box-sizing: border-box;
+}
+
+/* Responsive Overrides */
+@media (max-width: 768px) {
+  .app-sidenav {
+    width: 240px;
   }
+}

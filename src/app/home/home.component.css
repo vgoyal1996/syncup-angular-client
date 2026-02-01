@@ -1,4 +1,157 @@
-.mat-list-item-content {
-    text-align: center !important;
-    width: 100%
+/* Dashboard Layout */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.welcome-text h1 {
+    margin-bottom: 0.2rem;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.search-bar {
+    width: 100%;
+    max-width: 400px;
+}
+
+.search-field {
+    width: 100%;
+    font-size: 0.9rem;
+}
+
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.stat-card mat-card-content {
+    display: flex;
+    align-items: center;
+    padding: 1.5rem !important;
+}
+
+.stat-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1.5rem;
+}
+
+.stat-icon mat-icon {
+    font-size: 30px;
+    height: 30px;
+    width: 30px;
+    color: white;
+}
+
+.bg-primary-light {
+    background-color: var(--primary-light);
+}
+
+.bg-accent-light {
+    background-color: var(--accent-light);
+}
+
+.bg-warn-light {
+    background-color: #ffca28;
+}
+
+.bg-warn-light mat-icon {
+    color: #5d4037;
+}
+
+.stat-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-label {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-value {
+    margin: 0.2rem 0;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.stat-change {
+    font-size: 0.8rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.text-success {
+    color: #4caf50;
+}
+
+.text-danger {
+    color: #f44336;
+}
+
+/* Dashboard Content Grid */
+.dashboard-content-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 1.5rem;
+}
+
+.dashboard-card {
+    height: 100%;
+}
+
+.activity-feed {
+    padding: 0.5rem 0;
+}
+
+.activity-item {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.activity-time {
+    min-width: 80px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    text-align: right;
+}
+
+.activity-details {
+    font-size: 0.95rem;
+    color: var(--text-color);
+}
+
+/* Utilities */
+.text-primary {
+    color: var(--primary-color);
+}
+
+.text-accent {
+    color: var(--accent-color);
+}
+
+.text-warn {
+    color: #f44336;
 }
