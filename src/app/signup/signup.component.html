@@ -1,74 +1,55 @@
-<div class="container">
-  <h2 align="center">Sign Up</h2>
-  <br>
-  <br>
-  <form (ngSubmit)="f.form.valid && createAccount()" #f="ngForm" role="form">
-    <!--Sign Up User Id-->
-    <div class="form-group row">
-      <label for="signUpUserId" class="col-sm-2 col-form-label">User Id</label>
-      <div class="col-sm-10">
-        <input type="text"
-               id="signUpUserId"
-               class="form-control"
-               name="signUpUserId"
-               placeholder="User Id"
-               [(ngModel)]="signUpModel.userId"
-               #signUpUserId="ngModel"
-               [ngClass]="{ 'is-invalid': f.submitted && signUpUserId.invalid }"
-               required/>
-        <!-- input validation group -->
-        <div *ngIf="f.submitted && signUpUserId.invalid" class="invalid-input">
-          <!-- individual validation errors -->
-          <div *ngIf="signUpUserId.errors?.required">User Id is required</div>
-        </div>
-      </div>
-    </div>
-    <!--Sign Up Password-->
-    <div class="form-group row">
-      <label for="signUpPassword" class="col-sm-2 col-form-label">Password</label>
-      <div class="col-sm-10">
-        <input type="password"
-               id="signUpPassword"
-               class="form-control"
-               name="signUpPassword"
-               placeholder="Password"
-               [(ngModel)]="signUpModel.password"
-               #signUpPassword="ngModel"
-               [ngClass]="{ 'is-invalid': f.submitted && signUpPassword.invalid }"
-               required/>
-        <!-- input validation group -->
-        <div *ngIf="f.submitted && signUpPassword.invalid" class="invalid-input">
-          <!-- individual validation errors -->
-          <div *ngIf="signUpPassword.errors?.required">Password is required</div>
-        </div>
-      </div>
-    </div>
-    <!--Sign Up Confirm Password-->
-    <div class="form-group row">
-      <label for="signUpConfirmPassword" class="col-sm-2 col-form-label">Retype Password</label>
-      <div class="col-sm-10">
-        <input type="password"
-               id="signUpConfirmPassword"
-               class="form-control"
-               name="signUpConfirmPassword"
-               placeholder="Retype Password"
-               [(ngModel)]="signUpModel.confirmPassword"
-               #signUpConfirmPassword="ngModel"
-               [ngClass]="{ 'is-invalid': f.submitted && signUpConfirmPassword.invalid }"
-               required appConfirmEqualValidator="signUpPassword"/>
-        <!-- input validation group -->
-        <div *ngIf="f.submitted && signUpConfirmPassword.invalid" class="invalid-input">
-          <!-- individual validation errors -->
-          <div *ngIf="signUpConfirmPassword.errors?.required">Password is required</div>
-          <div *ngIf="signUpConfirmPassword.errors?.notEqual">Password does not match</div>
-        </div>
-      </div>
-    </div>
-    <!--Submit button-->
-    <div class="form-row text-center">
-      <div class="col-12">
-        <button type="submit" class="btn btn-primary">Create Account</button>
-      </div>
-    </div>
-  </form>
+<div class="login-container">
+  <mat-card class="login-card">
+    <mat-card-header>
+      <mat-card-title>
+        <h2>ApexTax</h2>
+      </mat-card-title>
+      <mat-card-subtitle>Create your account</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form (ngSubmit)="f.form.valid && createAccount()" #f="ngForm">
+
+        <!-- User ID -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>User ID</mat-label>
+          <input matInput placeholder="Choose a User ID" name="userId" [(ngModel)]="signUpModel.userId"
+            #userId="ngModel" required>
+          <mat-icon matSuffix>person</mat-icon>
+          <mat-error *ngIf="userId.invalid">User ID is required</mat-error>
+        </mat-form-field>
+
+        <!-- Password -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Password</mat-label>
+          <input matInput [type]="'password'" name="password" [(ngModel)]="signUpModel.password" #password="ngModel"
+            required>
+          <mat-icon matSuffix>lock</mat-icon>
+          <mat-error *ngIf="password.invalid">Password is required</mat-error>
+        </mat-form-field>
+
+        <!-- Confirm Password -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Confirm Password</mat-label>
+          <input matInput [type]="'password'" name="confirmPassword" [(ngModel)]="signUpModel.confirmPassword"
+            #confirmPassword="ngModel" required>
+          <mat-icon matSuffix>lock_clock</mat-icon>
+          <mat-error *ngIf="confirmPassword.invalid">Please confirm your password</mat-error>
+          <mat-error *ngIf="signUpModel.password !== signUpModel.confirmPassword && confirmPassword.touched">
+            Passwords do not match
+          </mat-error>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit" class="login-button"
+          [disabled]="f.invalid || signUpModel.password !== signUpModel.confirmPassword">
+          Sign Up
+        </button>
+
+      </form>
+    </mat-card-content>
+
+    <mat-card-actions class="footer-links">
+      <span>Already have an account? <a routerLink="/login">Login here</a></span>
+    </mat-card-actions>
+  </mat-card>
 </div>

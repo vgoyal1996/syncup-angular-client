@@ -1,54 +1,96 @@
+<div class="page-container">
 
-<br><br>
+  <!-- Dashboard Stats -->
+  <div class="stats-container">
+    <div class="stat-card bg-primary">
+      <h3>{{dataSource.data?.length || 0}}</h3>
+      <p>Total Returns</p>
+    </div>
+    <div class="stat-card bg-accent">
+      <h3>{{upcomingCount}}</h3>
+      <p>Upcoming (7 Days)</p>
+    </div>
+    <div class="stat-card bg-warn">
+      <h3>{{overdueCount}}</h3>
+      <p>Overdue / Due Today</p>
+    </div>
+  </div>
 
-<table mat-table class="mat-elevation-z8" [dataSource]="dataSource">
+  <!-- Actions & Search -->
+  <div class="toolbar">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Search Returns</mat-label>
+      <mat-icon matPrefix>search</mat-icon>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Form name or Periodicity">
+    </mat-form-field>
 
-  <ng-container matColumnDef="select">
-    <th mat-header-cell *matHeaderCellDef>
-      <mat-checkbox (change)="$event ? masterToggle() : null"
-                    [checked]="selection.hasValue() && isAllSelected()"
-                    [indeterminate]="selection.hasValue() && !isAllSelected()">
-      </mat-checkbox>
-    </th>
-    <td mat-cell *matCellDef="let row">
-      <mat-checkbox (click)="$event.stopPropagation()"
-                    (change)="toggleSelection(row)"
-                    [checked]="selection.isSelected(row)">
-      </mat-checkbox>
-    </td>
-  </ng-container>
+    <div>
+      <button mat-raised-button color="primary" (click)="openAddDialog()">
+        <mat-icon>add</mat-icon> Add New
+      </button>
+      <button mat-stroked-button color="warn" [disabled]="isButtonDisabled" (click)="openDeleteDialog()" class="ml-2">
+        <mat-icon>delete</mat-icon> Delete
+      </button>
+    </div>
+  </div>
 
-  <ng-container matColumnDef="formName">
-    <th mat-header-cell *matHeaderCellDef> Return Name </th>
-    <td mat-cell *matCellDef="let element"> {{element.getFormName}} </td>
-  </ng-container>
+  <!-- Table -->
+  <div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource">
 
-  <ng-container matColumnDef="periodicity">
-    <th mat-header-cell *matHeaderCellDef> Periodicity </th>
-    <td mat-cell *matCellDef="let element"> {{element.getPeriodicity}} </td>
-  </ng-container>
+      <ng-container matColumnDef="select">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
+            [indeterminate]="selection.hasValue() && !isAllSelected()" color="primary">
+          </mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <mat-checkbox (click)="$event.stopPropagation()" (change)="toggleSelection(row)"
+            [checked]="selection.isSelected(row)" color="primary">
+          </mat-checkbox>
+        </td>
+      </ng-container>
 
-  <ng-container matColumnDef="dueDateOfFiling">
-    <th mat-header-cell *matHeaderCellDef> Due Date of Filing </th>
-    <td mat-cell *matCellDef="let element"> {{element.getDueDateSchedulerSet[0].getDueDateOfFiling}} </td>
-  </ng-container>
+      <ng-container matColumnDef="formName">
+        <th mat-header-cell *matHeaderCellDef> Return Name </th>
+        <td mat-cell *matCellDef="let element"> <strong>{{element.getFormName}}</strong> </td>
+      </ng-container>
 
-  <ng-container matColumnDef="revisedDueDateOfFiling">
-    <th mat-header-cell *matHeaderCellDef> Revised Due Date of Filing </th>
-    <td mat-cell *matCellDef="let element"> {{element.getDueDateSchedulerSet[0].getRevisedDueDateOfFiling}} </td>
-  </ng-container>
+      <ng-container matColumnDef="periodicity">
+        <th mat-header-cell *matHeaderCellDef> Periodicity </th>
+        <td mat-cell *matCellDef="let element"> {{element.getPeriodicity}} </td>
+      </ng-container>
 
-  <ng-container matColumnDef="actions">
-    <th mat-header-cell *matHeaderCellDef>Actions</th>
-    <td mat-cell *matCellDef="let element">
-      <button mat-raised-button color="primary" style="margin: 2px;" (click)="openEditDialog(element)">Edit</button>
-      <button mat-raised-button color="primary" style="margin: 2px;" (click)="openRevisedDueDateDialog(element)">Add Revised Due Date of Return</button>
-    </td>
-  </ng-container>
+      <ng-container matColumnDef="dueDateOfFiling">
+        <th mat-header-cell *matHeaderCellDef> Due Date </th>
+        <td mat-cell *matCellDef="let element">
+          <span class="date-cell" [ngClass]="getDateClass(element.getDueDateSchedulerSet[0].getDueDateOfFiling)">
+            {{element.getDueDateSchedulerSet[0].getDueDateOfFiling}}
+          </span>
+        </td>
+      </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
+      <ng-container matColumnDef="revisedDueDateOfFiling">
+        <th mat-header-cell *matHeaderCellDef> Revised Due Date </th>
+        <td mat-cell *matCellDef="let element"> {{element.getDueDateSchedulerSet[0].getRevisedDueDateOfFiling || '-'}}
+        </td>
+      </ng-container>
 
-<button mat-raised-button color="primary" (click)="openAddDialog()">Add New</button>
-<button mat-raised-button color="warn" [disabled]="isButtonDisabled" (click)="openDeleteDialog()">Delete</button>
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button color="primary" (click)="openEditDialog(element)" matTooltip="Edit">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="accent" (click)="openRevisedDueDateDialog(element)"
+            matTooltip="Add Revised Date">
+            <mat-icon>event_available</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+</div>

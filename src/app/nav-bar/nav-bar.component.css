@@ -1,5 +1,6 @@
 .sidenav-container {
-  height: 100vh;
+  height: calc(100vh - 64px);
+  margin-top: 0;
 }
 
 /* Sidenav Styling */
@@ -96,8 +97,8 @@
 .content-wrapper {
   padding: 24px;
   background-color: var(--background-color);
-  min-height: calc(100vh - 64px);
-  box-sizing: border-box;
+  /* Remove min-height to avoid creating a scroll context */
+  /* The mat-sidenav-content will handle scrolling */
 }
 
 /* Responsive Overrides */

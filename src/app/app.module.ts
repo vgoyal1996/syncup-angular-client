@@ -19,6 +19,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -98,6 +99,7 @@ import { PrintService } from './shared/print/print.service';
     MatNativeDateModule,
     MatSelectModule,
     MatCheckboxModule,
+    MatAutocompleteModule,
     MatSnackBarModule,
     MatSortModule,
     MatPaginatorModule,

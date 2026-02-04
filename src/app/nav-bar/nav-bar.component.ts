@@ -4,6 +4,7 @@ import { NavBarService } from './nav-bar.service';
 import { PrintService } from '../shared/print/print.service';
 import { AuthService } from '../shared/auth/auth.service';
 import { Observable } from 'rxjs';
+import { Router, NavigationStart } from '@angular/router';
 
 @Component({
   selector: 'app-nav-bar',
@@ -28,16 +29,26 @@ export class NavBarComponent implements OnInit {
   constructor(
     public navBar: NavBarService,
     public printService: PrintService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) { }
 
   ngOnInit() {
     this.isLoggedIn$ = this.authService.isLoggedIn$;
+
+    // Auto-close sidenav on navigation (as per user request)
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        if (this._sidenav && this._sidenav.opened) {
+          this._sidenav.close();
+        }
+      }
+    });
   }
 
   toggleSidenav() {
-    if (this.sidenav) {
-      this.sidenav.toggle();
+    if (this._sidenav) {
+      this._sidenav.toggle();
     }
   }
 

@@ -4,16 +4,19 @@
 
 /* Option A: Corporate Trust Theme */
 :root {
-  --primary-color: #1a237e; /* Navy Blue */
+  --primary-color: #1a237e;
+  /* Navy Blue */
   --primary-light: #534bae;
   --primary-dark: #000051;
-  --accent-color: #009688; /* Teal */
+  --accent-color: #009688;
+  /* Teal */
   --accent-light: #52c7b8;
   --accent-dark: #00675b;
-  --background-color: #f5f7fa; /* Light Blue-Grey */
+  --background-color: #f5f7fa;
+  /* Light Blue-Grey */
   --text-color: #212121;
   --text-secondary: #757575;
-  --card-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   --sidebar-width: 250px;
 }
 
@@ -27,7 +30,12 @@ body {
 }
 
 /* Typography override */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: 'Roboto', sans-serif;
   color: var(--primary-color);
   font-weight: 500;
@@ -97,7 +105,103 @@ h1, h2, h3, h4, h5, h6 {
   align-items: center;
 }
 
-.mb-2 { margin-bottom: 1rem; }
-.mt-2 { margin-top: 1rem; }
-.mr-2 { margin-right: 1rem; }
-.ml-2 { margin-left: 1rem; }
+.mb-2 {
+  margin-bottom: 1rem;
+}
+
+.mt-2 {
+  margin-top: 1rem;
+}
+
+.mr-2 {
+  margin-right: 1rem;
+}
+
+.ml-2 {
+  margin-left: 1rem;
+}
+
+/* Snackbar Styles */
+.snackbar-success {
+  background-color: #2e7d32 !important;
+  /* Green 800 */
+  color: white !important;
+}
+
+.snackbar-success .mat-simple-snackbar-action {
+  color: #fff !important;
+}
+
+.snackbar-error {
+  background-color: #d32f2f !important;
+  /* Red 700 */
+  color: white !important;
+}
+
+
+
+/* Fix for transparent menus */
+.mat-mdc-menu-panel {
+  background-color: white !important;
+  min-width: 180px;
+}
+
+.mat-mdc-menu-item {
+  color: var(--text-color);
+}
+
+.mat-mdc-menu-item .mat-icon {
+  color: var(--primary-color);
+}
+
+/* Fix for transparent select and autocomplete panels */
+.mat-mdc-select-panel {
+  background-color: white !important;
+}
+
+.mat-mdc-autocomplete-panel {
+  background-color: white !important;
+}
+
+/* Single Scrollbar Fix: Let mat-sidenav-content be the only scrolling container */
+.mat-drawer-container {
+  overflow: visible !important;
+  /* Don't scroll here */
+}
+
+.mat-drawer-content {
+  overflow: auto !important;
+  /* Scroll here */
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Global Form Styling Improvements --- */
+
+/* 1. Universal Text Padding for Inputs & Textareas */
+input[matInput],
+textarea[matInput] {
+  padding-left: 12px !important;
+  /* Fix: Add breathing room for text */
+}
+
+/* 2. Fix for mat-select (Dropdowns) */
+/* This targets the inner value wrapper to ensure it also has padding */
+.mat-mdc-select-value,
+.mat-mdc-select-trigger {
+  padding-left: 12px !important;
+}
+
+/* 3. Modernize Form Fields (Global) */
+.mat-mdc-form-field-subscript-wrapper {
+  margin-bottom: 0.5em;
+  /* Cleaner spacing */
+}
+
+/* 4. Global Focus Elevation/Glow */
+.mat-mdc-form-field.mat-focused .mat-mdc-form-field-outline,
+.mat-mdc-form-field.mat-focused .mat-mdc-text-field-wrapper {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  background-color: #fafafa;
+  transition: all 0.3s ease;
+}

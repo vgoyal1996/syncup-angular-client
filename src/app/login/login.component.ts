@@ -3,6 +3,7 @@ import { Login } from '../model/Login';
 import { AuthService } from '../shared/auth/auth.service';
 import { Router } from '@angular/router';
 import { NavBarService } from '../nav-bar/nav-bar.service';
+import { NotificationService } from '../shared/notification/notification.service';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,12 @@ export class LoginComponent implements OnInit {
   hide = true;
   dbLoginModel: Login | undefined;
 
-  constructor(private authService: AuthService, private router: Router, private navBar: NavBarService) { }
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private navBar: NavBarService,
+    private notificationService: NotificationService
+  ) { }
 
   ngOnInit() {
     this.navBar.hide();
@@ -36,11 +42,11 @@ export class LoginComponent implements OnInit {
         if (user) {
           this.router.navigateByUrl('/home');
         } else {
-          alert('Invalid User ID or Password');
+          this.notificationService.showError('Invalid User ID or Password');
         }
       },
       err => {
-        alert('Invalid Credentials');
+        this.notificationService.showError('Invalid Credentials');
       }
     );
   }

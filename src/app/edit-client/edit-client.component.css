@@ -1,0 +1,106 @@
+.page-container {
+    height: calc(100vh - 112px);
+    /* 100vh - 64px (header) - 48px (wrapper padding) */
+    display: flex;
+    flex-direction: column;
+    padding: 24px 24px 0 24px;
+    max-width: 1000px;
+    margin: 0 auto;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+/* Header Card: Static/Fixed */
+.header-card {
+    margin-bottom: 24px;
+    border-left: 5px solid var(--primary-color);
+    padding: 16px;
+    flex: 0 0 auto;
+    z-index: 10;
+}
+
+/* Scrollable Form Area */
+.scrollable-content {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 24px;
+}
+
+.header-card mat-card-title {
+    font-size: 1.8rem !important;
+    font-weight: 700 !important;
+    margin-bottom: 8px !important;
+    color: #333;
+}
+
+.header-card mat-card-subtitle {
+    font-size: 1rem !important;
+    margin-top: 4px;
+}
+
+.header-icon {
+    transform: scale(1.5);
+    margin-right: 16px;
+    color: var(--primary-color);
+}
+
+/* Section Cards */
+.section-card {
+    margin-bottom: 24px;
+    padding: 16px;
+}
+
+.section-title {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--primary-color);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+}
+
+.section-title mat-icon {
+    margin-right: 8px;
+    font-size: 20px;
+    height: 20px;
+    width: 20px;
+}
+
+/* Form Layouts */
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    /* Increased gap */
+}
+
+.full-width {
+    flex: 1 1 100%;
+}
+
+.half-width {
+    flex: 1 1 calc(50% - 20px);
+    min-width: 300px;
+}
+
+.third-width {
+    flex: 1 1 calc(33.33% - 20px);
+    min-width: 250px;
+}
+
+.actions-row {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 32px;
+    padding-bottom: 40px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+
+    .half-width,
+    .third-width {
+        flex: 1 1 100%;
+    }
+}

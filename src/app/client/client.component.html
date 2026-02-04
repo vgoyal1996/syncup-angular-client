@@ -1,254 +1,212 @@
-<div class="container">
-  <br><br>
-  <form [formGroup]="clientForm" (ngSubmit)="createNewClient()">
-      <div class="container-fluid p-1 row">
-          <label for="clientName" class="col-sm-2 col-form-label">Client Name</label>
-          <div class="col-sm-10">
-              <input type="text" id="clientName" class="form-control" name="clientName" placeholder="Client Name"
-                  formControlName="clientName" [ngClass]="{ 'is-invalid': submitted && clientName.invalid }" />
-              <div *ngIf="submitted && clientName.invalid" class="invalid-input">
-                  <!-- validation errors -->
-                  <div *ngIf="clientName.errors.required">Client name is required</div>
-              </div>
-          </div>
-      </div>
-      <div class="container-fluid p-1 row">
-          <label for="clientCode" class="col-sm-2 col-form-label">Client Code</label>
-          <div class="col-sm-10">
-              <input type="text" id="clientCode" class="form-control" name="clientCode" placeholder="Client Code"
-                  formControlName="clientCode" [ngClass]="{ 'is-invalid': submitted && clientCode.invalid }" />
-              <div *ngIf="submitted && clientCode.invalid" class="invalid-input">
-                  <!-- validation errors -->
-                  <div *ngIf="clientCode.errors.required">Client code is required</div>
-              </div>
-          </div>
-      </div>
-      <div class="container-fluid p-1 row">
-          <label for="fatherName" class="col-sm-2 col-form-label">Father's Name</label>
-          <div class="col-sm-10">
-              <input type="text" id="fatherName" class="form-control" name="fatherName" placeholder="Father Name"
-                  formControlName="fatherName" [ngClass]="{ 'is-invalid': submitted && fatherName.invalid }" />
-              <div *ngIf="submitted && fatherName.invalid" class="invalid-input">
-                  <!-- validation errors -->
-                  <div *ngIf="fatherName.errors.required">Father's Name is required</div>
-              </div>
-          </div>
-      </div>
-      <div class="container-fluid p-1 row">
-          <label for="flatNo" class="col-sm-2 col-form-label">Flat No.</label>
-          <div class="col-sm-10">
-              <input type="text" id="flatNo" class="form-control" name="flatNo" placeholder="Flat No."
-                  formControlName="flatNo" [ngClass]="{ 'is-invalid': submitted && flatNo.invalid }" />
-              <div *ngIf="submitted && flatNo.invalid" class="invalid-input">
-                  <!-- validation errors -->
-                  <div *ngIf="flatNo.errors.required">Flat No. is required</div>
-              </div>
-          </div>
-      </div>
-      <div class="container-fluid p-1 row">
-          <label for="area" class="col-sm-2 col-form-label">Area</label>
-          <div class="col-sm-10">
-              <input type="text" id="area" class="form-control" name="area" placeholder="Area" formControlName="area"
-                  [ngClass]="{ 'is-invalid': submitted && area.invalid }" />
-              <div *ngIf="submitted && area.invalid" class="invalid-input">
-                  <!-- validation errors -->
-                  <div *ngIf="area.errors.required">Area is required</div>
-              </div>
-          </div>
-      </div>
-      <div class="container-fluid p-1 row">
-          <label for="state" class="col-sm-2 col-form-label">State</label>
-          <div class="col-sm-10">
-            <select class="form-control" id="state" name="state" formControlName="state"
-                [ngClass]="{ 'is-invalid': submitted && state.invalid }">
-                <option value="" selected></option>
-                <option *ngFor="let element of stateList" [value]="element.value" [innerHTML]="element.display"></option>
-            </select>
-            <!-- input validation group -->
-            <div *ngIf="submitted && state.invalid" class="invalid-input">
-                <!-- individual validation errors -->
-                <div *ngIf="state.errors.required">State cannot be blank</div>
+<div class="page-container">
+
+    <!-- Header Card -->
+    <mat-card class="header-card">
+        <mat-card-header>
+            <mat-icon class="header-icon">person_add</mat-icon>
+            <div style="display: flex; flex-direction: column;">
+                <mat-card-title>Add New Client</mat-card-title>
+                <mat-card-subtitle>Enter client details below to register a new client</mat-card-subtitle>
             </div>
-        </div>
-      </div>
-      <div class="container-fluid p-1 row">
-          <label for="city" class="col-sm-2 col-form-label">City</label>
-          <div class="col-sm-10">
-              <input type="text" id="city" class="form-control" name="city" placeholder="City" formControlName="city"
-                  [ngClass]="{ 'is-invalid': submitted && city.invalid }" />
-              <div *ngIf="submitted && city.invalid" class="invalid-input">
-                  <!-- validation errors -->
-                  <div *ngIf="city.errors.required">City is required</div>
-              </div>
-          </div>
-      </div>
-      <div class="container-fluid p-1 row">
-          <label for="pin" class="col-sm-2 col-form-label">PIN Code</label>
-          <div class="col-sm-10">
-              <input type="text" id="pin" class="form-control" name="pin" placeholder="PIN" formControlName="pin"
-                  [ngClass]="{ 'is-invalid': submitted && pin.invalid }" />
-              <div *ngIf="submitted && pin.invalid" class="invalid-input">
-                  <!-- validation errors -->
-                  <div *ngIf="pin.errors.required">PIN Code is required</div>
-              </div>
-          </div>
-      </div>
-      <div class="container-fluid p-1 row">
-          <label for="clientType" class="col-sm-2 col-form-label">Client Type</label>
-          <div class="col-sm-10">
-              <select class="form-control" id="clientType" name="clientType" formControlName="clientType"
-                  [ngClass]="{ 'is-invalid': submitted && clientType.invalid }">
-                  <option value="" selected></option>
-                  <option value="individual">Individual</option>
-                  <option value="company">Company</option>
-                  <option value="llp">LLP</option>
-                  <option value="huf">HUF</option>
-                  <option value="firm">Firm</option>
-                  <option value="association_of_persons">Association Of Persons</option>
-                  <option value="trust">Trust</option>
-                  <option value="body_of_individuals">Body Of Individuals</option>
-                  <option value="local_authority">Local Authority</option>
-                  <option value="artificial_juridical_person">Artificial Juridical Person</option>
-                  <option value="government">Government</option>
-              </select>
-              <!-- input validation group -->
-              <div *ngIf="submitted && clientType.invalid" class="invalid-input">
-                  <!-- individual validation errors -->
-                  <div *ngIf="clientType.errors.required">Client Type cannot be blank</div>
-              </div>
-          </div>
-      </div>
-      <div class="container-fluid p-1 row">
-          <label for="mobile" class="col-sm-2 col-form-label">Mobile No.</label>
-          <div class="col-sm-10">
-              <input type="text" id="mobile" class="form-control" name="mobile" placeholder="Mobile No." formControlName="mobile"
-                  [ngClass]="{ 'is-invalid': submitted && mobile.invalid }" />
-              <div *ngIf="submitted && mobile.invalid" class="invalid-input">
-                  <!-- validation errors -->
-                  <div *ngIf="mobile.errors.required">Mobile No. is required</div>
-                  <div *ngIf="mobile.errors.minlength">Mobile No. not of 10 digits</div>
-                  <div *ngIf="mobile.errors.maxlength">Mobile No. not of 10 digits</div>
-              </div>
-          </div>
-      </div>
-      <div class="container-fluid p-1 row">
-          <label for="emailId" class="col-sm-2 col-form-label">Client Email Id</label>
-          <div class="col-sm-10">
-              <input type="text" id="emailId" class="form-control" name="emailId" placeholder="Client Email Id" formControlName="emailId"
-                  [ngClass]="{ 'is-invalid': submitted && emailId.invalid }" />
-              <div *ngIf="submitted && emailId.invalid" class="invalid-input">
-                  <!-- validation errors -->
-                  <div *ngIf="emailId.errors.required">Client Email Id is required</div>
-                  <div *ngIf="emailId.errors.minlength">Not a valid Email Id</div>
-              </div>
-          </div>
-      </div>
-      <div class="container-fluid p-1 row">
-          <label for="pan" class="col-sm-2 col-form-label">Client PAN No.</label>
-          <div class="col-sm-10">
-              <input type="text" id="pan" class="form-control" name="pan" placeholder="PAN No." formControlName="pan"
-                  [ngClass]="{ 'is-invalid': submitted && pan.invalid }" />
-              <div *ngIf="submitted && pan.invalid" class="invalid-input">
-                  <!-- validation errors -->
-                  <div *ngIf="pan.errors.required">PAN No. is required</div>
-                  <div *ngIf="pan.errors.minlength">PAN No. not of 10 digits</div>
-                  <div *ngIf="pan.errors.maxlength">PAN No. not of 10 digits</div>
-                  <div *ngIf="pan.errors.pattern">Invalid PAN No.</div>
-              </div>
-          </div>
-      </div>
-      <div class="container-fluid p-1 row">
-          <label for="dobOrDoi" class="col-sm-2 col-form-label">Date of birth/Date of Incorporation</label>
-          <div class="col-sm-10">
-              <div class='input-group date' id='datetimepicker1'>
-                  <input type="date" class="form-control" id="dobOrDoi" name="dobOrDoi" formControlName="dobOrDoi"
-                    [ngClass]="{'is-invalid': submitted && dobOrDoi.invalid}"/>
-                </div>
-              <div *ngIf="submitted && dobOrDoi.invalid" class="invalid-input">
-                  <!-- validation errors -->
-                  <div *ngIf="dobOrDoi.errors.required">Date of birth/Date of Incorporation is required</div>
-              </div>
-          </div>
-      </div>
-      <div class="container-fluid p-1 row" [ngClass]="{ 'd-none' : clientType.value==='' || clientType.value==='individual',
-                                                  'd-flex' : clientType.value!=='' && clientType.value!=='individual'}">
-          <label for="responsiblePersonName" class="col-sm-2 col-form-label">Name of Responsible Person</label>
-          <div class="col-sm-10">
-              <input type="text" id="responsiblePersonName" class="form-control" name="responsiblePersonName" placeholder="Name of Responsible Person" 
-              formControlName="responsiblePersonName"
-                  [ngClass]="{ 'is-invalid': submitted && responsiblePersonName.invalid }" />
-              <div *ngIf="submitted && responsiblePersonName.invalid" class="invalid-input">
-                  <!-- validation errors -->
-                  <div *ngIf="responsiblePersonName.errors.required">Name of Responsible Person is required</div>
-              </div>
-          </div>
-      </div>
-      <div class="container-fluid p-1 row" [ngClass]="{ 'd-none' : clientType.value==='' || clientType.value==='individual',
-                                              'd-flex' : clientType.value!=='' && clientType.value!=='individual'}">
-          <label for="responsiblePersonPan" class="col-sm-2 col-form-label">PAN No. of Responsible Person</label>
-          <div class="col-sm-10">
-              <input type="text" id="responsiblePersonPan" class="form-control" name="responsiblePersonPan" placeholder="PAN No. of Responsible Person" 
-              formControlName="responsiblePersonPan"
-                  [ngClass]="{ 'is-invalid': submitted && responsiblePersonPan.invalid }" />
-              <div *ngIf="submitted && responsiblePersonPan.invalid" class="invalid-input">
-                  <!-- validation errors -->
-                  <div *ngIf="responsiblePersonPan.errors.required">PAN No. is required</div>
-                  <div *ngIf="responsiblePersonPan.errors.minlength">PAN No. not of 10 digits</div>
-                  <div *ngIf="responsiblePersonPan.errors.maxlength">PAN No. not of 10 digits</div>
-                  <div *ngIf="responsiblePersonPan.errors.pattern">Invalid PAN No.</div>
-              </div>
-          </div>
-      </div>
-      <div class="container-fluid p-1 row" [ngClass]="{ 'd-none' : clientType.value==='' || clientType.value==='individual',
-                                              'd-flex' : clientType.value!=='' && clientType.value!=='individual'}">
-          <label for="responsiblePersonDob" class="col-sm-2 col-form-label">Date of birth/Date of Incorporation</label>
-          <div class="col-sm-10">
-              <div class='input-group date' id='datetimepicker2'>
-                  <input type="date" class="form-control" id="responsiblePersonDob" name="responsiblePersonDob" formControlName="responsiblePersonDob"
-                    [ngClass]="{'is-invalid': submitted && responsiblePersonDob.invalid}"/>
-                </div>
-              <div *ngIf="submitted && responsiblePersonDob.invalid" class="invalid-input">
-                  <!-- validation errors -->
-                  <div *ngIf="responsiblePersonDob.errors.required">Date of birth/Date of Incorporation is required</div>
-              </div>
-          </div>
-      </div>
-      <div class="container-fluid p-1 row" [ngClass]="{ 'd-none' : clientType.value!=='individual',
-                                                      'd-flex' : clientType.value==='individual'}">
-          <label for="responsiblePersonAadhaar" class="col-sm-2 col-form-label">Aadhaar of Responsible Person</label>
-          <div class="col-sm-10">
-              <input type="text" id="responsiblePersonAadhaar" class="form-control" name="responsiblePersonAadhaar" placeholder="Aadhaar of Responsible Person" 
-              formControlName="responsiblePersonAadhaar"
-                  [ngClass]="{ 'is-invalid': submitted && responsiblePersonAadhaar.invalid }" />
-              <div *ngIf="submitted && responsiblePersonAadhaar.invalid" class="invalid-input">
-                  <!-- validation errors -->
-                  <div *ngIf="responsiblePersonAadhaar.errors.required">Aadhaar No. is required</div>
-                  <div *ngIf="responsiblePersonAadhaar.errors.minlength">Aadhaar No. not of 12 digits</div>
-                  <div *ngIf="responsiblePersonAadhaar.errors.maxlength">Aadhaar No. not of 12 digits</div>
-              </div>
-          </div>
-      </div>
-      <div class="container-fluid p-1 row" [ngClass]="{'d-none' : clientType.value!=='company' && clientType.value!=='llp',
-                                                  'd-flex' : clientType.value==='company'|| clientType.value==='llp'}">
-          <label for="cin" class="col-sm-2 col-form-label">CIN No.</label>
-          <div class="col-sm-10">
-              <input type="text" id="cin" class="form-control" name="cin" placeholder="CIN No." 
-              formControlName="cin"
-                  [ngClass]="{ 'is-invalid': submitted && cin.invalid }" />
-              <div *ngIf="submitted && cin.invalid" class="invalid-input">
-                  <!-- validation errors -->
-                  <div *ngIf="cin.errors.required">CIN No. is required</div>
-                  <div *ngIf="cin.errors.minlength">CIN No. not of 21 digits</div>
-                  <div *ngIf="cin.errors.maxlength">CIN No. not of 21 digits</div>
-              </div>
-          </div>
-      </div>
-      <div class=".container-fluid p-5">
-          <div class="col text-center">
-            <button mat-raised-button type="submit" color="primary">
-              Add Client
-            </button>
-          </div>
-      </div>
-  </form>
+        </mat-card-header>
+    </mat-card>
+
+    <div class="scrollable-content">
+        <form [formGroup]="clientForm" (ngSubmit)="createNewClient()">
+
+            <!-- Basic Info Card -->
+            <mat-card class="section-card">
+                <mat-card-content>
+                    <div class="section-title">
+                        <mat-icon>info</mat-icon> Basic Information
+                    </div>
+                    <div class="form-row">
+                        <mat-form-field appearance="outline" class="half-width">
+                            <mat-label>Client Name</mat-label>
+                            <input matInput formControlName="clientName" placeholder="Ex. John Doe" required>
+                            <mat-error *ngIf="clientName.invalid">Client Name is required</mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="half-width">
+                            <mat-label>Client Code</mat-label>
+                            <input matInput formControlName="clientCode" placeholder="Ex. JD001" required>
+                            <mat-error *ngIf="clientCode.invalid">Client Code is required</mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="half-width">
+                            <mat-label>Father's Name</mat-label>
+                            <input matInput formControlName="fatherName" placeholder="Father's Name" required>
+                            <mat-error *ngIf="fatherName.invalid">Father's Name is required</mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="half-width">
+                            <mat-label>Client Type</mat-label>
+                            <mat-select formControlName="clientType" required>
+                                <mat-option value="individual">Individual</mat-option>
+                                <mat-option value="company">Company</mat-option>
+                                <mat-option value="llp">LLP</mat-option>
+                                <mat-option value="huf">HUF</mat-option>
+                                <mat-option value="firm">Firm</mat-option>
+                                <mat-option value="association_of_persons">Association Of Persons</mat-option>
+                                <mat-option value="trust">Trust</mat-option>
+                                <mat-option value="body_of_individuals">Body Of Individuals</mat-option>
+                                <mat-option value="local_authority">Local Authority</mat-option>
+                                <mat-option value="artificial_juridical_person">Artificial Juridical Person</mat-option>
+                                <mat-option value="government">Government</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="clientType.invalid">Client Type is required</mat-error>
+                        </mat-form-field>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+
+            <!-- Address Card -->
+            <mat-card class="section-card">
+                <mat-card-content>
+                    <div class="section-title">
+                        <mat-icon>home</mat-icon> Address Details
+                    </div>
+                    <div class="form-row">
+                        <mat-form-field appearance="outline" class="third-width">
+                            <mat-label>Flat No.</mat-label>
+                            <input matInput formControlName="flatNo" required>
+                            <mat-error *ngIf="flatNo.invalid">Required</mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="third-width">
+                            <mat-label>Area</mat-label>
+                            <input matInput formControlName="area" required>
+                            <mat-error *ngIf="area.invalid">Required</mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="third-width">
+                            <mat-label>City</mat-label>
+                            <input matInput formControlName="city" required>
+                            <mat-error *ngIf="city.invalid">Required</mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="third-width">
+                            <mat-label>State</mat-label>
+                            <input type="text" placeholder="Pick one" matInput formControlName="state"
+                                [matAutocomplete]="auto">
+                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)">
+                                <mat-option *ngFor="let option of filteredStates | async" [value]="option.value">
+                                    {{option.display}}
+                                </mat-option>
+                            </mat-autocomplete>
+                            <mat-error *ngIf="state.invalid">Required</mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="third-width">
+                            <mat-label>PIN Code</mat-label>
+                            <input matInput formControlName="pin" required>
+                            <mat-error *ngIf="pin.invalid">Required</mat-error>
+                        </mat-form-field>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+
+            <!-- Tax & Contact Card -->
+            <mat-card class="section-card">
+                <mat-card-content>
+                    <div class="section-title">
+                        <mat-icon>receipt_long</mat-icon> Tax & Contact Info
+                    </div>
+                    <div class="form-row">
+                        <mat-form-field appearance="outline" class="half-width">
+                            <mat-label>Mobile No.</mat-label>
+                            <input matInput formControlName="mobile" required>
+                            <mat-error *ngIf="mobile.hasError('required')">Required</mat-error>
+                            <mat-error *ngIf="mobile.hasError('pattern')">Must start with 6-9 and be 10
+                                digits</mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="half-width">
+                            <mat-label>Email ID</mat-label>
+                            <input matInput formControlName="emailId" required>
+                            <mat-error *ngIf="emailId.hasError('required')">Required</mat-error>
+                            <mat-error *ngIf="emailId.hasError('email')">Invalid email</mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="half-width">
+                            <mat-label>PAN No.</mat-label>
+                            <input matInput formControlName="pan" style="text-transform: uppercase" required>
+                            <mat-error *ngIf="pan.invalid">Invalid PAN Format</mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="half-width">
+                            <mat-label>DOI / DOB</mat-label>
+                            <input matInput [matDatepicker]="picker" formControlName="dobOrDoi" required>
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                            <mat-error *ngIf="dobOrDoi.invalid">Required</mat-error>
+                        </mat-form-field>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+
+            <!-- Additional Info Card (Conditional) -->
+            <mat-card class="section-card" *ngIf="clientType.value && clientType.value !== 'individual'">
+                <mat-card-content>
+                    <div class="section-title">
+                        <mat-icon>business</mat-icon> Responsible Person Details
+                    </div>
+                    <div class="form-row">
+                        <mat-form-field appearance="outline" class="half-width">
+                            <mat-label>Name</mat-label>
+                            <input matInput formControlName="responsiblePersonName" required>
+                            <mat-error *ngIf="responsiblePersonName.invalid">Required</mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="half-width">
+                            <mat-label>PAN</mat-label>
+                            <input matInput formControlName="responsiblePersonPan" style="text-transform: uppercase"
+                                required>
+                            <mat-error *ngIf="responsiblePersonPan.invalid">Invalid PAN</mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="half-width">
+                            <mat-label>DOB</mat-label>
+                            <input matInput [matDatepicker]="rpPicker" formControlName="responsiblePersonDob" required>
+                            <mat-datepicker-toggle matSuffix [for]="rpPicker"></mat-datepicker-toggle>
+                            <mat-datepicker #rpPicker></mat-datepicker>
+                            <mat-error *ngIf="responsiblePersonDob.invalid">Required</mat-error>
+                        </mat-form-field>
+
+                        <div class="full-width" *ngIf="clientType.value === 'company' || clientType.value === 'llp'">
+                            <mat-form-field appearance="outline" class="full-width">
+                                <mat-label>CIN No.</mat-label>
+                                <input matInput formControlName="cin" required>
+                                <mat-error *ngIf="cin.invalid">Invalid CIN Format</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+
+            <mat-card class="section-card" *ngIf="clientType.value === 'individual'">
+                <mat-card-content>
+                    <div class="section-title">
+                        <mat-icon>fingerprint</mat-icon> Additional Info
+                    </div>
+                    <div class="form-row">
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Aadhaar No.</mat-label>
+                            <input matInput formControlName="responsiblePersonAadhaar" required>
+                            <mat-error *ngIf="responsiblePersonAadhaar.invalid">Invalid Aadhaar (12 digits, no 0/1
+                                start)</mat-error>
+                        </mat-form-field>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+
+            <div class="actions-row">
+                <button mat-raised-button color="primary" type="submit" [disabled]="clientForm.invalid">
+                    <mat-icon>save</mat-icon> Save Client
+                </button>
+                <button mat-button type="button" routerLink="/client-master">Cancel</button>
+            </div>
+
+        </form>
+    </div>
 </div>

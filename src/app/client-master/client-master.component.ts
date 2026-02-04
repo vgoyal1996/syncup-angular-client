@@ -230,4 +230,28 @@ export class ClientMasterComponent implements OnInit {
     this.isAnyCheckBoxSelected();
   }
 
+  // --- New Action Methods ---
+
+  async copyCredentials(client: Client) {
+    // Determine credentials based on client type or available data.
+    // For now, simpler implementation: Copy Name - PAN - Client Code
+    const textToCopy = `Client: ${client.getName}\nPAN: ${client.getPan}\nCode: ${client.getClientCode}\nMobile: ${client.getMobile}`;
+
+    try {
+      await navigator.clipboard.writeText(textToCopy);
+      // In a real app, use a Snackbar here.
+      alert('Client details copied to clipboard!');
+    } catch (err) {
+      console.error('Failed to copy: ', err);
+      alert('Failed to copy details');
+    }
+  }
+
+  sendReminder(client: Client) {
+    // Stub for future SMS/WhatsApp integration
+    const message = `Reminder sent to ${client.getName} on ${client.getMobile}`;
+    alert(message);
+    console.log(`[Stub] Sending reminder to ${client.getMobile}...`);
+  }
+
 }
