@@ -3,8 +3,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { SyncupApiService } from '../../shared/api/syncup-api.service';
 import { ReturnForm } from '../../model/ReturnForm';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Constants } from 'src/app/shared/global/constants';
+import { NotificationService } from '../../shared/notification/notification.service';
 
 @Component({
   selector: 'app-add-return-form-dialog',
@@ -23,7 +23,7 @@ export class AddReturnFormDialogComponent implements OnInit {
   isNotQuarterly = true;
 
   constructor(private dialogRef: MatDialogRef<AddReturnFormDialogComponent>, private formBuilder: FormBuilder,
-    private apiService: SyncupApiService, @Inject(MAT_DIALOG_DATA) private data: any, private snackBar: MatSnackBar) {
+    private apiService: SyncupApiService, @Inject(MAT_DIALOG_DATA) private data: any, private notificationService: NotificationService) {
     this.returnForm = formBuilder.group({
       returnFormName: this.formBuilder.control('', Validators.required),
       periodicity: this.formBuilder.control('', Validators.required),
@@ -191,15 +191,11 @@ export class AddReturnFormDialogComponent implements OnInit {
     this.apiService.addReturnForm(returnFormModel).subscribe(
       res => {
         console.log(returnFormModel.getFormName + " inserted");
-        this.snackBar.open(returnFormModel.getFormName + " inserted", null, {
-          duration: 3000,
-        });
+        this.notificationService.showSuccess(returnFormModel.getFormName + " inserted");
         this.dialogRef.close(res);
       },
       err => {
-        this.snackBar.open(err, null, {
-          duration: 4000,
-        });
+        this.notificationService.showError(err);
         this.dialogRef.close();
       }
     );

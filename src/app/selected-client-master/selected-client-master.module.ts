@@ -5,6 +5,11 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
 
 import { SelectedClientMasterRoutingModule } from './selected-client-master-routing.module';
 import { SelectedClientMasterComponent } from './selected-client-master.component';
@@ -18,6 +23,7 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SelectedClientDataService } from './selected-client-data.service';
 import { AddReturnInfoDialogComponent } from './add-return-info-dialog/add-return-info-dialog.component';
+import { OverviewComponent } from './overview/overview.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +33,7 @@ import { AddReturnInfoDialogComponent } from './add-return-info-dialog/add-retur
     TdsReturnComponent,
     RocReturnComponent,
     AddReturnInfoDialogComponent,
+    OverviewComponent
   ],
   imports: [
     CommonModule,
@@ -40,6 +47,11 @@ import { AddReturnInfoDialogComponent } from './add-return-info-dialog/add-retur
     MatInputModule,
     MatCheckboxModule,
     ReactiveFormsModule,
+    MatProgressSpinnerModule,
+    MatChipsModule,
+    MatIconModule,
+    MatCardModule,
+    MatDividerModule,
     SelectedClientMasterRoutingModule
   ],
   providers: [

@@ -1,40 +1,88 @@
-<div class="align-top-style">
-  <mat-grid-list cols="4" rowHeight="50px" gutterSize="5px">
-    <mat-grid-tile
-        *ngFor="let tile of headerTiles"
-        [colspan]="tile.cols"
-        [rowspan]="tile.rows"
-        [style.border]="tile.color">
-          {{tile.text}}
-    </mat-grid-tile>
-  </mat-grid-list>
+<div class="loading-overlay" *ngIf="isLoading">
+  <mat-spinner diameter="50"></mat-spinner>
 </div>
-<br>
-<div style="display: flex; justify-content: flex-end;">
-  <button mat-raised-button color="primary" [disabled]="!isReturnCredsArrayNotEmpty" (click)="printReport()">Print</button>
-  <button mat-raised-button color="primary" [disabled]="!isReturnCredsArrayNotEmpty" (click)="getPdf()">Get PDF</button>
-  <button mat-raised-button color="primary" [disabled]="isReturnCredsArrayNotEmpty" (click)="addReturnCredentials()">Add Return Credentials</button>
-  <button mat-raised-button color="primary" [disabled]="!isReturnCredsArrayNotEmpty" (click)="editReturnCredentials()">Edit Return Credentials</button>
+
+<div class="page-header-container" *ngIf="selectedClient">
+  <div class="header-top">
+    <button mat-icon-button (click)="goBack()" class="back-link">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div class="header-titles">
+      <h1 class="client-name">{{selectedClient.getName}}</h1>
+      <div class="client-badges">
+        <mat-chip-set>
+          <mat-chip class="ay-chip" highlighted color="primary">
+            <mat-icon matChipAvatar>calendar_today</mat-icon>
+            {{assessmentYear}}
+          </mat-chip>
+          <mat-chip class="code-chip">
+            <mat-icon matChipAvatar>badge</mat-icon>
+            {{selectedClient.getClientCode}}
+          </mat-chip>
+          <mat-chip class="type-chip">
+            <mat-icon matChipAvatar>category</mat-icon>
+            {{selectedClient.getClientType | titlecase}}
+          </mat-chip>
+        </mat-chip-set>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button mat-flat-button class="action-btn-outline" [disabled]="!isReturnCredsArrayNotEmpty"
+        (click)="printReport()">
+        <mat-icon>print</mat-icon> Print
+      </button>
+      <button mat-flat-button class="action-btn-outline" [disabled]="!isReturnCredsArrayNotEmpty" (click)="getPdf()">
+        <mat-icon>picture_as_pdf</mat-icon> PDF
+      </button>
+      <button mat-raised-button color="accent" (click)="addReturnCredentials()" class="ml-2">
+        <mat-icon>add</mat-icon> Add Credentials
+      </button>
+      <button mat-raised-button color="primary" [disabled]="!isReturnCredsArrayNotEmpty"
+        (click)="editReturnCredentials()" class="ml-2">
+        <mat-icon>edit</mat-icon> Edit Credentials
+      </button>
+    </div>
+  </div>
+
+  <mat-card class="detail-card mt-3">
+    <mat-card-content class="info-grid">
+      <div class="info-item">
+        <span class="label">PAN No:</span>
+        <span class="value">{{selectedClient.getPan}}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Father's Name:</span>
+        <span class="value">{{selectedClient.getFatherName}}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">DOB/DOI:</span>
+        <span class="value">{{selectedClient.getDoiOrDob}}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Mobile No:</span>
+        <span class="value">{{selectedClient.getMobile}}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Email Id:</span>
+        <span class="value">{{selectedClient.getClientEmail}}</span>
+      </div>
+    </mat-card-content>
+  </mat-card>
 </div>
-<br>
-<!-- <div class="container"> -->
-  <nav mat-tab-nav-bar>
-    <a mat-tab-link [hidden]="!link.showLink" *ngFor="let link of navLinks; let i = index;" [routerLink]="link.link"
-      routerLinkActive #rla="routerLinkActive" [active]="activeLinkIndex == i"
-      (click)="activeLinkIndex = i" [routerLinkActiveOptions]="{exact: true}">
-      {{link.label}}
+
+<div class="tab-wrapper" *ngIf="selectedClient">
+  <nav mat-tab-nav-bar [tabPanel]="tabPanel" class="main-tabs">
+    <a mat-tab-link *ngFor="let link of navLinks; let i = index;" [hidden]="!link.showLink" [routerLink]="link.link"
+      routerLinkActive #rla="routerLinkActive" [active]="activeLinkIndex == i" (click)="activeLinkIndex = i"
+      [routerLinkActiveOptions]="{exact: true}">
+      <mat-icon class="tab-icon">{{link.icon}}</mat-icon>
+      <span class="tab-label">{{link.label}}</span>
     </a>
   </nav>
-  <router-outlet></router-outlet>
-<!-- </div> -->
-<div class="align-bottom-style">
-  <mat-grid-list cols="4" rowHeight="50px" gutterSize="5px">
-    <mat-grid-tile
-        *ngFor="let tile of footerTiles"
-        [colspan]="tile.cols"
-        [rowspan]="tile.rows"
-        [style.border]="tile.color">
-          {{tile.text}}
-    </mat-grid-tile>
-  </mat-grid-list>    
+
+  <mat-tab-nav-panel #tabPanel>
+    <div class="tab-content">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-tab-nav-panel>
 </div>

@@ -80,14 +80,20 @@ export class GstReturnComponent implements OnInit {
         if (flag == true) {
           this.dataTransferService.currentReturnCredentialsArrayForEdit.subscribe(creds => {
             this.gstCreds = creds.filter(cred => cred.getReturnType == 'gst');
-            let i = 0;
-            this.gstCreds.forEach(gstCred => {
-              this.addReturnForm(gstCred, i);
-              if (i == 0) {
-                this.removeReturnForm(0);
-              }
-              i++;
-            });
+            if (this.gstCreds && this.gstCreds.length > 0) {
+              let i = 0;
+              this.gstCreds.forEach(gstCred => {
+                this.addReturnForm(gstCred, i);
+                if (i == 0) {
+                  this.removeReturnForm(0);
+                }
+                i++;
+              });
+            } else {
+              this.editFlag = false;
+              this.addReturnForm();
+              this.removeReturnForm(0);
+            }
           });
         } else {
           this.addReturnForm();
@@ -164,14 +170,19 @@ export class GstReturnComponent implements OnInit {
 
   saveReturnInfo(): void {
     if (this.gstReturnForm.invalid) {
-      alert("GST Return Form is invalid");
+      this.snackBar.open("Please provide valid GST credentials", null, { duration: 3000 });
       return;
     }
     for (let i = 0; i < (<FormArray>this.gstReturnForm.get('returnForms')).controls.length; i++) {
+      const form = (<FormArray>this.gstReturnForm.get('returnForms')).controls[i];
+      if (form.invalid) {
+        this.snackBar.open("Please provide valid GST credentials", null, { duration: 3000 });
+        return;
+      }
       if (this.applicableReturnFormsService.getSelectedReturnForms == undefined ||
         this.applicableReturnFormsService.getSelectedReturnForms('gst' + i) == undefined ||
         this.applicableReturnFormsService.getSelectedReturnForms('gst' + i).length === 0) {
-        alert("Applicable return forms not selected for Form No. " + (i + 1));
+        this.snackBar.open("Please select at least one applicable form", null, { duration: 3000 });
         return;
       }
     }

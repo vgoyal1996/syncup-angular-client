@@ -48,14 +48,21 @@ export class RocReturnComponent implements OnInit {
         if (flag == true) {
           this.dataTransferService.currentReturnCredentialsArrayForEdit.subscribe(creds => {
             this.rocCred = creds.filter(cred => cred.getReturnType == 'roc')[0];
-            this.rocReturnForm.setValue({
-              rocUserName: this.rocCred.getUserId,
-              rocPassword: this.rocCred.getPassword
-            });
-            this.rocCred.getReturnFormsList.forEach(clientReturnForm => {
-              this.selection.select(this.dataSource.find(form => form.getFormName == clientReturnForm.getReturnForm.getFormName));
-              this.applicableReturnFormsService.addSelectedReturnForm('roc', clientReturnForm.getReturnForm.getFormName);
-            });
+            if (this.rocCred) {
+              this.rocReturnForm.setValue({
+                rocUserName: this.rocCred.getUserId || '',
+                rocPassword: this.rocCred.getPassword || ''
+              });
+              if (this.rocCred.getReturnFormsList) {
+                this.rocCred.getReturnFormsList.forEach(clientReturnForm => {
+                  const matchingForm = this.dataSource.find(form => form.getFormName == clientReturnForm.getReturnForm.getFormName);
+                  if (matchingForm) this.selection.select(matchingForm);
+                  this.applicableReturnFormsService.addSelectedReturnForm('roc', clientReturnForm.getReturnForm.getFormName);
+                });
+              }
+            } else {
+              this.editFlag = false;
+            }
           });
         }
       });
@@ -102,11 +109,13 @@ export class RocReturnComponent implements OnInit {
   addRocReturnInfo() {
     this.submitted = true;
     if (this.rocReturnForm.invalid) {
+      this.snackBar.open("Please provide valid MCA credentials", null, { duration: 3000 });
       return;
     }
     if (this.applicableReturnFormsService.getSelectedReturnForms == undefined ||
       this.applicableReturnFormsService.getSelectedReturnForms('roc') == undefined ||
       this.applicableReturnFormsService.getSelectedReturnForms('roc').length === 0) {
+      this.snackBar.open("Please select at least one applicable form", null, { duration: 3000 });
       return;
     }
     console.log(this.rocReturnForm);

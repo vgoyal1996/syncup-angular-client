@@ -1,9 +1,79 @@
-.title-center {
-  flex: 1 1 auto;
-  text-align: center;
+/* Delete Dialog — Clean, Professional Design */
+
+/* Header with Danger Theme */
+h1.title-center {
+  font-size: 1.3rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  background-color: #d32f2f;
+  color: white;
+  margin: -24px -24px 0 -24px;
+  padding: 20px 32px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 
-mat-dialog-actions, mat-dialog-content {
+h1.title-center mat-icon {
+  font-size: 24px;
+  height: 24px;
+  width: 24px;
+}
+
+/* Content Area */
+[mat-dialog-content] {
+  padding: 0 32px;
+  overflow: hidden;
+}
+
+.warning-text {
+  font-size: 1rem;
+  color: #333;
+  margin-top: 24px;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+/* Styled List */
+.delete-list {
+  background-color: #fff0f0;
+  border: 1px solid #ffcdd2;
+  border-radius: 8px;
+  padding: 4px 16px;
+  margin-bottom: 8px;
+}
+
+.delete-item {
   display: flex;
-  justify-content: center;
+  align-items: center;
+  padding: 12px 8px;
+  border-bottom: 1px solid rgba(211, 47, 47, 0.1);
+}
+
+.delete-item:last-child {
+  border-bottom: none;
+}
+
+.delete-item mat-icon {
+  color: #d32f2f;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.delete-item-text {
+  font-weight: 500;
+  font-size: 1rem;
+  color: #c62828;
+}
+
+/* Action Buttons */
+[mat-dialog-actions] {
+  justify-content: flex-end;
+  padding: 16px 32px;
+  margin: 16px -24px -24px -24px;
+  border-top: 1px solid #eee;
+  background-color: #fafafa;
+  gap: 16px;
 }

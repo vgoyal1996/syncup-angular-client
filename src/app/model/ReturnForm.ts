@@ -18,21 +18,37 @@ export class ReturnForm {
   private fourthQuarterMonthOccurrence: number;
   private dueDateSchedulerSet: DueDateScheduler[];
 
-  constructor() {}
+  constructor() { }
 
   mapResponseToReturnForm(response) {
     this.formId = response.formId;
     this.formName = response.formName;
     this.returnType = response.returnType;
     this.periodicity = response.periodicity;
+
+    // Map all occurrence fields
+    this.monthlyDayOccurrence = response.monthlyDayOccurrence;
+    this.yearlyDayOccurrence = response.yearlyDayOccurrence;
+    this.yearlyMonthOccurrence = response.yearlyMonthOccurrence;
+    this.firstQuarterDayOccurrence = response.firstQuarterDayOccurrence;
+    this.firstQuarterMonthOccurrence = response.firstQuarterMonthOccurrence;
+    this.secondQuarterDayOccurrence = response.secondQuarterDayOccurrence;
+    this.secondQuarterMonthOccurrence = response.secondQuarterMonthOccurrence;
+    this.thirdQuarterDayOccurrence = response.thirdQuarterDayOccurrence;
+    this.thirdQuarterMonthOccurrence = response.thirdQuarterMonthOccurrence;
+    this.fourthQuarterDayOccurrence = response.fourthQuarterDayOccurrence;
+    this.fourthQuarterMonthOccurrence = response.fourthQuarterMonthOccurrence;
+
     this.dueDateSchedulerSet = [];
-    response.dueDateSchedulerSet.forEach(scheduler => {
-      let dueDateScheduler = new DueDateScheduler();
-      if (scheduler.toBeDelete == 0) {
-        dueDateScheduler.mapResponseToDueDateScheduler(scheduler);
-        this.dueDateSchedulerSet.push(dueDateScheduler);
-      }
-    });
+    if (response.dueDateSchedulerSet) {
+      response.dueDateSchedulerSet.forEach(scheduler => {
+        let dueDateScheduler = new DueDateScheduler();
+        if (scheduler.toBeDelete == 0) {
+          dueDateScheduler.mapResponseToDueDateScheduler(scheduler);
+          this.dueDateSchedulerSet.push(dueDateScheduler);
+        }
+      });
+    }
   }
 
   get getFormId(): number {

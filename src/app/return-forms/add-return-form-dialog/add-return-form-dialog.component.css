@@ -1,11 +1,119 @@
-.title-center {
-    flex: 1 1 auto;
-    text-align: center;
-  }
-mat-form-field {
-    width: 100%;
-}
-mat-dialog-actions {
+/* Dialog Layout */
+.form-row {
     display: flex;
-    justify-content: center;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin-bottom: 24px;
+    /* Increased separation */
+    align-items: flex-start;
+}
+
+.full-width {
+    flex: 1 1 100%;
+}
+
+.half-width {
+    flex: 1 1 calc(50% - 12px);
+}
+
+.third-width {
+    flex: 1 1 calc(33.33% - 16px);
+}
+
+/* Header Redesign */
+h1.title-center {
+    font-size: 1.4rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+
+    /* Branding */
+    background-color: var(--primary-color);
+    color: white;
+
+    /* Full Width Hack */
+    margin: -24px -24px 0 -24px;
+    padding: 24px 40px;
+
+    /* visual polish */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: block;
+    position: relative;
+    z-index: 100;
+    /* Keep on top */
+}
+
+/* Section Title */
+h5 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin: 16px 0 16px 0;
+    width: 100%;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 8px;
+    border-left: none;
+    /* Removed the accent border for clean look */
+    padding-left: 0;
+}
+
+.occurrence-text {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    color: #555;
+    height: 56px;
+    padding-top: 4px;
+    font-weight: 500;
+}
+
+[mat-dialog-content] {
+    overflow: auto;
+    /* Restore scroll */
+    max-height: 65vh;
+    /* Ensure predictable height */
+    padding-bottom: 24px;
+    padding-top: 24px;
+    /* Standard padding */
+}
+
+/* Force the first row down to clear header intersection */
+.form-row:first-of-type {
+    margin-top: 48px;
+}
+
+[mat-dialog-actions] {
+    justify-content: flex-end;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #eee;
+    margin-left: -24px;
+    margin-right: -24px;
+    padding-right: 24px;
+    background-color: #fafafa;
+    /* Subtle footer distinction */
+    padding-bottom: 16px;
+    margin-bottom: -24px;
+    /* Fill bottom space */
+}
+
+/* --- Input Fixes --- */
+
+/* 1. Ensure Text is not stuck to border */
+::ng-deep input.mat-mdc-input-element {
+    padding-left: 12px !important;
+    /* Restore padding */
+}
+
+/* 2. Fix Select Trigger alignment */
+::ng-deep .mat-mdc-select-trigger {
+    padding-left: 12px !important;
+}
+
+/* 3. Ensure label doesn't overlap text if padding is large */
+::ng-deep .mat-mdc-form-field-infix {
+    padding-top: 16px !important;
+    padding-bottom: 16px !important;
+    min-height: 56px;
 }

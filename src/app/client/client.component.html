@@ -130,7 +130,8 @@
 
                         <mat-form-field appearance="outline" class="half-width">
                             <mat-label>PAN No.</mat-label>
-                            <input matInput formControlName="pan" style="text-transform: uppercase" required>
+                            <input matInput formControlName="pan" style="text-transform: uppercase"
+                                (input)="forceUppercase('pan')" required>
                             <mat-error *ngIf="pan.invalid">Invalid PAN Format</mat-error>
                         </mat-form-field>
 
@@ -138,7 +139,7 @@
                             <mat-label>DOI / DOB</mat-label>
                             <input matInput [matDatepicker]="picker" formControlName="dobOrDoi" required>
                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                            <mat-datepicker #picker></mat-datepicker>
+                            <mat-datepicker #picker panelClass="custom-datepicker-panel"></mat-datepicker>
                             <mat-error *ngIf="dobOrDoi.invalid">Required</mat-error>
                         </mat-form-field>
                     </div>
@@ -161,7 +162,7 @@
                         <mat-form-field appearance="outline" class="half-width">
                             <mat-label>PAN</mat-label>
                             <input matInput formControlName="responsiblePersonPan" style="text-transform: uppercase"
-                                required>
+                                (input)="forceUppercase('responsiblePersonPan')" required>
                             <mat-error *ngIf="responsiblePersonPan.invalid">Invalid PAN</mat-error>
                         </mat-form-field>
 
@@ -169,7 +170,7 @@
                             <mat-label>DOB</mat-label>
                             <input matInput [matDatepicker]="rpPicker" formControlName="responsiblePersonDob" required>
                             <mat-datepicker-toggle matSuffix [for]="rpPicker"></mat-datepicker-toggle>
-                            <mat-datepicker #rpPicker></mat-datepicker>
+                            <mat-datepicker #rpPicker panelClass="custom-datepicker-panel"></mat-datepicker>
                             <mat-error *ngIf="responsiblePersonDob.invalid">Required</mat-error>
                         </mat-form-field>
 

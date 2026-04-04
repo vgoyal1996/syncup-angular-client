@@ -75,9 +75,12 @@ export class SyncupApiService {
     );
   }
 
-  updateReturnFormByReturnTypeAndReturnName(returnType: string, returnName: string, newReturnForm: ReturnForm): Observable<ReturnForm> {
-    return this.http.put(this.UPDATE_RETURN_FORM_BY_RETURN_TYPE_AND_RETURN_NAME + returnType + `/` + returnName, newReturnForm).pipe(
+  private UPDATE_RETURN_FORM_URL = `${this.BASE_URL}/returnform/update/`;
+
+  updateReturnForm(id: number, newReturnForm: ReturnForm): Observable<ReturnForm> {
+    return this.http.put(this.UPDATE_RETURN_FORM_URL + id, newReturnForm).pipe(
       map(response => {
+        if (!response) return null;
         let returnForm = new ReturnForm();
         returnForm.mapResponseToReturnForm(response);
         return returnForm;

@@ -14,10 +14,24 @@ import { FormControl, FormGroupDirective, NgForm, Validators, FormGroup, FormBui
   standalone: false
 })
 export class AssessmentYearDialogComponent implements OnInit {
-  assessmentYears = [
-    { value: '2019-20', viewValue: '2019-20' },
-    { value: '2020-21', viewValue: '2020-21' }
-  ];
+  assessmentYears: { value: string, viewValue: string }[] = [];
+
+  generateAssessmentYears() {
+    const currentYear = new Date().getFullYear();
+    const currentMonth = new Date().getMonth(); // 0-indexed, Jan is 0
+
+    // In India, AY starts from April. 
+    // If it's April or later, the current AY is currentYear-(currentYear+1)
+    // If it's before April, the current AY is (currentYear-1)-currentYear
+    let startYear = (currentMonth >= 3) ? currentYear : currentYear - 1;
+
+    // Provide 5 years including the current one
+    for (let i = 0; i < 5; i++) {
+      const year = startYear - i;
+      const ayString = `${year}-${(year + 1).toString().slice(-2)}`;
+      this.assessmentYears.push({ value: ayString, viewValue: ayString });
+    }
+  }
   selectedClient: Client;
   selectForm: FormGroup;
 
@@ -34,6 +48,7 @@ export class AssessmentYearDialogComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.generateAssessmentYears();
   }
 
   onNoClick(): void {

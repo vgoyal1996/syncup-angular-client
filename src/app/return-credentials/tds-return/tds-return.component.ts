@@ -51,17 +51,25 @@ export class TdsReturnComponent implements OnInit {
         if (flag == true) {
           this.dataTransferService.currentReturnCredentialsArrayForEdit.subscribe(creds => {
             this.tdsCred = creds.filter(cred => cred.getReturnType == 'tds')[0];
-            this.tdsReturnForm.setValue({
-              tdsTanNo: this.tdsCred.getTanNo,
-              tdsUserName: this.tdsCred.getUserId,
-              tdsPassword: this.tdsCred.getPassword,
-              tracesTdsPassword: this.tdsCred.getTracesPassword,
-              tracesTdsUserName: this.tdsCred.getTracesUserId
-            });
-            this.tdsCred.getReturnFormsList.forEach(clientReturnForm => {
-              this.selection.select(this.dataSource.find(form => form.getFormName == clientReturnForm.getReturnForm.getFormName));
-              this.applicableReturnFormsService.addSelectedReturnForm('tds', clientReturnForm.getReturnForm.getFormName);
-            });
+            if (this.tdsCred) {
+              this.tdsReturnForm.setValue({
+                tdsTanNo: this.tdsCred.getTanNo || '',
+                tdsUserName: this.tdsCred.getUserId || '',
+                tdsPassword: this.tdsCred.getPassword || '',
+                tracesTdsPassword: this.tdsCred.getTracesPassword || '',
+                tracesTdsUserName: this.tdsCred.getTracesUserId || ''
+              });
+              if (this.tdsCred.getReturnFormsList) {
+                this.tdsCred.getReturnFormsList.forEach(clientReturnForm => {
+                  const matchingForm = this.dataSource.find(form => form.getFormName == clientReturnForm.getReturnForm.getFormName);
+                  if (matchingForm) this.selection.select(matchingForm);
+                  this.applicableReturnFormsService.addSelectedReturnForm('tds', clientReturnForm.getReturnForm.getFormName);
+                });
+              }
+            } else {
+              // Switch off edit flag if no credentials exist for this specific tab yet
+              this.editFlag = false;
+            }
           });
         }
       });
@@ -120,11 +128,13 @@ export class TdsReturnComponent implements OnInit {
   addTdsReturnInfo() {
     this.submitted = true;
     if (this.tdsReturnForm.invalid) {
+      this.snackBar.open("Please provide valid username and password", null, { duration: 3000 });
       return;
     }
     if (this.applicableReturnFormsService.getSelectedReturnForms == undefined ||
       this.applicableReturnFormsService.getSelectedReturnForms('tds') == undefined ||
       this.applicableReturnFormsService.getSelectedReturnForms('tds').length === 0) {
+      this.snackBar.open("Please select at least one applicable form", null, { duration: 3000 });
       return;
     }
     console.log(this.tdsReturnForm.value);

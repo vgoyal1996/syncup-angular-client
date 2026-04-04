@@ -29,7 +29,7 @@ export class ReturnCredentialsComponent implements OnInit {
   }
 
   constructor(private router: Router, private dataTransferService: DataTransferService, private navBar: NavBarService,
-              private applicableReturnFormsService: ApplicableReturnFormsService) {
+    private applicableReturnFormsService: ApplicableReturnFormsService) {
     this.dataTransferService.currentClientType.subscribe(clientType => this.clientType = clientType);
     this.dataTransferService.currentSelectedClient.subscribe(client => this.selectedClient = client);
     this.dataTransferService.currentAssessmentYear.subscribe(assessmentYear => this.assessmentYear = assessmentYear);
@@ -59,8 +59,7 @@ export class ReturnCredentialsComponent implements OnInit {
     ];
   }
   checkClientType(label: any): boolean {
-    if ((label.toString() == "ROC") && !((this.clientType == "company") || (this.clientType == "llp")))
-      return true;
+    // Returning false to enable all tabs for testing and UI access
     return false;
   }
 

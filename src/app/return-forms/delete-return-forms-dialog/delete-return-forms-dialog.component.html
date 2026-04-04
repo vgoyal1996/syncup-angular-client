@@ -1,11 +1,24 @@
-<h1 mat-dialog-title class="title-center">Delete Return Forms</h1>
+<h1 mat-dialog-title class="title-center">
+  <mat-icon>warning</mat-icon> Delete Return Forms
+</h1>
 <div mat-dialog-content>
-  <mat-label>Do you want to Delete the Following Forms?</mat-label>
-  <mat-list role="list">
-    <mat-list-item *ngFor="let row of rowList; let i = index;">{{i+1 + '. '}} {{row.oldFormName}}</mat-list-item>
-  </mat-list>
+  <p class="warning-text">
+    Are you sure you want to delete the following <strong>{{rowList.length}}</strong> return form(s)?
+    <br>
+    <span style="font-size: 0.9rem; color: #666;">This action cannot be undone.</span>
+  </p>
+
+  <div class="delete-list">
+    <div *ngFor="let row of rowList" class="delete-item">
+      <mat-icon>delete_outline</mat-icon>
+      <span class="delete-item-text">{{row.oldFormName}}</span>
+    </div>
+  </div>
 </div>
-<div mat-dialog-actions align="center">
-  <button mat-raised-button type="button" (click)="onNoClick()">No</button>
-  <button mat-raised-button cdkFocusInitial (click)="deleteReturnForms()">Yes</button>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-raised-button color="warn" (click)="deleteReturnForms()">
+    <mat-icon style="margin-right: 4px;">delete</mat-icon> Delete Permanently
+  </button>
 </div>

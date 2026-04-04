@@ -1,43 +1,139 @@
 <h1 mat-dialog-title class="title-center">Edit Return Form</h1>
-<form [formGroup]="returnForm" (ngSubmit)="editReturnForm()">
-  <div class="form-group">
-    <div mat-dialog-content>
-      <mat-form-field appearance="fill">
+<div mat-dialog-content>
+  <form [formGroup]="returnForm" (ngSubmit)="editReturnForm()">
+
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="half-width">
         <mat-label>Return Form Name</mat-label>
-        <input matInput type="text" formControlName="returnFormName">
-        <mat-error *ngIf="returnFormName.hasError('required')">
-          Form name is <strong>required</strong>
-        </mat-error>
+        <input matInput formControlName="returnFormName">
+        <mat-error *ngIf="returnFormName.hasError('required')">Required</mat-error>
       </mat-form-field>
-      <br><br>
-      <mat-form-field appearance="fill">
-        <mat-label>Section</mat-label>
-        <mat-select formControlName="returnType">
-          <mat-option value="incomeTax">Income Tax</mat-option>
-          <mat-option value="tds">TDS</mat-option>
-          <mat-option value="gst">GST</mat-option>
-          <mat-option value="roc">ROC</mat-option>
-        </mat-select>
-        <mat-error *ngIf="returnType.hasError('required')">
-          Section is <strong>required</strong>
-        </mat-error>
-      </mat-form-field>
-      <br><br>
-      <mat-form-field appearance="fill">
-        <mat-label>Select</mat-label>
-        <mat-select formControlName="periodicity">
+
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Periodicity</mat-label>
+        <mat-select formControlName="periodicity" (selectionChange)="getFormPeriodicityAndSetOptionalValidators()">
           <mat-option value="monthly">Monthly</mat-option>
           <mat-option value="quarterly">Quarterly</mat-option>
           <mat-option value="yearly">Yearly</mat-option>
         </mat-select>
-        <mat-error *ngIf="periodicity.hasError('required')">
-          Form periodicity is <strong>required</strong>
-        </mat-error>
+        <mat-error *ngIf="periodicity.hasError('required')">Required</mat-error>
       </mat-form-field>
     </div>
-    <div mat-dialog-actions align="center">
-      <button mat-raised-button type="button" (click)="onNoClick()">Cancel</button>
-      <button mat-raised-button cdkFocusInitial>Edit</button>
+
+    <!-- Monthly Occurrence -->
+    <div *ngIf="!isNotMonthly">
+      <h5>Occurrence Details</h5>
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="half-width">
+          <mat-label>Due Day</mat-label>
+          <mat-select formControlName="monthlyDayOccurrence">
+            <mat-option *ngFor="let day of dayList" value="{{day}}">{{day}}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="monthlyDayOccurrence.invalid">Required</mat-error>
+        </mat-form-field>
+        <div class="half-width occurrence-text">
+          days from end of month
+        </div>
+      </div>
     </div>
-  </div>
-</form>
+
+    <!-- Yearly Occurrence -->
+    <div *ngIf="!isNotYearly">
+      <h5>Yearly Schedule</h5>
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="third-width">
+          <mat-label>Month</mat-label>
+          <mat-select formControlName="yearlyMonthOccurrence">
+            <mat-option *ngFor="let month of monthList" value="{{month}}">{{month}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="third-width">
+          <mat-label>Day</mat-label>
+          <mat-select formControlName="yearlyDayOccurrence">
+            <mat-option *ngFor="let day of dayList" value="{{day}}">{{day}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div class="third-width occurrence-text">from end of year</div>
+      </div>
+    </div>
+
+    <!-- Quarterly Occurrence -->
+    <div *ngIf="!isNotQuarterly">
+      <h5>Quarterly Schedule</h5>
+      <!-- Q1 -->
+      <div class="form-row">
+        <div class="full-width" style="font-size: 0.9rem; font-weight: 500;">Q1 (Apr-Jun)</div>
+        <mat-form-field appearance="outline" class="third-width">
+          <mat-label>Add Months</mat-label>
+          <mat-select formControlName="firstQuarterMonthOccurrence">
+            <mat-option *ngFor="let month of monthList" value="{{month}}">{{month}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="third-width">
+          <mat-label>Day</mat-label>
+          <mat-select formControlName="firstQuarterDayOccurrence">
+            <mat-option *ngFor="let day of dayList" value="{{day}}">{{day}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!-- Q2 -->
+      <div class="form-row">
+        <div class="full-width" style="font-size: 0.9rem; font-weight: 500;">Q2 (Jul-Sep)</div>
+        <mat-form-field appearance="outline" class="third-width">
+          <mat-label>Add Months</mat-label>
+          <mat-select formControlName="secondQuarterMonthOccurrence">
+            <mat-option *ngFor="let month of monthList" value="{{month}}">{{month}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="third-width">
+          <mat-label>Day</mat-label>
+          <mat-select formControlName="secondQuarterDayOccurrence">
+            <mat-option *ngFor="let day of dayList" value="{{day}}">{{day}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!-- Q3 -->
+      <div class="form-row">
+        <div class="full-width" style="font-size: 0.9rem; font-weight: 500;">Q3 (Oct-Dec)</div>
+        <mat-form-field appearance="outline" class="third-width">
+          <mat-label>Add Months</mat-label>
+          <mat-select formControlName="thirdQuarterMonthOccurrence">
+            <mat-option *ngFor="let month of monthList" value="{{month}}">{{month}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="third-width">
+          <mat-label>Day</mat-label>
+          <mat-select formControlName="thirdQuarterDayOccurrence">
+            <mat-option *ngFor="let day of dayList" value="{{day}}">{{day}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!-- Q4 -->
+      <div class="form-row">
+        <div class="full-width" style="font-size: 0.9rem; font-weight: 500;">Q4 (Jan-Mar)</div>
+        <mat-form-field appearance="outline" class="third-width">
+          <mat-label>Add Months</mat-label>
+          <mat-select formControlName="fourthQuarterMonthOccurrence">
+            <mat-option *ngFor="let month of monthList" value="{{month}}">{{month}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="third-width">
+          <mat-label>Day</mat-label>
+          <mat-select formControlName="fourthQuarterDayOccurrence">
+            <mat-option *ngFor="let day of dayList" value="{{day}}">{{day}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div mat-dialog-actions>
+      <button mat-button type="button" (click)="onNoClick()">Cancel</button>
+      <button mat-raised-button color="primary" type="submit">Update Return</button>
+    </div>
+
+  </form>
+</div>

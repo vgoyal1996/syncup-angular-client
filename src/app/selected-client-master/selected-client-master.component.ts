@@ -14,6 +14,7 @@ import { PdfmakeService } from 'ng-pdf-make/pdfmake/pdfmake.service';
 import { Cell, Row, Table } from 'ng-pdf-make/objects/table';
 import { ReturnForm } from '../model/ReturnForm';
 import { ClientReturnForms } from '../model/ClientReturnForms';
+import { NotificationService } from '../shared/notification/notification.service';
 
 export class Tile {
   text: string;
@@ -42,45 +43,59 @@ export class SelectedClientMasterComponent implements OnInit {
   headerTiles: Tile[] = [];
   footerTiles: Tile[] = [];
   selected = new FormControl(0);
-  isReturnCredsArrayNotEmpty = true;
+  isReturnCredsArrayNotEmpty = false;
   navLinks;
   activeLinkIndex = -1;
+  isLoading = false;
 
 
   constructor(private navBar: NavBarService, private dataTransferService: DataTransferService,
     private apiService: SyncupApiService, private router: Router, private dataService: SelectedClientDataService,
-    private activatedRoute: ActivatedRoute, private printService: PrintService, private pdfmake: PdfmakeService) {
+    private activatedRoute: ActivatedRoute, private printService: PrintService, private pdfmake: PdfmakeService,
+    private notificationService: NotificationService) {
     this.navLinks = [
+      {
+        label: 'Overview',
+        link: '/selected-client-master/overview',
+        index: 0,
+        showLink: true,
+        icon: 'dashboard'
+      },
       {
         label: 'Income Tax',
         link: '/selected-client-master/incomeTax',
-        index: 0,
-        showLink: false
+        index: 1,
+        showLink: false,
+        icon: 'description'
       },
       {
         label: 'TDS',
         link: '/selected-client-master/tds',
-        index: 1,
-        showLink: false
+        index: 2,
+        showLink: false,
+        icon: 'account_balance'
       },
       {
         label: 'GST',
         link: '/selected-client-master/gst',
-        index: 2,
-        showLink: false
+        index: 3,
+        showLink: false,
+        icon: 'receipt_long'
       },
       {
         label: 'ROC',
         link: '/selected-client-master/roc',
-        index: 3,
-        showLink: false
+        index: 4,
+        showLink: false,
+        icon: 'business'
       }
     ];
   }
 
   ngOnInit() {
     this.navBar.show();
-    this.activeLinkIndex = this.navLinks.indexOf(this.navLinks.find(tab => tab.link === this.router.url));
+    this.activeLinkIndex = this.navLinks.findIndex(tab => this.router.url.includes(tab.link));
+    if (this.activeLinkIndex === -1) this.activeLinkIndex = 0;
     forkJoin([this.dataTransferService.currentAssessmentYear.pipe(first()), this.dataTransferService.currentSelectedClient.pipe(first())]).subscribe(
       results => {
         console.log(results[0]);
@@ -88,18 +103,29 @@ export class SelectedClientMasterComponent implements OnInit {
         this.assessmentYear = results[0];
         this.selectedClient = results[1];
         this.navBar.changeToolBarTitle(this.selectedClient.getName);
-        this.populateGridList();
+        this.isLoading = true;
         this.apiService.getReturnCredentialsByClientId(this.assessmentYear, this.selectedClient.getId).subscribe(
           results2 => {
             console.log(results2);
             this.returnCredsArray = results2;
             if (this.returnCredsArray == undefined || this.returnCredsArray.length == 0) {
               this.isReturnCredsArrayNotEmpty = false;
+            } else {
+              this.isReturnCredsArrayNotEmpty = true;
             }
             this.dataService.updateReturnCredsArray(this.returnCredsArray);
             this.returnCredsArray.forEach(cred => {
-              this.navLinks[this.navLinks.findIndex(link => link.link.endsWith(cred.getReturnType))].showLink = true;
+              const linkIndex = this.navLinks.findIndex(link => link.link.endsWith(cred.getReturnType));
+              if (linkIndex !== -1) {
+                this.navLinks[linkIndex].showLink = true;
+              }
             });
+            this.isLoading = false;
+          },
+          err => {
+            console.error('Error fetching return credentials', err);
+            this.notificationService.showError('Failed to fetch return credentials. Please try again.');
+            this.isLoading = false;
           }
         );
       }
@@ -248,17 +274,9 @@ export class SelectedClientMasterComponent implements OnInit {
     this.navigateToReturnCredentials();
   }
 
-  populateGridList() {
-    this.headerTiles.push(new Tile("Assessment Year: " + this.assessmentYear));
-    this.headerTiles.push(new Tile("Client Code: " + this.selectedClient.getClientCode));
-    this.headerTiles.push(new Tile("PAN No: " + this.selectedClient.getPan));
-    this.headerTiles.push(new Tile("Client Type: " + this.selectedClient.getClientType));
-
-    this.footerTiles.push(new Tile("Father's Name: " + this.selectedClient.getFatherName));
-    this.footerTiles.push(new Tile("DOB/DOI: " + this.selectedClient.getDoiOrDob));
-    this.footerTiles.push(new Tile("Mobile No: " + this.selectedClient.getMobile));
-    this.footerTiles.push(new Tile("Email Id: " + this.selectedClient.getClientEmail));
-
+  // Placeholder for any additional logic if needed for the revamped header
+  goBack() {
+    this.router.navigate(['/client-master']);
   }
 
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ReturnForm } from '../model/ReturnForm';
-import {SyncupApiService} from 'src/app/shared/api/syncup-api.service';
+import { SyncupApiService } from 'src/app/shared/api/syncup-api.service';
 import { DatePipe } from '@angular/common';
 import { Constants } from '../shared/global/constants';
 
@@ -11,7 +11,7 @@ import { Constants } from '../shared/global/constants';
 export class ApplicableReturnFormsService {
   private dataSource = new BehaviorSubject<ReturnForm[]>([]);
   currentDataSource = this.dataSource.asObservable();
-  private selectedReturnForms  = new BehaviorSubject<Map<string, string[]>>(new Map<string, string[]>());
+  private selectedReturnForms = new BehaviorSubject<Map<string, string[]>>(new Map<string, string[]>());
 
   constructor(private apiService: SyncupApiService, private datePipe: DatePipe) { }
 
@@ -19,7 +19,11 @@ export class ApplicableReturnFormsService {
     this.apiService.getAllReturnForms().subscribe(
       res => {
         console.log(res);
-        res.forEach(returnForm => returnForm.getDueDateSchedulerSet[0].setDueDateOfFiling = this.datePipe.transform(returnForm.getDueDateSchedulerSet[0].getDueDateOfFiling, Constants.DUE_DATE_OF_FILING_DISPLAY_FORMAT))
+        res.forEach(returnForm => {
+          if (returnForm.getDueDateSchedulerSet && returnForm.getDueDateSchedulerSet.length > 0) {
+            returnForm.getDueDateSchedulerSet[0].setDueDateOfFiling = this.datePipe.transform(returnForm.getDueDateSchedulerSet[0].getDueDateOfFiling, Constants.DUE_DATE_OF_FILING_DISPLAY_FORMAT)
+          }
+        });
         this.dataSource.next(res);
       },
       err => {
@@ -39,7 +43,7 @@ export class ApplicableReturnFormsService {
   public getDataSourceByReturnType(returnType: string): ReturnForm[] {
     let temp = this.dataSource.getValue();
     this.clearSelectedReturnForms(returnType);
-    return temp.filter( returnForm => returnForm.getReturnType == returnType);
+    return temp.filter(returnForm => returnForm.getReturnType == returnType);
   }
 
   public addSelectedReturnForm(returnType: string, returnFormName: string) {

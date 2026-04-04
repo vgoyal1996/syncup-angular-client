@@ -1,0 +1,74 @@
+.overview-container {
+    padding: 8px 0;
+}
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.status-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-left: 4px solid #ccc;
+}
+
+.status-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1) !important;
+}
+
+.status-card.active {
+    border-left-color: var(--accent-color);
+}
+
+.status-card.pending {
+    border-left-color: #ff9800;
+}
+
+.status-card mat-icon {
+    color: var(--primary-color);
+    background: rgba(26, 35, 126, 0.05);
+    padding: 8px;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.count {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin: 16px 0 0;
+    color: var(--text-color);
+}
+
+.welcome-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f9f9ff 100%);
+}
+
+.features-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin-top: 20px;
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.mt-4 {
+    margin-top: 1.5rem;
+}
+
+.mt-3 {
+    margin-top: 1rem;
+}

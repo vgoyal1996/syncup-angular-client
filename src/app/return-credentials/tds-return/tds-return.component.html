@@ -1,105 +1,124 @@
-<div class="container">
-  <br><br>
-  <mat-table class="mat-elevation-z8" [dataSource]="dataSource">
+<div class="service-container">
+  <mat-card class="unified-card">
+    <div class="unified-content-grid">
+      <!-- Left Column: Forms Selection -->
+      <div class="forms-section">
+        <h3 class="section-title">
+          <mat-icon color="primary">list_alt</mat-icon>
+          Applicable Forms
+        </h3>
 
-    <ng-container matColumnDef="select">
-      <mat-header-cell *matHeaderCellDef>
-        <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
-          [indeterminate]="selection.hasValue() && !isAllSelected()">
-        </mat-checkbox>
-      </mat-header-cell>
-      <mat-cell *matCellDef="let row">
-        <mat-checkbox (click)="$event.stopPropagation()" (change)="toggleSelection(row)"
-          [checked]="selection.isSelected(row)">
-        </mat-checkbox>
-      </mat-cell>
-    </ng-container>
+        <div class="table-container mat-elevation-z0">
+          <mat-table [dataSource]="dataSource">
+            <ng-container matColumnDef="select">
+              <mat-header-cell *matHeaderCellDef class="checkbox-col">
+                <mat-checkbox (change)="$event ? masterToggle() : null"
+                  [checked]="selection.hasValue() && isAllSelected()"
+                  [indeterminate]="selection.hasValue() && !isAllSelected()" color="primary">
+                </mat-checkbox>
+              </mat-header-cell>
+              <mat-cell *matCellDef="let row" class="checkbox-col">
+                <mat-checkbox (click)="$event.stopPropagation()" (change)="toggleSelection(row)"
+                  [checked]="selection.isSelected(row)" color="primary">
+                </mat-checkbox>
+              </mat-cell>
+            </ng-container>
 
-    <ng-container matColumnDef="formName">
-      <mat-header-cell *matHeaderCellDef> Return Name </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.formName}} </mat-cell>
-    </ng-container>
+            <ng-container matColumnDef="formName">
+              <mat-header-cell *matHeaderCellDef> Return Name </mat-header-cell>
+              <mat-cell *matCellDef="let element" class="form-name-cell"> {{element.formName}} </mat-cell>
+            </ng-container>
 
-    <ng-container matColumnDef="periodicity">
-      <mat-header-cell *matHeaderCellDef> Periodicity </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.periodicity}} </mat-cell>
-    </ng-container>
+            <ng-container matColumnDef="periodicity">
+              <mat-header-cell *matHeaderCellDef> Periodicity </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <span class="period-tag">{{element.periodicity}}</span>
+              </mat-cell>
+            </ng-container>
 
-    <ng-container matColumnDef="dueDateOfFiling">
-      <mat-header-cell *matHeaderCellDef> Due Date of Filing </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.getDueDateSchedulerSet[0].getDueDateOfFiling}} </mat-cell>
-    </ng-container>
+            <ng-container matColumnDef="dueDateOfFiling">
+              <mat-header-cell *matHeaderCellDef> Due Date </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <div class="due-date-wrapper">
+                  <mat-icon class="date-icon">event</mat-icon>
+                  {{element.getDueDateSchedulerSet && element.getDueDateSchedulerSet.length > 0 ?
+                  element.getDueDateSchedulerSet[0].getDueDateOfFiling : 'Not Set'}}
+                </div>
+              </mat-cell>
+            </ng-container>
 
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-  </mat-table>
-  <br><br>
-  <form [formGroup]="tdsReturnForm" (ngSubmit)="addTdsReturnInfo()">
-    <div class=".container-fluid p-1">
-      <div class="row">
-        <label for="tdsUserName" class="col-sm-2 col-form-label">User Name</label>
-        <div class="col-sm-4">
-          <input type="text" id="tdsUserName" class="form-control" name="tdsUserName" placeholder="User Name"
-            formControlName="tdsUserName" [ngClass]="{ 'is-invalid': submitted && tdsUserName.invalid }" />
-          <div *ngIf="submitted && tdsUserName.invalid" class="invalid-input">
-            <!-- validation errors -->
-            <div *ngIf="tdsUserName.errors.required">TDS User name is required</div>
-          </div>
-        </div>
-        <label for="tdsPassword" class="col-sm-2 col-form-label">Password</label>
-        <div class="col-sm-4">
-          <input type="password" id="tdsPassword" class="form-control" name="tdsPassword" placeholder="Password"
-            formControlName="tdsPassword" [ngClass]="{ 'is-invalid': submitted && tdsPassword.invalid }" />
-          <div *ngIf="submitted && tdsPassword.invalid" class="invalid-input">
-            <!-- validation errors -->
-            <div *ngIf="tdsPassword.errors.required">TDS Password is required</div>
-          </div>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;" class="table-row"></mat-row>
+          </mat-table>
         </div>
       </div>
-    </div>
-    <div class=".container-fluid p-1">
-      <div class="row">
-        <label for="tracesTdsUserName" class="col-sm-2 col-form-label">Traces User Name</label>
-        <div class="col-sm-4">
-          <input type="text" id="tracesTdsUserName" class="form-control" name="tracesTdsUserName"
-            placeholder="User Name" formControlName="tracesTdsUserName"
-            [ngClass]="{ 'is-invalid': submitted && tracesTdsUserName.invalid }" />
-          <div *ngIf="submitted && tracesTdsUserName.invalid" class="invalid-input">
-            <!-- validation errors -->
-            <div *ngIf="tracesTdsUserName.errors.required">TDS Traces User name is required</div>
+
+      <!-- Right Column: Credentials Form -->
+      <div class="credentials-section">
+        <h3 class="section-title">
+          <mat-icon color="primary">security</mat-icon>
+          Portal & TRACES Credentials
+        </h3>
+
+        <form [formGroup]="tdsReturnForm" (ngSubmit)="addTdsReturnInfo()" class="credentials-form">
+          <div class="credential-fields">
+            <div class="section-divider mt-2 mb-2">
+              <span class="divider-text">Portal Login</span>
+            </div>
+
+            <mat-form-field appearance="outline" class="form-field w-100 mb-2">
+              <mat-label>Portal User ID</mat-label>
+              <input matInput id="tdsUserName" name="tdsUserName" placeholder="Enter user ID"
+                formControlName="tdsUserName" required />
+              <mat-icon matSuffix class="text-muted">person</mat-icon>
+              <mat-error *ngIf="submitted && tdsUserName.errors?.required">User name is required</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="form-field w-100 mb-2">
+              <mat-label>Portal Password</mat-label>
+              <input matInput type="password" id="tdsPassword" name="tdsPassword" placeholder="Enter password"
+                formControlName="tdsPassword" required />
+              <mat-icon matSuffix class="text-muted">lock</mat-icon>
+              <mat-error *ngIf="submitted && tdsPassword.errors?.required">Password is required</mat-error>
+            </mat-form-field>
+
+            <div class="section-divider mt-2 mb-2">
+              <span class="divider-text">TRACES Details</span>
+            </div>
+
+            <mat-form-field appearance="outline" class="form-field w-100 mb-2">
+              <mat-label>TRACES User ID</mat-label>
+              <input matInput id="tracesTdsUserName" name="tracesTdsUserName" placeholder="Traces ID"
+                formControlName="tracesTdsUserName" required />
+              <mat-icon matSuffix class="text-muted">badge</mat-icon>
+              <mat-error *ngIf="submitted && tracesTdsUserName.errors?.required">TRACES user name is
+                required</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="form-field w-100 mb-2">
+              <mat-label>TRACES Password</mat-label>
+              <input matInput type="password" id="tracesTdsPassword" name="tracesTdsPassword"
+                placeholder="Traces password" formControlName="tracesTdsPassword" required />
+              <mat-icon matSuffix class="text-muted">security</mat-icon>
+              <mat-error *ngIf="submitted && tracesTdsPassword.errors?.required">TRACES password is required</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="form-field w-100 mb-2">
+              <mat-label>TAN Number</mat-label>
+              <input matInput id="tdsTanNo" name="tdsTanNo" placeholder="Enter TAN" formControlName="tdsTanNo"
+                required />
+              <mat-icon matSuffix class="text-muted">account_balance</mat-icon>
+              <mat-error *ngIf="submitted && tdsTanNo.errors?.required">TAN No. is required</mat-error>
+            </mat-form-field>
           </div>
-        </div>
-        <label for="tracesTdsPassword" class="col-sm-2 col-form-label">Traces Password</label>
-        <div class="col-sm-4">
-          <input type="password" id="tracesTdsPassword" class="form-control" name="tracesTdsPassword"
-            placeholder="Password" formControlName="tracesTdsPassword"
-            [ngClass]="{ 'is-invalid': submitted && tracesTdsPassword.invalid }" />
-          <div *ngIf="submitted && tracesTdsPassword.invalid" class="invalid-input">
-            <!-- validation errors -->
-            <div *ngIf="tracesTdsPassword.errors.required">TDS Traces Password is required</div>
+
+          <div class="form-actions mt-4">
+            <button mat-raised-button color="primary" type="submit" class="submit-btn w-100">
+              <mat-icon>save</mat-icon> Save TDS Information
+            </button>
           </div>
-        </div>
+        </form>
       </div>
     </div>
-    <div class="container p-1">
-      <div class="row justify-content-md-center">
-        <label for="tdsTanNo" class="col-sm-2 col-form-label">TAN No</label>
-        <div class="col-sm-4">
-          <input type="text" id="tdsTanNo" class="form-control" name="tdsTanNo" placeholder="TAN No"
-            formControlName="tdsTanNo" [ngClass]="{ 'is-invalid': submitted && tdsTanNo.invalid }" />
-          <div *ngIf="submitted && tdsTanNo.invalid" class="invalid-input">
-            <!-- validation errors -->
-            <div *ngIf="tdsTanNo.errors.required">TAN No. is required</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class=".container-fluid p-5">
-      <div class="col text-center">
-        <button type="submit" class="btn btn-primary">
-          <span>Add Return Information</span>
-        </button>
-      </div>
-    </div>
-  </form>
+  </mat-card>
 </div>

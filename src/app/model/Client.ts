@@ -1,4 +1,4 @@
-import {FormGroup} from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { ReturnCredentials } from './ReturnCredentials';
 
 export class Client {
@@ -24,7 +24,7 @@ export class Client {
   private cin: string;
   private returnCredentialsList: ReturnCredentials[];
 
-  constructor() {}
+  constructor() { }
 
   public setFieldsFromForm(clientForm: FormGroup) {
     this.name = clientForm.controls.clientName.value;
@@ -68,11 +68,13 @@ export class Client {
     this.responsiblePersonAadhaar = response.responsiblePersonAadhaar;
     this.cin = response.cin;
     this.returnCredentialsList = [];
-    response.returnCredentialsList.forEach(element => {
-      let returnCredentials = new ReturnCredentials();
-      returnCredentials.mapResponseToReturnCredentials(element);
-      this.returnCredentialsList.push(returnCredentials);
-    });
+    if (response.returnCredentialsList && Array.isArray(response.returnCredentialsList)) {
+      response.returnCredentialsList.forEach(element => {
+        let returnCredentials = new ReturnCredentials();
+        returnCredentials.mapResponseToReturnCredentials(element);
+        this.returnCredentialsList.push(returnCredentials);
+      });
+    }
   }
 
   get getName(): string {

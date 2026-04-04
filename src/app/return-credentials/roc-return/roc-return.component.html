@@ -1,60 +1,90 @@
-<div class="container">
-  <br><br>
-  <mat-table class="mat-elevation-z8" [dataSource]="dataSource">
+<div class="service-container">
+  <mat-card class="unified-card">
+    <div class="unified-content-grid">
+      <!-- Left Column: Forms Selection -->
+      <div class="forms-section">
+        <h3 class="section-title">
+          <mat-icon color="primary">list_alt</mat-icon>
+          Applicable Forms
+        </h3>
 
-    <ng-container matColumnDef="select">
-      <mat-header-cell *matHeaderCellDef>
-        <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
-          [indeterminate]="selection.hasValue() && !isAllSelected()">
-        </mat-checkbox>
-      </mat-header-cell>
-      <mat-cell *matCellDef="let row">
-        <mat-checkbox (click)="$event.stopPropagation()" (change)="toggleSelection(row)"
-          [checked]="selection.isSelected(row)">
-        </mat-checkbox>
-      </mat-cell>
-    </ng-container>
+        <div class="table-container mat-elevation-z0">
+          <mat-table [dataSource]="dataSource">
+            <ng-container matColumnDef="select">
+              <mat-header-cell *matHeaderCellDef class="checkbox-col">
+                <mat-checkbox (change)="$event ? masterToggle() : null"
+                  [checked]="selection.hasValue() && isAllSelected()"
+                  [indeterminate]="selection.hasValue() && !isAllSelected()" color="primary">
+                </mat-checkbox>
+              </mat-header-cell>
+              <mat-cell *matCellDef="let row" class="checkbox-col">
+                <mat-checkbox (click)="$event.stopPropagation()" (change)="toggleSelection(row)"
+                  [checked]="selection.isSelected(row)" color="primary">
+                </mat-checkbox>
+              </mat-cell>
+            </ng-container>
 
-    <ng-container matColumnDef="formName">
-      <mat-header-cell *matHeaderCellDef> Return Name </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.formName}} </mat-cell>
-    </ng-container>
+            <ng-container matColumnDef="formName">
+              <mat-header-cell *matHeaderCellDef> Return Name </mat-header-cell>
+              <mat-cell *matCellDef="let element" class="form-name-cell"> {{element.formName}} </mat-cell>
+            </ng-container>
 
-    <ng-container matColumnDef="periodicity">
-      <mat-header-cell *matHeaderCellDef> Periodicity </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.periodicity}} </mat-cell>
-    </ng-container>
+            <ng-container matColumnDef="periodicity">
+              <mat-header-cell *matHeaderCellDef> Periodicity </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <span class="period-tag">{{element.periodicity}}</span>
+              </mat-cell>
+            </ng-container>
 
-    <ng-container matColumnDef="dueDateOfFiling">
-      <mat-header-cell *matHeaderCellDef> Due Date of Filing </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.getDueDateSchedulerSet[0].getDueDateOfFiling}} </mat-cell>
-    </ng-container>
+            <ng-container matColumnDef="dueDateOfFiling">
+              <mat-header-cell *matHeaderCellDef> Due Date </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <div class="due-date-wrapper">
+                  <mat-icon class="date-icon">event</mat-icon>
+                  {{element.getDueDateSchedulerSet && element.getDueDateSchedulerSet.length > 0 ?
+                  element.getDueDateSchedulerSet[0].getDueDateOfFiling : 'Not Set'}}
+                </div>
+              </mat-cell>
+            </ng-container>
 
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-  </mat-table>
-  <br><br>
-  <form [formGroup]="rocReturnForm" (ngSubmit)="addRocReturnInfo()">
-    <div class=".container-fluid p-1">
-      <div class="row">
-        <label for="rocUserName" class="col-sm-2 col-form-label">User Name</label>
-        <div class="col-sm-4">
-          <input type="text" id="rocUserName" class="form-control" name="rocUserName" placeholder="User Name"
-            formControlName="rocUserName" />
-        </div>
-        <label for="rocPassword" class="col-sm-2 col-form-label">Password</label>
-        <div class="col-sm-4">
-          <input type="password" id="rocPassword" class="form-control" name="rocPassword" placeholder="Password"
-            formControlName="rocPassword" />
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;" class="table-row"></mat-row>
+          </mat-table>
         </div>
       </div>
-    </div>
-    <div class=".container-fluid p-5">
-      <div class="col text-center">
-        <button type="submit" class="btn btn-primary">
-          <span>Add Return Information</span>
-        </button>
+
+      <!-- Right Column: Credentials Form -->
+      <div class="credentials-section">
+        <h3 class="section-title">
+          <mat-icon color="primary">security</mat-icon>
+          ROC Portal Credentials
+        </h3>
+
+        <form [formGroup]="rocReturnForm" (ngSubmit)="addRocReturnInfo()" class="credentials-form">
+          <div class="credential-fields">
+            <mat-form-field appearance="outline" class="form-field w-100 mb-2">
+              <mat-label>MCA User ID</mat-label>
+              <input matInput id="rocUserName" name="rocUserName" placeholder="Enter user ID"
+                formControlName="rocUserName" required />
+              <mat-icon matSuffix class="text-muted">person</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="form-field w-100 mb-2">
+              <mat-label>Portal Password</mat-label>
+              <input matInput type="password" id="rocPassword" name="rocPassword" placeholder="Enter password"
+                formControlName="rocPassword" required />
+              <mat-icon matSuffix class="text-muted">lock</mat-icon>
+            </mat-form-field>
+          </div>
+
+          <div class="form-actions mt-4">
+            <button mat-raised-button color="primary" type="submit" class="submit-btn w-100"
+              [disabled]="!rocReturnForm.valid">
+              <mat-icon>save</mat-icon> Save ROC Information
+            </button>
+          </div>
+        </form>
       </div>
     </div>
-  </form>
+  </mat-card>
 </div>

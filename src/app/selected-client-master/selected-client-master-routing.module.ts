@@ -6,11 +6,13 @@ import { IncomeTaxReturnComponent } from './income-tax-return/income-tax-return.
 import { GstReturnComponent } from './gst-return/gst-return.component';
 import { TdsReturnComponent } from './tds-return/tds-return.component';
 import { RocReturnComponent } from './roc-return/roc-return.component';
+import { OverviewComponent } from './overview/overview.component';
 
 const routes: Routes = [
   {
     path: '', component: SelectedClientMasterComponent, children: [
-      { path: '', redirectTo: 'incomeTax', pathMatch: 'full' },
+      { path: '', redirectTo: 'overview', pathMatch: 'full' },
+      { path: 'overview', component: OverviewComponent },
       { path: 'incomeTax', component: IncomeTaxReturnComponent },
       { path: 'tds', component: TdsReturnComponent },
       { path: 'roc', component: RocReturnComponent },

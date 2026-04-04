@@ -1,5 +1,4 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SyncupApiService } from 'src/app/shared/api/syncup-api.service';
@@ -7,6 +6,7 @@ import { ReturnForm } from 'src/app/model/ReturnForm';
 import { DatePipe } from '@angular/common';
 import { Constants } from 'src/app/shared/global/constants';
 import { DueDateScheduler } from 'src/app/model/DueDateScheduler';
+import { NotificationService } from 'src/app/shared/notification/notification.service';
 
 @Component({
   selector: 'app-add-revised-due-date-dialog',
@@ -19,34 +19,34 @@ export class AddRevisedDueDateDialogComponent implements OnInit {
   formHeading: string;
   form: ReturnForm;
 
-  constructor(private dialogRef: MatDialogRef<AddRevisedDueDateDialogComponent>, private formBuilder: FormBuilder,
-    private apiService: SyncupApiService, @Inject(MAT_DIALOG_DATA) private data: any, private snackBar: MatSnackBar,
-    private datepipe: DatePipe) {
+  constructor(
+    private dialogRef: MatDialogRef<AddRevisedDueDateDialogComponent>,
+    private formBuilder: FormBuilder,
+    private apiService: SyncupApiService,
+    @Inject(MAT_DIALOG_DATA) private data: any,
+    private notificationService: NotificationService,
+    private datepipe: DatePipe
+  ) {
     this.form = data.form;
     this.formHeading = this.form.getFormName;
+
+    // Simplified form - only the essential fields
+    const currentDueDate = this.form.getDueDateSchedulerSet?.[0]?.getDueDateOfFiling
+      ? new Date(this.form.getDueDateSchedulerSet[0].getDueDateOfFiling)
+      : null;
+
+    const existingRevisedDate = this.form.getDueDateSchedulerSet?.[0]?.getRevisedDueDateOfFiling
+      ? new Date(this.form.getDueDateSchedulerSet[0].getRevisedDueDateOfFiling)
+      : null;
+
     this.revisedDueDateForm = this.formBuilder.group({
-      periodicity: this.formBuilder.control({ value: this.form.getPeriodicity, disabled: true }, Validators.required),
-      fromDate: this.formBuilder.control({ value: new Date(this.datepipe.transform(new Date(this.form.getDueDateSchedulerSet[0].getStartDate), Constants.DATE_PICKER_FORMAT)), disabled: true }, Validators.required),
-      toDate: this.formBuilder.control({ value: new Date(this.datepipe.transform(new Date(this.form.getDueDateSchedulerSet[0].getEndDate), Constants.DATE_PICKER_FORMAT)), disabled: true }, Validators.required),
-      dueDateOfFiling: this.formBuilder.control({ value: new Date(this.datepipe.transform(new Date(this.form.getDueDateSchedulerSet[0].getDueDateOfFiling), Constants.DATE_PICKER_FORMAT)), disabled: true }, Validators.required),
-      revisedDueDateOfFiling: this.formBuilder.control('', Validators.required)
+      dueDateOfFiling: this.formBuilder.control({ value: currentDueDate, disabled: true }),
+      revisedDueDateOfFiling: this.formBuilder.control(existingRevisedDate, Validators.required)
     });
   }
 
   onNoClick(): void {
     this.dialogRef.close();
-  }
-
-  get periodicity() {
-    return this.revisedDueDateForm.get('periodicity');
-  }
-
-  get fromDate() {
-    return this.revisedDueDateForm.get('fromDate');
-  }
-
-  get toDate() {
-    return this.revisedDueDateForm.get('toDate');
   }
 
   get dueDateOfFiling() {
@@ -65,35 +65,25 @@ export class AddRevisedDueDateDialogComponent implements OnInit {
       return;
     }
 
+    // Build the scheduler payload
     let scheduler = new DueDateScheduler();
-    scheduler.setFormName = this.formHeading;
-    scheduler.setStartDate = this.fromDate.value;
-    scheduler.setEndDate = this.toDate.value;
-    scheduler.setDueDateOfFiling = this.dueDateOfFiling.value;
     scheduler.setRevisedDueDateOfFiling = this.revisedDueDateOfFiling.value;
 
     this.apiService.addRevisedDueDateOfFiling(this.formHeading, scheduler).subscribe(
       res => {
         if (res != null) {
-          this.snackBar.open("Revised due date Updated", null, {
-            duration: 3000,
-          });
+          this.notificationService.showSuccess("Revised due date saved for " + this.formHeading);
           this.dialogRef.close(res);
         } else {
-          this.snackBar.open("OOPS!!! An error occurred", null, {
-            duration: 3000,
-          });
+          this.notificationService.showError("Failed to save revised due date");
           this.dialogRef.close();
         }
       },
       err => {
         console.log(err);
-        this.snackBar.open(err, null, {
-          duration: 4000,
-        });
+        this.notificationService.showError(err.message || "An error occurred");
         this.dialogRef.close();
       }
     );
   }
-
 }

@@ -27,6 +27,132 @@
   opacity: 1;
 }
 
+.page-header-container {
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  margin-bottom: 24px;
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.back-link {
+  color: var(--text-secondary);
+  background: white;
+  border: 1px solid #e0e0e0 !important;
+}
+
+.header-titles {
+  flex: 1;
+}
+
+.client-name {
+  margin: 0 0 8px 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+}
+
+.client-badges mat-chip-set {
+  margin-top: 4px;
+}
+
+.ay-chip {
+  background-color: var(--primary-color) !important;
+  color: white !important;
+}
+
+.code-chip {
+  background-color: rgba(0, 150, 136, 0.1) !important;
+  color: var(--accent-dark) !important;
+}
+
+.header-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.action-btn-outline {
+  border: 1px solid #e0e0e0 !important;
+  background-color: white !important;
+  color: var(--text-color) !important;
+}
+
+.detail-card {
+  border-radius: 12px !important;
+  background: white;
+  margin-top: 16px;
+}
+
+.info-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding: 8px 16px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-item .label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.info-item .value {
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+/* Tabs Redesign */
+.tab-wrapper {
+  margin-top: 12px;
+}
+
+.main-tabs {
+  background: transparent;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.tab-icon {
+  margin-right: 8px;
+  font-size: 20px;
+  height: 20px;
+  width: 20px;
+}
+
+.tab-label {
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+.tab-content {
+  padding: 24px 0;
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .mat-tab-links,
 .mat-tab-link {
   display: table;
@@ -38,4 +164,22 @@
 .tabContentContainer {
   border: 1px solid black;
   background: #ffffff 50% 50% repeat-x;
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(2px);
+}
+
+.ml-2 {
+  margin-left: 12px;
 }

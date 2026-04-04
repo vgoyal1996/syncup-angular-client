@@ -29,7 +29,7 @@ export class ReturnFormsComponent implements OnInit {
   upcomingCount = 0;
   overdueCount = 0;
 
-  private headings = {
+  public headings: { [key: string]: string } = {
     incomeTax: 'Income Tax',
     tds: 'TDS',
     roc: 'ROC',
@@ -57,24 +57,24 @@ export class ReturnFormsComponent implements OnInit {
     this.overdueCount = 0;
 
     forms.forEach(form => {
-      // Assuming getDueDateOfFiling is a date string in format accessible to Date constructor
-      // Or we trust the API provided valid dates.
-      // Based on previous code, it might be a formatted string "Wed Feb 01 2026" or "DD/MM/YYYY"
-      // Let's assume the DatePipe transform in ngOnInit puts it in a parseable format or verify logic.
-      const dateStr = form.getDueDateSchedulerSet[0].getDueDateOfFiling;
-      const dueDate = new Date(dateStr);
+      if (form.getDueDateSchedulerSet && form.getDueDateSchedulerSet.length > 0) {
+        const dateStr = form.getDueDateSchedulerSet[0].getDueDateOfFiling;
+        const dueDate = new Date(dateStr);
 
-      if (!isNaN(dueDate.getTime())) {
-        if (dueDate < today) {
-          this.overdueCount++;
-        } else if (dueDate <= nextWeek) {
-          this.upcomingCount++;
+        if (!isNaN(dueDate.getTime())) {
+          if (dueDate < today) {
+            this.overdueCount++;
+          } else if (dueDate <= nextWeek) {
+            this.upcomingCount++;
+          }
         }
       }
     });
   }
 
   getDateClass(dateString: string): string {
+    if (!dateString) return '';
+
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const sevenDays = new Date();
@@ -85,11 +85,11 @@ export class ReturnFormsComponent implements OnInit {
     if (isNaN(dueDate.getTime())) return '';
 
     if (dueDate < today) {
-      return 'date-urgent';
+      return 'urgent'; // Matched with .status-chip.urgent
     } else if (dueDate <= sevenDays) {
-      return 'date-upcoming';
+      return 'upcoming'; // Matched with .status-chip.upcoming
     } else {
-      return 'date-safe';
+      return 'safe'; // Matched with .status-chip.safe
     }
   }
 
@@ -129,8 +129,9 @@ export class ReturnFormsComponent implements OnInit {
 
   openRevisedDueDateDialog(element: ReturnForm): void {
     const dialogRef = this.dialog.open(AddRevisedDueDateDialogComponent, {
-      width: '650px',
-      height: '600px',
+      width: '550px',
+      height: 'auto',
+      maxHeight: '90vh',
       data: { form: element }
     });
     dialogRef.afterClosed().subscribe(result => {
@@ -183,7 +184,6 @@ export class ReturnFormsComponent implements OnInit {
     console.log(rowList);
     const dialogRef = this.dialog.open(DeleteReturnFormsDialogComponent, {
       width: '550px',
-      height: '400px',
       data: { returnFormList: rowList, returnType: this.returnType }
     });
 
@@ -228,12 +228,30 @@ export class ReturnFormsComponent implements OnInit {
 
   onNewReturnFormAdded(newReturnFormValue: ReturnForm): void {
     let form = new ReturnForm();
+    form.setFormId = newReturnFormValue.getFormId;
     form.setFormName = newReturnFormValue.getFormName;
     form.setPeriodicity = newReturnFormValue.getPeriodicity;
+    form.setReturnType = newReturnFormValue.getReturnType;
+
+    // Copy all occurrence fields for edit functionality
+    form.setMonthlyDayOccurrence = newReturnFormValue.getMonthlyDayOccurrence;
+    form.setYearlyDayOccurrence = newReturnFormValue.getYearlyDayOccurrence;
+    form.setYearlyMonthOccurrence = newReturnFormValue.getYearlyMonthOccurrence;
+    form.setFirstQuarterDayOccurrence = newReturnFormValue.getFirstQuarterDayOccurrence;
+    form.setFirstQuarterMonthOccurrence = newReturnFormValue.getFirstQuarterMonthOccurrence;
+    form.setSecondQuarterDayOccurrence = newReturnFormValue.getSecondQuarterDayOccurrence;
+    form.setSecondQuarterMonthOccurrence = newReturnFormValue.getSecondQuarterMonthOccurrence;
+    form.setThirdQuarterDayOccurrence = newReturnFormValue.getThirdQuarterDayOccurrence;
+    form.setThirdQuarterMonthOccurrence = newReturnFormValue.getThirdQuarterMonthOccurrence;
+    form.setFourthQuarterDayOccurrence = newReturnFormValue.getFourthQuarterDayOccurrence;
+    form.setFourthQuarterMonthOccurrence = newReturnFormValue.getFourthQuarterMonthOccurrence;
+
     form.setDueDateSchedulerSet = newReturnFormValue.getDueDateSchedulerSet;
-    form.getDueDateSchedulerSet[0].setDueDateOfFiling = this.datepipe.transform(new Date(newReturnFormValue.getDueDateSchedulerSet[0].getDueDateOfFiling), Constants.REVISED_DUE_DATE_OF_FILING_DISPLAY_FORMAT);
-    if (newReturnFormValue.getDueDateSchedulerSet[0].getRevisedDueDateOfFiling != undefined) {
-      newReturnFormValue.getDueDateSchedulerSet[0].setRevisedDueDateOfFiling = this.datepipe.transform(new Date(newReturnFormValue.getDueDateSchedulerSet[0].getRevisedDueDateOfFiling), Constants.REVISED_DUE_DATE_OF_FILING_DISPLAY_FORMAT);
+    if (newReturnFormValue.getDueDateSchedulerSet && newReturnFormValue.getDueDateSchedulerSet.length > 0) {
+      form.getDueDateSchedulerSet[0].setDueDateOfFiling = this.datepipe.transform(new Date(newReturnFormValue.getDueDateSchedulerSet[0].getDueDateOfFiling), Constants.REVISED_DUE_DATE_OF_FILING_DISPLAY_FORMAT);
+      if (newReturnFormValue.getDueDateSchedulerSet[0].getRevisedDueDateOfFiling != undefined) {
+        newReturnFormValue.getDueDateSchedulerSet[0].setRevisedDueDateOfFiling = this.datepipe.transform(new Date(newReturnFormValue.getDueDateSchedulerSet[0].getRevisedDueDateOfFiling), Constants.REVISED_DUE_DATE_OF_FILING_DISPLAY_FORMAT);
+      }
     }
 
     const currentData = this.dataSource.data;
@@ -255,9 +273,11 @@ export class ReturnFormsComponent implements OnInit {
             let temp: ReturnForm[] = []
             res.forEach(form => {
               let returnForm = form;
-              returnForm.getDueDateSchedulerSet[0].setDueDateOfFiling = new Date(this.datepipe.transform(new Date(returnForm.getDueDateSchedulerSet[0].getDueDateOfFiling), Constants.REVISED_DUE_DATE_OF_FILING_DISPLAY_FORMAT)).toDateString();
-              if (returnForm.getDueDateSchedulerSet[0].getRevisedDueDateOfFiling != null) {
-                returnForm.getDueDateSchedulerSet[0].setRevisedDueDateOfFiling = new Date(this.datepipe.transform(new Date(returnForm.getDueDateSchedulerSet[0].getRevisedDueDateOfFiling), Constants.REVISED_DUE_DATE_OF_FILING_DISPLAY_FORMAT)).toDateString();
+              if (returnForm.getDueDateSchedulerSet && returnForm.getDueDateSchedulerSet.length > 0) {
+                returnForm.getDueDateSchedulerSet[0].setDueDateOfFiling = new Date(this.datepipe.transform(new Date(returnForm.getDueDateSchedulerSet[0].getDueDateOfFiling), Constants.REVISED_DUE_DATE_OF_FILING_DISPLAY_FORMAT)).toDateString();
+                if (returnForm.getDueDateSchedulerSet[0].getRevisedDueDateOfFiling != null) {
+                  returnForm.getDueDateSchedulerSet[0].setRevisedDueDateOfFiling = new Date(this.datepipe.transform(new Date(returnForm.getDueDateSchedulerSet[0].getRevisedDueDateOfFiling), Constants.REVISED_DUE_DATE_OF_FILING_DISPLAY_FORMAT)).toDateString();
+                }
               }
               temp.push(returnForm);
             });

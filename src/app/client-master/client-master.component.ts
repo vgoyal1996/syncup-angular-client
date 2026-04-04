@@ -166,7 +166,7 @@ export class ClientMasterComponent implements OnInit {
   openAssessmentYearDialog(element: Client) {
     const dialogRef = this.dialog.open(AssessmentYearDialogComponent, {
       width: '550px',
-      height: '300px',
+      height: 'auto',
       data: { selectedClient: element }
     });
     dialogRef.afterClosed().subscribe(result => {

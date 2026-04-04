@@ -174,6 +174,13 @@ export class ClientComponent implements OnInit {
     return selectedState ? selectedState.display : value;
   }
 
+  forceUppercase(controlName: string): void {
+    const control = this.clientForm.get(controlName);
+    if (control && control.value) {
+      control.setValue(control.value.toUpperCase(), { emitEvent: false });
+    }
+  }
+
   createNewClient(): void {
     this.submitted = true;
     if (this.clientForm.invalid) {

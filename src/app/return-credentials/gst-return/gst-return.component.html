@@ -1,164 +1,176 @@
-<div class="container">
-  <div [formGroup]="gstReturnForm">
-    <div formArrayName="returnForms" *ngFor="let returnForm of returnForms.controls; let i = index">
-      <h3 class="p-3">{{i+1}}. GST Return Credentials</h3>
-      <button mat-raised-button *ngIf="i == 0" color="primary" (click)="setFormFieldsAsMaster()">Set As Master</button>
-      <div [formGroupName]="i">
-        <br><br>
-        <mat-table class="mat-elevation-z8" [dataSource]="dataSources[i]">
-
-          <ng-container matColumnDef="select">
-            <mat-header-cell *matHeaderCellDef>
-              <mat-checkbox (change)="$event ? masterToggle(i) : null"
-                [checked]="selections[i].hasValue() && isAllSelected(i)"
-                [indeterminate]="selections[i].hasValue() && !isAllSelected(i)">
-              </mat-checkbox>
-            </mat-header-cell>
-            <mat-cell *matCellDef="let row">
-              <mat-checkbox (click)="$event.stopPropagation()" (change)="toggleSelection(i, row)"
-                [checked]="selections[i].isSelected(row)">
-              </mat-checkbox>
-            </mat-cell>
-          </ng-container>
-
-          <ng-container matColumnDef="formName">
-            <mat-header-cell *matHeaderCellDef> Return Name </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.getFormName}} </mat-cell>
-          </ng-container>
-
-          <ng-container matColumnDef="periodicity">
-            <mat-header-cell *matHeaderCellDef> Periodicity </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.getPeriodicity}} </mat-cell>
-          </ng-container>
-
-          <ng-container matColumnDef="dueDateOfFiling">
-            <mat-header-cell *matHeaderCellDef> Due Date of Filing </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.getDueDateSchedulerSet[0].getDueDateOfFiling}} </mat-cell>
-          </ng-container>
-
-          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-        </mat-table>
-        <br><br>
-        <div class=".container-fluid p-1">
-          <div class="row">
-            <label [attr.for]="'gstFlatNo'+i" class="col-sm-2 col-form-label">Flat No.</label>
-            <div class="col-sm-4">
-              <input type="text" [id]="'gstFlatNo'+i" class="form-control" name="gstFlatNo" placeholder="Flat No."
-                formControlName="gstFlatNo" [ngClass]="{ 'is-invalid': (returnForm.get('gstFlatNo').touched || returnForm.get('gstFlatNo').dirty) &&
-                         returnForm.get('gstFlatNo').invalid}" />
-              <div *ngIf="(returnForm.get('gstFlatNo').touched || returnForm.get('gstFlatNo').dirty) &&
-                  returnForm.get('gstFlatNo').errors?.required" class="invalid-input">
-                Flat No. is required
-              </div>
-            </div>
-            <label [attr.for]="'gstArea'+i" class="col-sm-2 col-form-label">Area</label>
-            <div class="col-sm-4">
-              <input type="text" [id]="'gstArea'+i" class="form-control" name="gstArea" placeholder="Area"
-                formControlName="gstArea" [ngClass]="{ 'is-invalid': (returnForm.get('gstArea').touched || returnForm.get('gstArea').dirty) &&
-                         returnForm.get('gstArea').invalid }" />
-              <div *ngIf="(returnForm.get('gstArea').touched || returnForm.get('gstArea').dirty) &&
-                  returnForm.get('gstArea').errors?.required" class="invalid-input">
-                Area is required
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class=".container-fluid p-1">
-          <div class="row">
-            <label [attr.for]="'gstCity'+i" class="col-sm-2 col-form-label">City</label>
-            <div class="col-sm-4">
-              <input type="text" [id]="'gstCity'+i" class="form-control" name="gstCity" placeholder="City"
-                formControlName="gstCity" [ngClass]="{ 'is-invalid': (returnForm.get('gstCity').touched || returnForm.get('gstCity').dirty) &&
-                         returnForm.get('gstCity').invalid }" />
-              <div *ngIf="(returnForm.get('gstCity').touched || returnForm.get('gstCity').dirty) &&
-                  returnForm.get('gstCity').errors?.required" class="invalid-input">
-                City Name is required
-              </div>
-            </div>
-            <label [attr.for]="'gstState'+i" class="col-sm-2 col-form-label">State</label>
-            <div class="col-sm-4">
-              <input type="text" [id]="'gstState'+i" class="form-control" name="gstState" placeholder="State"
-                formControlName="gstState" [ngClass]="{ 'is-invalid': (returnForm.get('gstState').touched || returnForm.get('gstState').dirty) &&
-                         returnForm.get('gstState').invalid }" />
-              <div *ngIf="(returnForm.get('gstState').touched || returnForm.get('gstState').dirty) &&
-                  returnForm.get('gstState').errors?.required" class="invalid-input">
-                State Name is required
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class=".container-fluid p-1">
-          <div class="row">
-            <label [attr.for]="'gstPin'+i" class="col-sm-2 col-form-label">PIN</label>
-            <div class="col-sm-4">
-              <input type="text" [id]="'gstPin'+i" class="form-control" name="gstPin" placeholder="PIN"
-                formControlName="gstPin" [ngClass]="{ 'is-invalid': (returnForm.get('gstPin').touched || returnForm.get('gstPin').dirty) &&
-                         returnForm.get('gstPin').invalid }" />
-              <div *ngIf="(returnForm.get('gstPin').touched || returnForm.get('gstPin').dirty) &&
-                  returnForm.get('gstPin').errors?.required" class="invalid-input">
-                PIN Number is required
-              </div>
-            </div>
-            <label [attr.for]="'gstNo'+i" class="col-sm-2 col-form-label">GST No</label>
-            <div class="col-sm-4">
-              <input type="text" [id]="'gstNo'+i" class="form-control" name="gstNo" placeholder="GST No"
-                formControlName="gstNo" [ngClass]="{ 'is-invalid': (returnForm.get('gstNo').touched || returnForm.get('gstNo').dirty) &&
-                         returnForm.get('gstNo').invalid }" />
-              <div *ngIf="(returnForm.get('gstNo').touched || returnForm.get('gstNo').dirty) &&
-                  returnForm.get('gstNo').errors?.required" class="invalid-input">
-                GST Number is required
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class=".container-fluid p-1">
-          <div class="row">
-            <label [attr.for]="'gstUserName'+i" class="col-sm-2 col-form-label">User Name</label>
-            <div class="col-sm-4">
-              <input type="text" [id]="'gstUserName'+i" class="form-control" name="gstUserName" placeholder="User Name"
-                formControlName="gstUserName" [ngClass]="{ 'is-invalid': (returnForm.get('gstUserName').touched || returnForm.get('gstUserName').dirty) &&
-                         returnForm.get('gstUserName').invalid }" />
-              <div *ngIf="(returnForm.get('gstUserName').touched || returnForm.get('gstUserName').dirty) &&
-                  returnForm.get('gstUserName').errors?.required" class="invalid-input">
-                GST User name is required
-              </div>
-            </div>
-            <label [attr.for]="'gstPassword'+i" class="col-sm-2 col-form-label">Password</label>
-            <div class="col-sm-4">
-              <input type="password" [id]="'gstPassword'+i" class="form-control" name="gstPassword"
-                placeholder="Password" formControlName="gstPassword" [ngClass]="{ 'is-invalid': (returnForm.get('gstPassword').touched || returnForm.get('gstPassword').dirty) &&
-                         returnForm.get('gstPassword').invalid }" />
-              <div *ngIf="(returnForm.get('gstPassword').touched || returnForm.get('gstPassword').dirty) &&
-                  returnForm.get('gstPassword').errors?.required" class="invalid-input">
-                GST Password is required
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+<div class="service-container">
+  <div class="gst-actions-bar mb-3">
+    <button mat-raised-button color="accent" (click)="addReturnForm()" class="add-gst-btn">
+      <mat-icon>add_circle</mat-icon> Add GST Registration
+    </button>
   </div>
-  <div class=".container-fluid p-5">
-    <div class="container p-4">
-      <div class="row justify-content-center">
-        <div class="col-4 text-center">
-          <button type="button" class="btn btn-secondary" (click)="addReturnForm()">Add GST
-            Credentials
-          </button>
-        </div>
-        <div class="col-4 text-center">
-          <button type="button" class="btn btn-secondary"
-            (click)="removeReturnForm(returnForms.controls.length - 1)">Remove GST
-            Credentials
-          </button>
-        </div>
-      </div>
-    </div>
-    <div class="col text-center">
-      <button type="submit" class="btn btn-primary" (click)="saveReturnInfo()">
-        <span>Add Return Information</span>
-      </button>
-    </div>
+
+  <form [formGroup]="gstReturnForm">
+    <mat-accordion class="gst-accordion" multi>
+      <ng-container formArrayName="returnForms">
+        <mat-expansion-panel *ngFor="let returnForm of returnForms.controls; let i = index" [formGroupName]="i"
+          [expanded]="i === 0" class="unified-card mb-3">
+
+          <mat-expansion-panel-header class="expansion-header">
+            <mat-panel-title class="panel-title">
+              <mat-icon color="primary" class="mr-2">business</mat-icon>
+              <span>{{ returnForm.get('gstNo').value || 'New GST Registration ' + (i+1) }}</span>
+            </mat-panel-title>
+            <mat-panel-description *ngIf="i == 0">
+              <button mat-stroked-button color="primary" (click)="$event.stopPropagation(); setFormFieldsAsMaster()"
+                class="master-btn-small">
+                <mat-icon>copy_all</mat-icon> Set As Master
+              </button>
+            </mat-panel-description>
+            <mat-panel-description class="remove-action" *ngIf="returnForms.controls.length > 1">
+              <button mat-icon-button color="warn" (click)="$event.stopPropagation(); removeReturnForm(i)"
+                matTooltip="Remove Registration">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <div class="unified-content-grid">
+            <!-- Left Column: Forms Selection -->
+            <div class="forms-section">
+              <h3 class="section-title">
+                <mat-icon color="primary">list_alt</mat-icon>
+                Applicable Forms
+              </h3>
+
+              <div class="table-container mat-elevation-z0">
+                <mat-table [dataSource]="dataSources[i]">
+                  <ng-container matColumnDef="select">
+                    <mat-header-cell *matHeaderCellDef class="checkbox-col">
+                      <mat-checkbox (change)="$event ? masterToggle(i) : null"
+                        [checked]="selections[i].hasValue() && isAllSelected(i)"
+                        [indeterminate]="selections[i].hasValue() && !isAllSelected(i)" color="primary">
+                      </mat-checkbox>
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row" class="checkbox-col">
+                      <mat-checkbox (click)="$event.stopPropagation()" (change)="toggleSelection(i, row)"
+                        [checked]="selections[i].isSelected(row)" color="primary">
+                      </mat-checkbox>
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="formName">
+                    <mat-header-cell *matHeaderCellDef> Return Name </mat-header-cell>
+                    <mat-cell *matCellDef="let element" class="form-name-cell"> {{element.getFormName}} </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="periodicity">
+                    <mat-header-cell *matHeaderCellDef> Periodicity </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                      <span class="period-tag">{{element.getPeriodicity}}</span>
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="dueDateOfFiling">
+                    <mat-header-cell *matHeaderCellDef> Due Date </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                      <div class="due-date-wrapper">
+                        <mat-icon class="date-icon">event</mat-icon>
+                        {{element.getDueDateSchedulerSet && element.getDueDateSchedulerSet.length > 0 ?
+                        element.getDueDateSchedulerSet[0].getDueDateOfFiling : 'Not Set'}}
+                      </div>
+                    </mat-cell>
+                  </ng-container>
+
+                  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayedColumns;" class="table-row"></mat-row>
+                </mat-table>
+              </div>
+            </div>
+
+            <!-- Right Column: Registration Details -->
+            <div class="credentials-section">
+              <h3 class="section-title">
+                <mat-icon color="primary">security</mat-icon>
+                Registration Details
+              </h3>
+
+              <div class="credentials-form">
+                <div class="credential-fields">
+                  <!-- Portal Details -->
+                  <div class="section-divider mt-2 mb-2">
+                    <span class="divider-text">Portal Login</span>
+                  </div>
+
+                  <mat-form-field appearance="outline" class="form-field w-100 mb-2">
+                    <mat-label>GST Number</mat-label>
+                    <input matInput [id]="'gstNo'+i" name="gstNo" placeholder="Enter GSTIN" formControlName="gstNo"
+                      required />
+                    <mat-icon matSuffix class="text-muted">pin</mat-icon>
+                    <mat-error *ngIf="returnForm.get('gstNo').errors?.required">GST number is required</mat-error>
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline" class="form-field w-100 mb-2">
+                    <mat-label>Portal User ID</mat-label>
+                    <input matInput [id]="'gstUserName'+i" name="gstUserName" placeholder="Portal User ID"
+                      formControlName="gstUserName" required />
+                    <mat-icon matSuffix class="text-muted">person</mat-icon>
+                    <mat-error *ngIf="returnForm.get('gstUserName').errors?.required">User name is required</mat-error>
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline" class="form-field w-100 mb-2">
+                    <mat-label>Portal Password</mat-label>
+                    <input matInput type="password" [id]="'gstPassword'+i" name="gstPassword"
+                      placeholder="Portal Password" formControlName="gstPassword" required />
+                    <mat-icon matSuffix class="text-muted">lock</mat-icon>
+                    <mat-error *ngIf="returnForm.get('gstPassword').errors?.required">Password is required</mat-error>
+                  </mat-form-field>
+
+                  <!-- Address Info -->
+                  <div class="section-divider mt-3 mb-2">
+                    <span class="divider-text">Primary Address</span>
+                  </div>
+
+                  <div class="address-grid">
+                    <mat-form-field appearance="outline" class="form-field">
+                      <mat-label>Flat/House No.</mat-label>
+                      <input matInput [id]="'gstFlatNo'+i" name="gstFlatNo" placeholder="Flat No."
+                        formControlName="gstFlatNo" required />
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="form-field">
+                      <mat-label>Area/Locality</mat-label>
+                      <input matInput [id]="'gstArea'+i" name="gstArea" placeholder="Area" formControlName="gstArea"
+                        required />
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="form-field">
+                      <mat-label>City</mat-label>
+                      <input matInput [id]="'gstCity'+i" name="gstCity" placeholder="City" formControlName="gstCity"
+                        required />
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="form-field">
+                      <mat-label>State</mat-label>
+                      <input matInput [id]="'gstState'+i" name="gstState" placeholder="State" formControlName="gstState"
+                        required />
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="form-field col-span-full">
+                      <mat-label>PIN Code</mat-label>
+                      <input matInput [id]="'gstPin'+i" name="gstPin" placeholder="PIN" formControlName="gstPin"
+                        required />
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </ng-container>
+    </mat-accordion>
+  </form>
+
+  <!-- Global Save Actions -->
+  <div class="main-submit-section p-4 mat-elevation-z2 mt-3 mb-4 rounded-card bg-white">
+    <button mat-raised-button color="primary" class="submit-btn-large w-100" (click)="saveReturnInfo()"
+      [disabled]="!gstReturnForm.valid">
+      <mat-icon>save_all</mat-icon> Save All GST Registrations
+    </button>
   </div>
 </div>

@@ -48,14 +48,21 @@ export class IncomeTaxReturnComponent implements OnInit {
         if (flag == true) {
           this.dataTransferService.currentReturnCredentialsArrayForEdit.subscribe(creds => {
             this.incomeTaxCred = creds.filter(cred => cred.getReturnType == 'incomeTax')[0];
-            this.incomeTaxReturnForm.setValue({
-              incomeTaxUserName: this.incomeTaxCred.getUserId,
-              incomeTaxPassword: this.incomeTaxCred.getPassword
-            });
-            this.incomeTaxCred.getReturnFormsList.forEach(clientReturnForm => {
-              this.selection.select(this.dataSource.find(form => form.getFormName == clientReturnForm.getReturnForm.getFormName));
-              this.applicableReturnFormsService.addSelectedReturnForm('incomeTax', clientReturnForm.getReturnForm.getFormName);
-            });
+            if (this.incomeTaxCred) {
+              this.incomeTaxReturnForm.setValue({
+                incomeTaxUserName: this.incomeTaxCred.getUserId || '',
+                incomeTaxPassword: this.incomeTaxCred.getPassword || ''
+              });
+              if (this.incomeTaxCred.getReturnFormsList) {
+                this.incomeTaxCred.getReturnFormsList.forEach(clientReturnForm => {
+                  const matchingForm = this.dataSource.find(form => form.getFormName == clientReturnForm.getReturnForm.getFormName);
+                  if (matchingForm) this.selection.select(matchingForm);
+                  this.applicableReturnFormsService.addSelectedReturnForm('incomeTax', clientReturnForm.getReturnForm.getFormName);
+                });
+              }
+            } else {
+              this.editFlag = false;
+            }
           });
         }
       });
@@ -102,11 +109,13 @@ export class IncomeTaxReturnComponent implements OnInit {
   addIncomeTaxReturnInfo() {
     this.submitted = true;
     if (this.incomeTaxReturnForm.invalid) {
+      this.snackBar.open("Please provide valid PAN and password", null, { duration: 3000 });
       return;
     }
     if (this.applicableReturnFormsService.getSelectedReturnForms == undefined ||
       this.applicableReturnFormsService.getSelectedReturnForms('incomeTax') == undefined ||
       this.applicableReturnFormsService.getSelectedReturnForms('incomeTax').length === 0) {
+      this.snackBar.open("Please select at least one applicable form", null, { duration: 3000 });
       return;
     }
     const incomeTaxCredentials: ReturnCredentials = new ReturnCredentials();
